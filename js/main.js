@@ -23,3 +23,5 @@ window.onscroll=() =>{
     searchform.classList.remove('active')
     cart.classList.remove('active')
 }
+
+//coodkasjdfkashdfskfhsjfhdjfhdjfhdfjh
