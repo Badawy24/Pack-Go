@@ -12,7 +12,7 @@ document.querySelector('.fa-search').onclick= () =>{
 }
 
 let cart = document.querySelector('.cart-item-container')
-document.querySelector('.fa-shopping-car').onclick= () =>{
+document.querySelector('.fa-shopping-cart').onclick= () =>{
     cart.classList.toggle('active')
     navbar.classList.remove('active')
     searchform.classList.remove('active')
