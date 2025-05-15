@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header-z">
+        <div class="logo-z">Shop</div>
+        <nav class="navbar">
+            <a href="./index.html">Home</a>
+            <a href="./shop.html">Shop</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+        <div class="icon-z">
+            <i class="fa fa-search"></i>
+            <i class="fa fa-shopping-cart"></i>
+        </div>
+    </header>
+
+    <!-- Breadcrumb and Browse Section -->
+    <div class="browse-section-m">
+        <div class="breadcrumb-m">
+            <a href="./index.html">Home</a> > <a href="./shop.html">All Products</a>
+        </div>
+
+        <div class="product-count-sort-m">
+            <span>18 products</span> <!-- الجزئىه بتاعت الكونت دي هتتعمل في js -->
+            <div class="sort-by-m">
+                <span>Sort by:</span>
+                <select>
+                    <option>Recommended</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Section -->
+    <section class="shop-m">
+        <div class="sidebar-m">
+            <h3>Browse by</h3>
+            <ul>
+                <li><a href="#" class="active">All Products</a></li>
+                <li><a href="#">Backpacks</a></li>
+                <li><a href="#">Duffle Bags</a></li>
+                <li><a href="#">New Arrivals</a></li>
+                <li><a href="#">Travel Packs</a></li>
+            </ul>
+        </div>
+        
+        <div class="shop-container-m">
+            <div class="product-card-m">
+                <img src="img/bag1.jpg" alt="product 1">
+                <h3>Product 1</h3>
+                <p class="price-m">$19.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+            <div class="product-card-m">
+                <img src="img/bag2.jpg" alt="product 1">
+                <h3>Product 2</h3>
+                <p class="price-m">$24.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+            <div class="product-card-m">
+                <img src="img/bag3.jpg" alt="product 1">
+                <h3>Product 3</h3>
+                <p class="price-m">$29.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+            <div class="product-card-m">
+                <img src="img/bag1.jpg" alt="product 1">
+                <h3>Product 4</h3>
+                <p class="price-m">$34.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+            <div class="product-card-m">
+                <img src="img/bag4.jpg" alt="product 1">
+                <h3>Product 5</h3>
+                <p class="price-m">$39.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+            <div class="product-card-m">
+                <img src="img/bag5.jpg" alt="product 1">
+                <h3>Product 6</h3>
+                <p class="price-m">$44.99</p>
+                <button class="add-to-cart-m">Add to Cart</button>
+            </div>
+
+    
+
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-m">
+        <p>&copy; 2025 pack & pag</p>
+    </footer>
+    <script src="shop.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
