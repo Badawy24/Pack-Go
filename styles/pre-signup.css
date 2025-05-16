@@ -1,0 +1,436 @@
+/* Signup Page Styles */
+
+/* General body and page layout */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #eeeeee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #222831;
+    color: #ffffff;
+    padding: 40px 20px 10px 20px;
+    text-align: center;
+}
+
+/* Main content area padding */
+main {
+    padding: 0 30px;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    /* General footer padding */
+    background-color: #333;
+    /* Fallback footer, specific modal footer is different */
+    color: #aaa;
+    font-size: 0.8em;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* --- Component Classes --- */
+
+/* General container for centered content (e.g., initial view before modal) */
+/* This .container style is for a general page structure not directly used by pre-signup.html which uses .container.modal-signup-k */
+/* However, it's kept for now as it might be intended for a broader site structure or future use. */
+/* If strictly cleaning for pre-signup.html only, this .container block could also be a candidate for removal or refinement. */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+    background-color: #222831;
+    color: #eeeeee;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+
+/* Signup page heading (used in general and modal context) */
+/* The first declaration of .signup-heading-k is for a general context if .container was used. */
+/* The second one is more specific to the modal. */
+.signup-heading-k {
+    margin: 0 0 10px 0;
+    font-size: 2.2em;
+    /* Base size, overridden in modal/responsive */
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+/* Subheading text */
+.subheading-k {
+    color: #eeeeee;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* Form container (if used directly in non-modal context) */
+.form-container-k {
+    margin-top: 0;
+}
+
+/* Row layout for form elements (e.g., first name, last name) */
+.row-k {
+    display: flex;
+    gap: 20px;
+}
+
+/* Half-width column within a row */
+.half-k {
+    flex: 1;
+}
+
+/* Input group styling */
+.input-group-k {
+    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group-k label {
+    display: block;
+    margin-bottom: 8px;
+    color: #eeeeee;
+    font-size: 1em;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.input-group-k input {
+    width: 100%;
+    padding: 10px 5px 8px 5px;
+    border: none;
+    border-bottom: 2px solid #444950;
+    border-radius: 0;
+    box-sizing: border-box;
+    font-size: 1em;
+    background-color: transparent;
+    color: #eeeeee;
+    transition: border-bottom-color 0.3s ease;
+}
+
+.input-group-k input:focus {
+    border-bottom-color: #ffffff;
+    outline: none;
+}
+
+.input-group-k input::placeholder {
+    color: #444950;
+    opacity: 1;
+}
+
+/* General button styling with a -k suffix */
+.btn-k {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+/* Primary button variant */
+.btn-primary-k {
+    background-color: #ffffff;
+    color: #222831;
+    border: 1px solid #cccccc;
+}
+
+.btn-primary-k:hover {
+    background-color: #eeeeee;
+    color: #222831;
+    border: 1px solid #bbbbbb;
+}
+
+/* Google button styling (general, may be overridden for modal context) */
+/* This is the first declaration of .btn-google-k, a more specific one follows for the modal. */
+.btn-google-k {
+    background-color: #ffffff;
+    color: #444;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn-google-k:hover {
+    background-color: #f8f8f8;
+}
+
+/* Google icon within buttons */
+.google-icon-k {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Styling for the signup modal specifically (used by pre-signup.html) */
+.container.modal-signup-k {
+    max-width: 420px;
+    margin: 60px auto;
+    /* Provides spacing from viewport edges */
+    background: #181818;
+    color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    padding: 36px 32px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    opacity: 0;
+    /* Initial state for animation */
+    transform: translateY(100vh);
+    /* Initial state for animation */
+    animation: slideUpCenter 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Signup heading specifically for the modal */
+.signup-heading-k {
+    /* This re-declaration targets the modal context. */
+    font-size: 2.1em;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 18px 0;
+    letter-spacing: 0.5px;
+}
+
+/* Row for switching between login/signup */
+.switch-row-k {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+/* Description text in the switch row */
+.switch-desc-k {
+    color: #bdbdbd;
+    font-size: 1em;
+}
+
+/* Button for switching forms */
+.switch-btn-k {
+    background: none;
+    border: none;
+    color: #4a90e2;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.switch-btn-k:hover {
+    color: #357ab8;
+}
+
+/* Container for social authentication buttons */
+.social-auth-k {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+/* Social signup button style */
+.btn-social-k {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.08em;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Google button specific overrides (for modal context) */
+.btn-google-k {
+    /* This re-declaration targets the modal context. */
+    background: #fff;
+    color: #222;
+}
+
+.btn-google-k:hover {
+    /* This re-declaration targets the modal context. */
+    background: #f5f5f5;
+}
+
+/* Icon used in social buttons */
+.icon-social-k {
+    width: 22px;
+    height: 22px;
+}
+
+/* Separator with "or" text */
+.separator-k {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0 12px 0;
+    color: #bdbdbd;
+    font-size: 1em;
+}
+
+.separator-k span {
+    flex: 1;
+    position: relative;
+}
+
+.separator-k span:before,
+.separator-k span:after {
+    content: '';
+    display: inline-block;
+    height: 1px;
+    background: #333;
+    width: 40%;
+    /* Adjust to control line length */
+    vertical-align: middle;
+    margin: 0 8px;
+}
+
+/* Small separator variant (not currently used in pre-signup.html but defined) */
+.small-sep-k {
+    margin: 10px 0 10px 0;
+    font-size: 0.98em;
+}
+
+/* Button for email signup */
+.btn-email-signup-k {
+    width: 100%;
+    background: #fff;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.08em;
+    font-weight: 600;
+    padding: 12px 0;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-email-signup-k:hover {
+    background: #f5f5f5;
+}
+
+/* Footer styling specific to modal context */
+footer {
+    text-align: center;
+    padding: 16px 0 0 0;
+    background: none;
+    color: #aaa;
+    font-size: 0.8em;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* --- Animations --- */
+@keyframes slideUpCenter {
+    from {
+        opacity: 0;
+        transform: translateY(100vh);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 600px) {
+
+    /* Adjustments for smaller screens (general .container, if used) */
+    .container {
+        margin: 10px;
+        box-shadow: none;
+        border-radius: 0;
+        padding-bottom: 10px;
+    }
+
+    main {
+        padding: 0 10px;
+    }
+
+    /* Signup heading in general responsive context */
+    .signup-heading-k {
+        font-size: 1.5em;
+    }
+
+    .subheading-k {
+        font-size: 1em;
+    }
+
+    .btn-k {
+        font-size: 1em;
+        padding: 10px;
+    }
+
+    .input-group-k input {
+        padding: 8px 3px 6px 3px;
+    }
+
+    .row-k {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Modal specific adjustments for smaller screens */
+    .container.modal-signup-k {
+        max-width: 98vw;
+        margin: 10px;
+        padding: 18px 6vw 12px 6vw;
+    }
+
+    /* Signup heading in modal responsive context */
+    .signup-heading-k {
+        font-size: 1.3em;
+        /* This applies to .signup-heading-k within the modal on small screens */
+    }
+
+    .btn-social-k,
+    .btn-email-signup-k {
+        font-size: 1em;
+        padding: 10px 0;
+    }
+
+    .icon-social-k {
+        width: 18px;
+        height: 18px;
+    }
+}
