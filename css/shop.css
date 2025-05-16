@@ -1,53 +1,9 @@
-
-*{
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-    text-transform: capitalize;
-    outline: none;
-    border: none;
-}
-
-
-html{
-    font-size: 62.5%;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-}
-body{
-    background-color: #020202;
-    font-family: "Open Sans", sans-serif;
-}
-
-
-.header-z{
-    opacity: .7;
-    background-color: #020202;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    padding: 1.5rem 7%;
-    z-index: 1000;
-}
-.header-z .navbar a{
-    margin: 0 1rem;
-    font-size: 1.5rem;
-    color: #a29c9c;
-}
-.header-z .navbar a:hover{
-    color: white;
-}
-
 /* Breadcrumb and Browse Section */
 .browse-section-m {
     max-width: 1200px;
     margin: 10rem auto 0;
     padding: 0 2%;
-    color: #eee6e6;
+    color: var(--light-grey-color);
 }
 
 .breadcrumb-m {
@@ -56,11 +12,11 @@ body{
 }
 
 .breadcrumb-m a {
-    color: #a29c9c;
+    color: var(--dark-grey-color);
 }
 
 .breadcrumb-m a:hover {
-    color: white;
+    color: var(--white-color);
 }
 
 .product-count-sort-m {
@@ -69,7 +25,7 @@ body{
     align-items: center;
     margin-bottom: 3rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--secondary-color);
 }
 
 .product-count-sort-m span {
@@ -84,17 +40,17 @@ body{
 
 .sort-by-m select {
     padding: 0.5rem 1rem;
-    background-color: #1c1c1c;
-    color: #eee6e6;
+    background-color: var(--dark-color);
+    color: var(--light-grey-color);
     border-radius: 0.5rem;
-    border: 1px solid #333;
+    border: 1px solid var(--secondary-color);
 }
 
 /* Shop Section */
 .shop-m {
     display: flex;
     padding: 0 2% 5rem;
-    
+
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -102,14 +58,14 @@ body{
 
 .sidebar-m {
     width: 20%;
-    background-color: #1c1c1c;
+    background-color: var(--dark-color);
     padding: 2rem;
     border-radius: 1rem;
 }
 
 .sidebar-m h3 {
     font-size: 2.2rem;
-    color: #eee6e6;
+    color: var(--light-grey-color);
     margin-bottom: 1.5rem;
 }
 
@@ -122,21 +78,21 @@ body{
 }
 
 .sidebar-m ul li a {
-    color: #eee6e6;
+    color: var(--light-grey-color);
     font-size: 1.5rem;
 }
 
 .sidebar-m ul li a.active {
-    color: white;
+    color: var(--white-color);
     font-weight: bold;
 }
 
 .sidebar-m ul li a:hover {
-    color: white;
+    color: var(--white-color);
 }
 
 .category-description {
-    color: #a29c9c;
+    color: var(--dark-grey-color);
     font-size: 1.3rem;
     margin-top: 0.5rem;
 }
@@ -149,7 +105,7 @@ body{
 }
 
 .product-card-m {
-   
+
     padding: 2rem;
     border-radius: 1rem;
     text-align: center;
@@ -163,20 +119,20 @@ body{
 .product-card-m h3 {
     margin: 1rem 0;
     font-size: 2rem;
-    color: #a29c9c;
+    color: var(--dark-grey-color);
 
 }
 
 .product-card-m .price-m {
-    color: #a29c9c;
+    color: var(--dark-grey-color);
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
 .product-card-m .add-to-cart-m {
     background-color: transparent;
-    border: 2px solid #eee6e6;
-    color: #eee6e6;
+    border: 2px solid var(--light-grey-color);
+    color: var(--light-grey-color);
     padding: 1rem 2rem;
     font-size: 1.4rem;
     cursor: pointer;
@@ -185,14 +141,14 @@ body{
 }
 
 .product-card-m .add-to-cart-m:hover {
-    background-color: #eee6e6;
-    color: #111;
+    background-color: var(--light-grey-color);
+    color: var(--dark-color);
 }
 
 /* Footer Styles */
 .footer-m {
-    background-color: #111;
-    color: #fff;
+    background-color: var(--dark-color);
+    color: var(--white-color);
     text-align: center;
     padding: 1rem 0;
 }
