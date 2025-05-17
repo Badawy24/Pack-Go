@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pack&Go</title>
+    <link rel="stylesheet" href="css/ProductSC.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1 class="logo">Pack&Go</h1>
+        <nav class="nav">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Search backpacks...">
+        </div>
+      </div>
+      </div>
+
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Adventure Starts Here</h2>
+        <p>Explore our exclusive backpack collection.</p>
+        <a href="#products" class="btn-primary">Shop Now</a>
+      </div>
+    </section>
+
+    <section id="products" class="products-section">
+      <h3 class="section-title">Our Products</h3>
+      
+    <div class="filters">
+      <label for="price-filter">Sort by Price:</label>
+      <select id="price-filter">
+        <option value="overall">Overall</option>
+        <option value="low">Low to High</option>
+        <option value="high">High to Low</option>
+      </select>
+    </div>
+      <div class="product-list" id="product-list"></div>
+    </section>
+
+    <section id="about" class="about-section">
+      <div class="container">
+        <h3>About Pack&Go</h3>
+        <p>
+          Pack&Go is your best companion for all your travel and everyday
+          adventures. Stylish, durable, and functional backpacks for every need.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <h3>Contact Us</h3>
+        <form>
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+          <textarea placeholder="Your Message" required></textarea>
+          <button type="submit" class="btn-primary">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <div class="cart" id="cart">
+      <h4>Cart</h4>
+      <div id="cart-items"></div>
+      <div id="cart-total">Total: $0</div>
+    </div>
+
+    <footer class="site-footer">
+      <p>&copy; 2025 Pack&Go. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
