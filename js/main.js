@@ -1,5 +1,7 @@
 import { addProductToFirestore } from "./pushDataToFirestore.js";
 import { productsData } from "./getDataFromFirestore.js";
+import { productsInShop } from "./shop.js"
+
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -20,6 +22,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 // const analytics = getAnalytics(app);
 
+productsInShop(db); 
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
 //     {
