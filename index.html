@@ -26,8 +26,8 @@
         <div class="right-z navbar">
             <a href="./index.html">Home</a>
             <a href="./shop.html">Shop</a>
-            <a href="">About</a>
-            <a href="">Contact</a>
+            <a href="./index.html#about">About</a>
+            <a href="./index.html#contact">Contact</a>
         </div>
         <div class="icons-z">
             <div class="icon-z fas fa-search"></div>
@@ -80,7 +80,7 @@
     <section class="home-z">
         <div class="center-z">
             <h1>PLAN YOUR ADVENTURE</h1>
-            <button class="button-z">SHOP NOW</button>
+           <a href="./shop.html"><button class="button-z">SHOP NOW</button></a> 
             <div class="arrow-z">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -94,60 +94,46 @@
     <div class="shop-z">
         <div class="left-z">
             <h1>New Arrivals</h1>
-            <button class="button-z">SHOP NOW</button>
+           <a href="./shop.html"><button class="button-z">SHOP NOW</button></a> 
         </div>
         <div class="right-z"></div>
     </div>
-    <div class="categories-z">
+    <div class="categories-z" id="categories">
         <div class="cat-z cat1-z">
-            <div class="overlay-z"><img src="./img/cat-1.avif" alt=""></div>
-            <h1>BACKPACKS</h1>
-        </div>
-        <div class="cat-z cat2-z">
-            <div class="overlay-z"><img src="./img/cat-2.avif" alt=""></div>
-            <h1>DUFFLE BAGS</h1>
-        </div>
-        <div class="cat-z cat3-z">
-            <div class="overlay-z"><img src="./img/cat-3.avif" alt=""></div>
-            <h1>TRAVEL PACKS</h1>
-        </div>
+  <div class="overlay-z"><img src="./img/cat-1.avif" alt=""></div>
+  <h1></h1>
+</div>
+
+<div class="cat-z cat2-z">
+  <div class="overlay-z"><img src="./img/cat-2.avif" alt=""></div>
+  <h1></h1>
+</div>
+
+<div class="cat-z cat3-z">
+  <div class="overlay-z"><img src="./img/cat-3.avif" alt=""></div>
+  <h1></h1>
+</div>
+
     </div>
     <div class="sale-z">
         <div class="tex-center-z">
             <h1>NOW ON SALE</h1>
             <h4>UP TO 50% OFF</h4>
         </div>
-        <div class="sale-flex-z">
-            <div class="product-z product-1-z">
-                <img src="./img/product1.webp" alt="">
-                <div class="product-content-z">
-                    <h3>CANVAS BACKPACK</h3>
-                    <hr>
-                    <del>$75.00</del><span>67.50</span>
-                </div>
-                <button class="button-z">VIEW DETAILS</button>
-            </div>
-            <div class="product-z product-2-z">
-                <img src="./img/product2.webp" alt="">
-                <div class="product-content-z">
-                    <h3>TECHNICAL BACKPACK</h3>
-                    <hr>
-                    <del>$75.00</del><span>67.50</span>
-                </div>
-                <button class="button-z">VIEW DETAILS</button>
-            </div>
-            <div class="product-z product-3-z">
-                <img src="./img/prpduct3.webp" alt="">
-                <div class="product-content-z">
-                    <h3>CAMO BACKPACK</h3>
-                    <hr>
-                    <del>$75.00</del><span>67.50</span>
-                </div>
-                <button class="button-z">VIEW DETAILS</button>
-            </div>
+        <div id="sale-flex" class="sale-flex-z">
+    <div class="product-z product-1-z" id="product-template" style="display:none;">
+        <img src="" alt="">
+        <div class="product-content-z">
+            <h3></h3>
+            <hr>
+            <del></del><span></span>
         </div>
+        <button class="button-z">VIEW DETAILS</button>
     </div>
-    <div class="about-z">
+</div>
+
+    </div>
+    <div id="about" class="about-z">
         <div class="about-left-z">
             <div class="content-z">
                 <h1>ABOUT US</h1>
@@ -159,7 +145,7 @@
 
         </div>
     </div>
-    <div class="contact-z">
+    <div class="contact-z" id="contact">
         <div class="inputs-z">
             <div class="first-input-z">
                 <label for="firstname">First Name* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -196,6 +182,8 @@
     </footer>
     <script type="module" src="./js/main.js"></script>
     <script src="./js/header.js"></script>
+    <script type="module" src="./js/home-product.js"></script>
+    <script src="./js/home-category.js"></script>
 </body>
 
 </html>
