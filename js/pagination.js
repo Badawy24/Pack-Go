@@ -1,7 +1,7 @@
 const itemsPerPage = 8;
 let currentPage = 1;
 
-function paginateProducts() {
+export function paginateProducts() {
     const allProducts = Array.from(document.querySelectorAll('#shop-body-B .product-card-m'));
     const totalPages = Math.ceil(allProducts.length / itemsPerPage);
     const paginationContainer = document.getElementById('pagination-b');
