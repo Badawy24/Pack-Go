@@ -44,7 +44,7 @@ export function createProductCard(products) {
         let productPrice = document.createElement("p");
         productPrice.classList.add("price-m");
         productPrice.innerText = product.price + "$";
-
+        
         // <button class="add-to-cart-m">Add to Cart</button>
         // let productBtnAddCart = document.createElement("button");
         // productBtnAddCart.classList.add("add-to-cart-m");
@@ -59,9 +59,13 @@ export function createProductCard(products) {
         // });
 
         // Append all elements to the product card
+     let button = document.createElement("button");
+      button.classList.add("button-z");
+      button.innerText = "Add To Cart";
         productCard.appendChild(productImg);
         productCard.appendChild(productTitle);
         productCard.appendChild(productPrice);
+        productCard.appendChild(button);
         // productCard.appendChild(productBtnAddCart);
         // productCard.appendChild(productBtnViewDetials);
 

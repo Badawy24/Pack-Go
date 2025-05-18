@@ -1,6 +1,7 @@
 footer {
     padding: 30px;
-    background-color: var(--secondary-color);
+    background-color: #0A0C0D;
+    color: var(--light-grey-color) ;
 }
 
 footer .f-z {
