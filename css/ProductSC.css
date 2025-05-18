@@ -99,15 +99,15 @@
 }
 .product-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: column; /* يخلي العناصر رأسية */
+  gap: 10px; /* مسافة بين الزرين */
   margin-top: 15px;
 }
 
 .add-cart-btn,
 .buy-now-btn {
   padding: 10px 20px;
-  width: 150%;
+  width: 100%;
   border: none;
   background: #afb0b1;
   color: #fff;
