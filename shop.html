@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/shop.css">
+    <link rel="stylesheet" href="./css/pagination.css">
 </head>
 
 <body>
@@ -81,12 +82,11 @@
 
     <!-- Breadcrumb and Browse Section -->
     <div class="browse-section-m">
+        
         <div class="breadcrumb-m">
             <a href="./index.html">Home</a> > <a href="./shop.html">All Products</a>
         </div>
-
         <div class="product-count-sort-m">
-            <span>18 products</span> <!-- الجزئىه بتاعت الكونت دي هتتعمل في js -->
             <div class="sort-by-m">
                 <span>Sort by:</span>
                 <select>
@@ -121,6 +121,7 @@
             </div> -->
         </div>
     </section>
+    <div class="pagination-b" id="pagination-b"></div>
 
     <!-- Footer Section -->
     <footer>
@@ -131,10 +132,12 @@
             </div>
         </div>
     </footer>
+ 
     <script type="module" src="./js/main.js"></script>
     <script src="./js/header.js"></script>
     <script type="module" src="./js/shop.js"></script>
-
+    <script src="./js/pagination.js"></script>
+    
 </body>
 
 </html>

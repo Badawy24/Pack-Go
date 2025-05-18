@@ -36,24 +36,33 @@ export const productsInShop = (db) => {
             //  <p class="price-m"></p>
             let productPrice = document.createElement("p");
             productPrice.classList.add("price-m");
-            productPrice.innerText = product.price;
+            productPrice.innerText = product.price + "$";
 
             // <button class="add-to-cart-m">Add to Cart</button>
-            let productButton = document.createElement("button");
-            productButton.classList.add("add-to-cart-m");
-            productButton.innerText = "Add to Cart";
+            // let productBtnAddCart = document.createElement("button");
+            // productBtnAddCart.classList.add("add-to-cart-m");
+            // productBtnAddCart.innerText = "Add to Cart";
+            
+            // let productBtnViewDetials = document.createElement("button");
+            // productBtnViewDetials.classList.add("add-to-cart-m");
+            // productBtnViewDetials.innerText = "View Details";
+            
+            // productBtnViewDetials.addEventListener("click", () => {
+            //     window.location.href = `productDetails.html?id=${product.id}`;
+            // });
 
             // Append all elements to the product card
             productCard.appendChild(productImg);
             productCard.appendChild(productTitle);
             productCard.appendChild(productPrice);
-            productCard.appendChild(productButton);
+            // productCard.appendChild(productBtnAddCart);
+            // productCard.appendChild(productBtnViewDetials);
 
             // Append the product card to the shop body
             shopBody.append(productCard);
 
 
-            productButton.addEventListener("click", () => {
+            productCard.addEventListener("click", () => {
                 console.log('Product id : ', product.id);
                 console.log("Product code : ", product.code);
                 console.log("Product title : ", product.title);
