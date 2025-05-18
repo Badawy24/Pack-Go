@@ -26,8 +26,10 @@ export function createProductCard(products) {
     products.forEach(product => {
 
         // <div class="product-card-m"></div>
-        let productCard = document.createElement("div");
+            let productCard = document.createElement("div");
         productCard.classList.add("product-card-m");
+        productCard.setAttribute("data-category", product.category); // مهم للفلترة
+
 
         // <img src="" alt="">
         let productImg = document.createElement("img");
