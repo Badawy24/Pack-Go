@@ -32,11 +32,15 @@
         <div class="icons-z">
             <div class="icon-z fas fa-search"></div>
             <div class="fas fa-shopping-cart icon-z" style="color: white;"></div>
-            <a href="">
+          <!--   <a href="auth/loginForm.html">
                 <div class="fas fa-user user-icon-z"></div>
                 <span>Log in</span>
-            </a>
-
+            </a> -->
+     <a href="auth/loginForm.html" id="user-link">
+        <img id="user-icon" class="user-icon-z" src="img/default-user-icon.png" alt="User Icon" />
+        <span id="login-text">Log in</span>
+      </a>
+            <a href="#" id="logout-btn" style="display:none; margin-left:12px; color:#fff;">Logout</a>
             <div class="icon-z fas fa-bars" id="menu-btn"></div>
         </div>
 
@@ -194,6 +198,7 @@
             </div>
         </div>
     </footer>
+    <script type="module" src="./js/index.js"></script>
     <script type="module" src="./js/main.js"></script>
     <script src="./js/header.js"></script>
 </body>
