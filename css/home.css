@@ -241,7 +241,7 @@
 }
 
 .product-z h3 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     margin-bottom: 8px;
 }
 
@@ -251,7 +251,7 @@ hr {
     height: 3px;
     position: absolute;
     left: 50%;
-    top: 95%;
+    top: 94%;
     transform: translate(-50%, -50%);
 }
 

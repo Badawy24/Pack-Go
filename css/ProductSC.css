@@ -27,8 +27,8 @@
 }
 .product-images img {
   width: 100%;
-  border-radius: 8px;
   margin-bottom: 8px;
+  border: 1px solid #4d4d4e;
 }
 .image-thumbs {
   display: flex;
@@ -112,19 +112,27 @@
   background: #afb0b1;
   color: #fff;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 2rem;
   cursor: pointer;
   font-weight: 500;
   transition: ease 0.6s;
 }
+.add-cart-btn{
+  background-color: #111;
+  transition: .3s;
+  font-weight: bold;
+}
 .buy-now-btn {
-  background: #afb0b1;
+  background: #3272a7;
+  font-weight: bold;
 }
 .add-cart-btn:hover {
-  background: #767677;
+  background: none;
+  color: #fff;
+  border: 1px solid #fff;
 }
 .buy-now-btn:hover {
-  background: #767677;
+    background: #0f5792;
 }
 .product-details h2 {
   margin: 18px 0 7px 0;
