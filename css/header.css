@@ -38,9 +38,31 @@
     border-radius: 50%;
 }
 
+#user-icon.user-icon-z {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
 .header-z a span {
     font-size: 1.5rem;
     text-transform: uppercase;
+}
+
+#login-text-k {
+    margin-left: 8px;
+    font-weight: 600;
+    color: #fff;
+}
+
+#login-text {
+    margin-left: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+    letter-spacing: 1px;
 }
 
 #menu-btn {
@@ -141,6 +163,19 @@
 
 .header-z a:hover {
     color: white;
+}
+
+.icons-z {
+    display: flex;
+    align-items: center;
+    gap: 18px; /* space between icons */
+}
+
+#user-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
 }
 
 @media(max-width:768px) {
