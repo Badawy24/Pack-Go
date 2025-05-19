@@ -1,17 +1,11 @@
 import { addProductToFirestore } from "./pushDataToFirestore.js";
 import { productsData } from "./getDataFromFirestore.js";
 import { productsInShop } from "./shop.js";
-import { db } from "./firebase-config.js";
-
-// Initialize shop with Firestore instance
-productsInShop(db);
-
-import { productsInShop } from "./shop.js"
 import { productsInHome } from "./home-product.js";
 import { displayProductByCategory } from "./productbycategory.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-// import { getAnalytics } from "firebase/analytics";
+// import { db } from "./firebase-config.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDOL8EAF_5kYHAom1fZ_7UiAxWcWIJ5Aok",
@@ -26,6 +20,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// Initialize shop with Firestore instance
+productsInShop(db);
+
+// import { productsInShop } from "./shop.js"
+
+// import { getAnalytics } from "firebase/analytics";
+
+
+
 // const analytics = getAnalytics(app);
 
 productsInShop(db); 
