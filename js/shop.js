@@ -1,4 +1,5 @@
 import { collection, onSnapshot } from "firebase/firestore";
+import {paginateProducts } from './pagination.js';
 
 export let productsArray = [];
 // Get Data From Firestore And Display it In shop.html As Dynamic Data
@@ -83,7 +84,7 @@ productCard.addEventListener("click", (e) => {
         // Append the product card to the shop body
         shopBody.append(productCard);
 
-
+        
         productCard.addEventListener("click", () => {
             console.log('Product id : ', product.id);
             console.log("Product code : ", product.code);
@@ -99,6 +100,7 @@ productCard.addEventListener("click", (e) => {
             console.log("Product image : ", product.image);
             console.log("Product info : ", product.info);
         });
+        paginateProducts();
     });
 }
 
