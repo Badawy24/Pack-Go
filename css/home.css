@@ -67,7 +67,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0px 0px;
+    padding: 11px;
     position: fixed;
     z-index: 100;
 }

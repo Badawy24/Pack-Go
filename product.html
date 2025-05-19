@@ -3,82 +3,173 @@
   <head>
     <meta charset="UTF-8" />
     <title>Pack&Go</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart"
+    />
+    <!-- fontawesome link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/header.css" />
+    <link rel="stylesheet" href="./css/footer.css" />
     <link rel="stylesheet" href="css/ProductSC.css" />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container">
-        <h1 class="logo">Pack&Go</h1>
-        <nav class="nav">
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </nav>
-        <div class="search-box">
-          <input type="text" id="search-input" placeholder="Search backpacks...">
-        </div>
+    <!-- Header -->
+    <header class="header-z">
+      <h2 href="" class="logo-z">P<span>ACK </span>& G<span>O</span></h2>
+      <div class="right-z navbar">
+        <a href="./index.html">Home</a>
+        <a href="./shop.html">Shop</a>
+        <a href="">About</a>
+        <a href="">Contact</a>
       </div>
+      <div class="icons-z">
+        <div class="icon-z fas fa-search"></div>
+        <div class="fas fa-shopping-cart icon-z" style="color: white"></div>
+        <a href="">
+          <div class="fas fa-user user-icon-z"></div>
+          <span>Log in</span>
+        </a>
+
+        <div class="icon-z fas fa-bars" id="menu-btn"></div>
       </div>
 
+      <div class="search-form">
+        <input type="search" placeholder="search here ..." id="search-box" />
+        <label for="search-box" class="fas fa-search"></label>
+      </div>
+      <div class="cart-item-container">
+        <div class="cart-item">
+          <span class="fas fa-times"></span>
+          <div class="content-z">
+            <h3>cart item 01</h3>
+            <div class="price">$15.99/-</div>
+          </div>
+        </div>
+        <div class="cart-item">
+          <span class="fas fa-times"></span>
+          <div class="content-z">
+            <h3>cart item 02</h3>
+            <div class="price">$15.99/-</div>
+          </div>
+        </div>
+        <div class="cart-item">
+          <span class="fas fa-times"></span>
+          <div class="content-z">
+            <h3>cart item 03</h3>
+            <div class="price">$15.99/-</div>
+          </div>
+        </div>
+        <div class="cart-item">
+          <span class="fas fa-times"></span>
+          <div class="content-z">
+            <h3>cart item 04</h3>
+            <div class="price">$15.99/-</div>
+          </div>
+        </div>
+        <a href="" class="btn-z">Checkout Now</a>
+      </div>
     </header>
 
-    <section class="hero">
-      <div class="hero-content">
-        <h2>Adventure Starts Here</h2>
-        <p>Explore our exclusive backpack collection.</p>
-        <a href="#products" class="btn-primary">Shop Now</a>
+    <!-- Product Screen -->
+    <main id="main-content">
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a> / <a href="shop.html">Backpacks</a> /
+        <span>CANVAS BACKPACK</span>
       </div>
-    </section>
 
-    <section id="products" class="products-section">
-      <h3 class="section-title">Our Products</h3>
-      
-    <div class="filters">
-      <label for="price-filter">Sort by Price:</label>
-      <select id="price-filter">
-        <option value="overall">Overall</option>
-        <option value="low">Low to High</option>
-        <option value="high">High to Low</option>
-      </select>
-    </div>
-      <div class="product-list" id="product-list"></div>
-    </section>
+      <section class="product-section">
+        <div class="product-images">
+          <img src="img/bag1.jpg" alt="Canvas Backpack" />
+          <div class="image-thumbs">
+            <img src="img/bag2.jpg" alt="Product Thumb" />
+            <img src="img/bag3.jpg" alt="Product Thumb" />
+          </div>
+        </div>
+        <div class="product-info">
+          <h1>CANVAS BACKPACK</h1>
+          <div class="rating">
+            <span>★</span><span>★</span><span>★</span><span>★</span>
+            <span class="half">★</span>
+            <span class="rating-value">4.5 | 4 reviews</span>
+          </div>
+          <div class="product-price">
+            <span class="old-price">$75.00</span>
+            <span class="sale-price">$67.50</span>
+          </div>
 
-    <section id="about" class="about-section">
-      <div class="container">
-        <h3>About Pack&Go</h3>
-        <p>
-          Pack&Go is your best companion for all your travel and everyday
-          adventures. Stylish, durable, and functional backpacks for every need.
-        </p>
+          <form id="add-to-cart-form">
+            <label for="color">Color:</label>
+            <select id="color" name="color" required>
+              <option value="Blue">Blue</option>
+              <option value="Black">Black</option>
+              <option value="Green">Green</option>
+            </select>
+            <label for="quantity">Quantity:</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              value="1"
+              min="1"
+              required
+            />
+            <div class="product-buttons">
+              <button type="submit" class="add-cart-btn">Add to Cart</button>
+              <button type="button" class="buy-now-btn">Buy Now</button>
+            </div>
+          </form>
+
+          <div class="product-details">
+            <h2>Product Info</h2>
+            <p>
+              Our Canvas Backpack is your ideal everyday companion. Made from
+              durable canvas material in classic colors, it features comfortable
+              padded shoulder straps and multiple zippered compartments for all
+              your essentials. Easy to clean, stylish for any adventure or just
+              commuting to work or class.
+              <br />
+              <strong>Material:</strong> 100% cotton canvas<br />
+              <strong>Dimensions:</strong> 30cm x 45cm x 15cm<br />
+              <strong>Care:</strong> Spot clean with damp cloth. Do not machine
+              wash.
+            </p>
+          </div>
+          <div class="product-details">
+            <h2>Return and Refund Policy</h2>
+            <p>
+              Not satisfied with your purchase? You may return or exchange items
+              within 30 days. Items must be unused and in original packaging.
+              Contact our support for easy returns.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="f-z">
+        <p>© 2025 by PACK & GO.</p>
+        <div class="links-z">
+          <a href="index.html">HOME</a><a href="">ABOUT</a><a href="">CONTACT</a
+          ><a href="shop.html">SHOP</a>
+        </div>
       </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-      <div class="container">
-        <h3>Contact Us</h3>
-        <form>
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea placeholder="Your Message" required></textarea>
-          <button type="submit" class="btn-primary">Send</button>
-        </form>
-      </div>
-    </section>
-
-    <div class="cart" id="cart">
-      <h4>Cart</h4>
-      <div id="cart-items"></div>
-      <div id="cart-total">Total: $0</div>
-    </div>
-
-    <footer class="site-footer">
-      <p>&copy; 2025 Pack&Go. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="js/product.js"></script>
   </body>
 </html>

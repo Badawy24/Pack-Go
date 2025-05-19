@@ -6,6 +6,31 @@ import { db } from "./firebase-config.js";
 // Initialize shop with Firestore instance
 productsInShop(db);
 
+import { productsInShop } from "./shop.js"
+import { productsInHome } from "./home-product.js";
+import { displayProductByCategory } from "./productbycategory.js";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+// import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDOL8EAF_5kYHAom1fZ_7UiAxWcWIJ5Aok",
+  authDomain: "pack-go-5d568.firebaseapp.com",
+  projectId: "pack-go-5d568",
+  storageBucket: "pack-go-5d568.firebasestorage.app",
+  messagingSenderId: "525870091383",
+  appId: "1:525870091383:web:06655ed6e02bcf40e28a72",
+  measurementId: "G-R9DE3EBPD2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+// const analytics = getAnalytics(app);
+
+productsInShop(db); 
+productsInHome(db); 
+displayProductByCategory(db);
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
 //     {
@@ -50,34 +75,34 @@ productsInShop(db);
 //         "image": "./img/products/3.jpg",
 //         "info": "Spacious with multiple compartments."
 //     },
-//     {
-//         "code": 104,
-//         "title": "Leather Laptop Bag",
-//         "description": "Premium leather bag suitable for laptops.",
-//         "category": "mens-bags",
-//         "price": 89.99,
-//         "discountPercentage": 12,
-//         "quantity": 40,
-//         "returnPolicy": "14 days return",
-//         "colorHEX": "#5c4033",
-//         "color": "Brown",
-//         "image": "./img/products/4.jpg",
-//         "info": "Perfect for business and travel."
-//     },
-//     {
-//         "code": 105,
-//         "title": "Casual Tote Bag",
-//         "description": "Lightweight and stylish tote for daily use.",
-//         "category": "womens-bags",
-//         "price": 29.99,
-//         "discountPercentage": 20,
-//         "quantity": 90,
-//         "returnPolicy": "7 days return policy",
-//         "colorHEX": "#ff66cc",
-//         "color": "Pink",
-//         "image": "./img/products/5.jpg",
-//         "info": "Trendy and comfortable for all outfits."
-//     },
+    // {
+    //     "code": 104,
+    //     "title": "Leather Laptop Bag",
+    //     "description": "Premium leather bag suitable for laptops.",
+    //     "category": "mens-bags",
+    //     "price": 89.99,
+    //     "discountPercentage": 12,
+    //     "quantity": 40,
+    //     "returnPolicy": "14 days return",
+    //     "colorHEX": "#5c4033",
+    //     "color": "Brown",
+    //     "image": "./img/products/4.jpg",
+    //     "info": "Perfect for business and travel."
+    // },
+    // {
+    //     "code": 105,
+    //     "title": "Casual Tote Bag",
+    //     "description": "Lightweight and stylish tote for daily use.",
+    //     "category": "womens-bags",
+    //     "price": 29.99,
+    //     "discountPercentage": 20,
+    //     "quantity": 90,
+    //     "returnPolicy": "7 days return policy",
+    //     "colorHEX": "#ff66cc",
+    //     "color": "Pink",
+    //     "image": "./img/products/5.jpg",
+    //     "info": "Trendy and comfortable for all outfits."
+    // },
 //     {
 //         "code": 106,
 //         "title": "Sample Bag Product 6",

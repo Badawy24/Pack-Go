@@ -89,11 +89,12 @@
         <div class="product-count-sort-m">
             <div class="sort-by-m">
                 <span>Sort by:</span>
-                <select>
-                    <option>Recommended</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                    <option>Newest</option>
+                <select id="sort">
+                    <option value="0">Recommended</option>
+                    <option value="1">Price: Low to High</option>
+                    <option value="2">Price: High to Low</option>
+                    <option value="3">Title: A - Z </option>
+                    <option value="4">Title: Z - A </option>
                 </select>
             </div>
         </div>
@@ -103,13 +104,22 @@
     <section class="shop-m">
         <div class="sidebar-m">
             <h3>Browse by</h3>
-            <ul>
+            <!-- <ul id="filter">
                 <li><a href="#" class="active">All Products</a></li>
                 <li><a href="#">Backpacks</a></li>
                 <li><a href="#">Duffle Bags</a></li>
                 <li><a href="#">New Arrivals</a></li>
                 <li><a href="#">Travel Packs</a></li>
-            </ul>
+            </ul> -->
+                            <ul id="filter">
+                    <li><a href="#" class="active" data-category="all">All Products</a></li>
+                    <!-- <li><a href="#" data-category="womens-bags">Women's Bags</a></li>
+                    <li><a href="#" data-category="mens-bags">Men's Bags</a></li> -->
+
+                    <li><a href="#" data-category="backpacks">Back-packs</a></li>
+                    <li><a href="#" data-category="dufflebags">duffle-Bags</a></li>
+                    <li><a href="#" data-category="travelpacks">Travel-Packs</a></li>
+                </ul>
         </div>
 
         <div class="shop-container-m" id="shop-body-B">
@@ -136,7 +146,9 @@
     <script type="module" src="./js/main.js"></script>
     <script src="./js/header.js"></script>
     <script type="module" src="./js/shop.js"></script>
-    <script src="./js/pagination.js"></script>
+    <script type="module" src="./js/sortInShop.js"></script>
+    <script type="module" src="./js/pagination.js"></script>
+    <script type="module" src="./js/filtershop.js"></script>
     
 </body>
 
