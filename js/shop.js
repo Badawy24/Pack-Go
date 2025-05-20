@@ -1,6 +1,5 @@
 import { collection, onSnapshot } from "firebase/firestore";
 import {paginateProducts } from './pagination.js';
-
 export let productsArray = [];
 // Get Data From Firestore And Display it In shop.html As Dynamic Data
 export const productsInShop = (db) => {
