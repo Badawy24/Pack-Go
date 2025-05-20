@@ -1,5 +1,6 @@
 import { auth } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { userDataService, getCurrentUserUid } from './userDataService.js';
 
 const logoutBtn = document.getElementById('logout-btn');
 
@@ -18,10 +19,14 @@ onAuthStateChanged(auth, (user) => {
     const loginText = document.getElementById('login-text');
     const userLink = document.getElementById('user-link');
 
-    console.log('userIcon:', userIcon, 'loginText:', loginText, 'userLink:', userLink); // Debug: log elements
+    if (user) {
+        userDataService.setCurrentUser(user);
+        console.log('Current UID:', getCurrentUserUid());
+    } else {
+        console.log('User is signed out');
+    }
 
     if (user && userIcon && loginText && userLink) {
-        console.log('Photo URL:', user.photoURL); // Debug: log photo URL
         console.log('Display Name:', user.displayName); // Debug: log display name
 
         userIcon.src = user.photoURL ? user.photoURL : 'img/default-user-icon.png';
@@ -29,9 +34,11 @@ onAuthStateChanged(auth, (user) => {
         userLink.href = "user.html";
         if (logoutBtn) logoutBtn.style.display = 'inline';
     } else if (userIcon && loginText && userLink) {
-        //userIcon.src = 'img/default-user-icon.png';
         loginText.textContent = "Log in";
         userLink.href = "auth/loginForm.html";
         if (logoutBtn) logoutBtn.style.display = 'none';
     }
 });
+
+
+

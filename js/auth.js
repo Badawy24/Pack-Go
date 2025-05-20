@@ -5,6 +5,7 @@ import {
     GoogleAuthProvider,
     signInWithPopup
 } from "firebase/auth";
+import { userDataService } from './userDataService.js';  //modified
 
 const updateUserUI = (user) => {
     const userIcon = document.getElementById('user-icon');
@@ -21,8 +22,11 @@ const updateUserUI = (user) => {
 const handleEmailSignIn = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log('Signed in user:', {
+            uid: userCredential.user.uid,
+            email: userCredential.user.email
+        });
         updateUserUI(userCredential.user);
-        console.log("User signed in successfully");
         window.location.href = '../index.html';
     } catch (error) {
         alert(error.message);
@@ -34,8 +38,14 @@ const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
         const result = await signInWithPopup(auth, provider);
+        // Save user data on Google sign-in
+        await userDataService.saveUserData(result.user.uid, {
+            uid: result.user.uid,
+            email: result.user.email,
+            displayName: result.user.displayName,
+            createdAt: new Date().toISOString()
+        });
         updateUserUI(result.user);
-        console.log("User signed in successfully");
         window.location.href = '../index.html';
     } catch (error) {
         alert(error.message);
@@ -50,7 +60,14 @@ const handleEmailSignUp = async (email, password, confirmPassword) => {
     }
 
     try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Save only essential user data
+        await userDataService.saveUserData(userCredential.user.uid, {
+            uid: userCredential.user.uid,
+            email: email,
+            displayName: null,
+            createdAt: new Date().toISOString()
+        });
         window.location.href = '../index.html';
     } catch (error) {
         alert(error.message);

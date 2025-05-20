@@ -6,6 +6,7 @@ import { displayProductByCategory } from "./productbycategory.js";
 import { getProductDetails } from "./getProductDetails.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+
 // import { db } from "./firebase-config.js";
 
 const firebaseConfig = {
