@@ -1,4 +1,5 @@
 import { collection, onSnapshot, query, limit } from "firebase/firestore";
+import { db } from "./firebase-config.js";
 
 export const productsInHome = (db) => {
     const productsCollection = collection(db, 'productsData');
@@ -45,3 +46,6 @@ export const productsInHome = (db) => {
 
     });
 }
+document.addEventListener("DOMContentLoaded", () => {
+    productsInHome(db);
+});

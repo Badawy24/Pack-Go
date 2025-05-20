@@ -1,79 +1,20 @@
-import { addProductToFirestore } from "./pushDataToFirestore.js";
-import { productsData } from "./getDataFromFirestore.js";
-import { productsInShop } from "./shop.js";
-import { productsInHome } from "./home-product.js";
-import { displayProductByCategory } from "./productbycategory.js";
-import { getProductDetails } from "./getProductDetails.js";
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { initPayPal } from "./payment.js";
-
-// import { db } from "./firebase-config.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDOL8EAF_5kYHAom1fZ_7UiAxWcWIJ5Aok",
-  authDomain: "pack-go-5d568.firebaseapp.com",
-  projectId: "pack-go-5d568",
-  storageBucket: "pack-go-5d568.firebasestorage.app",
-  messagingSenderId: "525870091383",
-  appId: "1:525870091383:web:06655ed6e02bcf40e28a72",
-  measurementId: "G-R9DE3EBPD2"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-// Initialize shop with Firestore instance
-productsInShop(db);
-
-// import { productsInShop } from "./shop.js"
-
-// import { getAnalytics } from "firebase/analytics";
-
-
-
-// const analytics = getAnalytics(app);
-
-// Call functions to display products in different parts of site
-productsInShop(db);
-productsInHome(db);
-displayProductByCategory(db);
-document.addEventListener("DOMContentLoaded", () => {
-  initPayPal(db);
-});
-// Check if current page is product details page, then fetch details
-if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get("id");
-  console.log("Product ID from URL:", productId);
-  if (productId) {
-    getProductDetails(productId, db)
-      .catch(err => console.error("Error in getProductDetails:", err));
-  } else {
-    console.error("No product ID found in URL.");
-    const container = document.getElementById("product-details-container");
-    if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
-  }
-}
-
-
 
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
-    // {
-    //     "code": 101,
-    //     "title": "Blue Women's Handbag",
-    //     "description": "Stylish and spacious accessory for everyday use.",
-    //     "category": "womens-bags",
-    //     "price": 49.99,
-    //     "discountPercentage": 17.88,
-    //     "quantity": 76,
-    //     "returnPolicy": "7 days return policy",
-    //     "colorHEX": "#ff0000",
-    //     "color": "Red",
-    //     "image": "./img/products/1.jpg",
-    //     "info": "Elegant blue handbag for modern women."
-    // },
+// {
+//     "code": 101,
+//     "title": "Blue Women's Handbag",
+//     "description": "Stylish and spacious accessory for everyday use.",
+//     "category": "womens-bags",
+//     "price": 49.99,
+//     "discountPercentage": 17.88,
+//     "quantity": 76,
+//     "returnPolicy": "7 days return policy",
+//     "colorHEX": "#ff0000",
+//     "color": "Red",
+//     "image": "./img/products/1.jpg",
+//     "info": "Elegant blue handbag for modern women."
+// },
 //     {
 //         "code": 102,
 //         "title": "Classic Black Backpack",
@@ -102,34 +43,34 @@ if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
 //         "image": "./img/products/3.jpg",
 //         "info": "Spacious with multiple compartments."
 //     },
-    // {
-    //     "code": 104,
-    //     "title": "Leather Laptop Bag",
-    //     "description": "Premium leather bag suitable for laptops.",
-    //     "category": "mens-bags",
-    //     "price": 89.99,
-    //     "discountPercentage": 12,
-    //     "quantity": 40,
-    //     "returnPolicy": "14 days return",
-    //     "colorHEX": "#5c4033",
-    //     "color": "Brown",
-    //     "image": "./img/products/4.jpg",
-    //     "info": "Perfect for business and travel."
-    // },
-    // {
-    //     "code": 105,
-    //     "title": "Casual Tote Bag",
-    //     "description": "Lightweight and stylish tote for daily use.",
-    //     "category": "womens-bags",
-    //     "price": 29.99,
-    //     "discountPercentage": 20,
-    //     "quantity": 90,
-    //     "returnPolicy": "7 days return policy",
-    //     "colorHEX": "#ff66cc",
-    //     "color": "Pink",
-    //     "image": "./img/products/5.jpg",
-    //     "info": "Trendy and comfortable for all outfits."
-    // },
+// {
+//     "code": 104,
+//     "title": "Leather Laptop Bag",
+//     "description": "Premium leather bag suitable for laptops.",
+//     "category": "mens-bags",
+//     "price": 89.99,
+//     "discountPercentage": 12,
+//     "quantity": 40,
+//     "returnPolicy": "14 days return",
+//     "colorHEX": "#5c4033",
+//     "color": "Brown",
+//     "image": "./img/products/4.jpg",
+//     "info": "Perfect for business and travel."
+// },
+// {
+//     "code": 105,
+//     "title": "Casual Tote Bag",
+//     "description": "Lightweight and stylish tote for daily use.",
+//     "category": "womens-bags",
+//     "price": 29.99,
+//     "discountPercentage": 20,
+//     "quantity": 90,
+//     "returnPolicy": "7 days return policy",
+//     "colorHEX": "#ff66cc",
+//     "color": "Pink",
+//     "image": "./img/products/5.jpg",
+//     "info": "Trendy and comfortable for all outfits."
+// },
 //     {
 //         "code": 106,
 //         "title": "Sample Bag Product 6",
