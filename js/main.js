@@ -3,6 +3,7 @@ import { productsData } from "./getDataFromFirestore.js";
 import { productsInShop } from "./shop.js";
 import { productsInHome } from "./home-product.js";
 import { displayProductByCategory } from "./productbycategory.js";
+import { getProductDetails } from "./getProductDetails.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 // import { db } from "./firebase-config.js";
@@ -31,9 +32,28 @@ productsInShop(db);
 
 // const analytics = getAnalytics(app);
 
-productsInShop(db); 
-productsInHome(db); 
+// Call functions to display products in different parts of site
+productsInShop(db);
+productsInHome(db);
 displayProductByCategory(db);
+
+// Check if current page is product details page, then fetch details
+if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get("id");
+  console.log("Product ID from URL:", productId);
+  if (productId) {
+    getProductDetails(productId, db)
+      .catch(err => console.error("Error in getProductDetails:", err));
+  } else {
+    console.error("No product ID found in URL.");
+    const container = document.getElementById("product-details-container");
+    if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
+  }
+}
+
+
+
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
 //     {

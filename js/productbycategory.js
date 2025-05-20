@@ -27,8 +27,9 @@ export async function displayProductByCategory(db) {
       return;
     }
 
-    querySnapshot.forEach(doc => {
-      const product = doc.data();
+    querySnapshot.forEach(docSnap => {
+      const product = docSnap.data();
+      const productId = docSnap.id;
 
       const catTitle = document.getElementById('cat-title');
       if (catTitle) catTitle.innerText = product.category;
@@ -50,12 +51,15 @@ export async function displayProductByCategory(db) {
       button.classList.add("button-z");
       button.innerText = "Add To Cart";
 
-
       productCard.appendChild(img);
       productCard.appendChild(title);
       productCard.appendChild(price);
       productCard.appendChild(button);
 
+      // ✅ هنا الجزء المهم: الكليك يوديك على صفحة التفاصيل
+      productCard.addEventListener("click", () => {
+        window.location.href = `productDetails.html?id=${productId}`;
+      });
 
       container.appendChild(productCard);
     });

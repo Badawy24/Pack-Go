@@ -62,11 +62,22 @@ export function createProductCard(products) {
         // Append all elements to the product card
      let button = document.createElement("button");
       button.classList.add("button-z");
-      button.innerText = "Add To Cart";
+      button.innerText = "View Details";
         productCard.appendChild(productImg);
         productCard.appendChild(productTitle);
         productCard.appendChild(productPrice);
         productCard.appendChild(button);
+        let viewDetailsBtn = document.createElement("button");
+viewDetailsBtn.classList.add("add-to-cart-m");
+viewDetailsBtn.innerText = "View Details";
+
+productCard.addEventListener("click", (e) => {
+    e.stopPropagation(); // عشان ما يشتغلش كود كليك على الكارد كله
+    window.location.href = `productDetails.html?id=${product.id}`;
+});
+
+// productCard.appendChild(viewDetailsBtn);
+
         // productCard.appendChild(productBtnAddCart);
         // productCard.appendChild(productBtnViewDetials);
 
