@@ -6,6 +6,7 @@ import { displayProductByCategory } from "./productbycategory.js";
 import { getProductDetails } from "./getProductDetails.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { initPayPal } from "./payment.js";
 
 // import { db } from "./firebase-config.js";
 
@@ -37,7 +38,9 @@ productsInShop(db);
 productsInShop(db);
 productsInHome(db);
 displayProductByCategory(db);
-
+document.addEventListener("DOMContentLoaded", () => {
+  initPayPal(db);
+});
 // Check if current page is product details page, then fetch details
 if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -57,20 +60,20 @@ if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
 
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
-//     {
-//         "code": 101,
-//         "title": "Blue Women's Handbag",
-//         "description": "Stylish and spacious accessory for everyday use.",
-//         "category": "womens-bags",
-//         "price": 49.99,
-//         "discountPercentage": 17.88,
-//         "quantity": 76,
-//         "returnPolicy": "7 days return policy",
-//         "colorHEX": "#ff0000",
-//         "color": "Red",
-//         "image": "./img/products/1.jpg",
-//         "info": "Elegant blue handbag for modern women."
-//     },
+    // {
+    //     "code": 101,
+    //     "title": "Blue Women's Handbag",
+    //     "description": "Stylish and spacious accessory for everyday use.",
+    //     "category": "womens-bags",
+    //     "price": 49.99,
+    //     "discountPercentage": 17.88,
+    //     "quantity": 76,
+    //     "returnPolicy": "7 days return policy",
+    //     "colorHEX": "#ff0000",
+    //     "color": "Red",
+    //     "image": "./img/products/1.jpg",
+    //     "info": "Elegant blue handbag for modern women."
+    // },
 //     {
 //         "code": 102,
 //         "title": "Classic Black Backpack",
