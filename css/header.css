@@ -1,5 +1,4 @@
 .header-z {
-    opacity: .9;
     background-color: var(--main-color);
     display: flex;
     align-items: center;
@@ -8,7 +7,7 @@
     top: 0;
     right: 0;
     left: 0;
-    padding: 1.5rem 7%;
+    padding: 1.5rem 6%;
     z-index: 1000;
 }
 
@@ -25,7 +24,6 @@
 .header-z .icon-z {
     color: var(--white-color);
     font-size: 2rem;
-    margin-left: 2rem;
     cursor: pointer;
 }
 
@@ -49,8 +47,11 @@
 .header-z a span {
     font-size: 1.5rem;
     text-transform: uppercase;
+    color: #c4c4bf;
 }
-
+.header-z a span:hover {
+    color: #fff;
+}
 #login-text-k {
     margin-left: 8px;
     font-weight: 600;
@@ -104,9 +105,7 @@
     position: absolute;
     top: 100%;
     right: -100%;
-    background-color: var(--white-color);
     padding: 0 1.5rem;
-    height: 80vh;
     width: 35rem;
 }
 
@@ -154,14 +153,14 @@
     color: var(--dark-grey-color);
 }
 
-.header-z a {
+.header-z .right-z a {
     margin: 0 1rem;
     font-size: 1.5rem;
     color: var(--dark-grey-color);
     text-transform: uppercase;
 }
 
-.header-z a:hover {
+.header-z .right-z a:hover {
     color: white;
 }
 
@@ -187,7 +186,8 @@
         position: absolute;
         top: 100%;
         right: -100%;
-        background-color: var(--white-color);
+        color: #fefefe;
+        background-color: var(--main-color);
         width: 30rem;
         height: calc(100vh - 9.5rem);
         display: block;
@@ -201,9 +201,12 @@
         display: block;
         margin: 1.5rem;
         padding: .5rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
-
+    .header-z .navbar a:hover {
+        background-color: rgb(19, 19, 56);
+        border-radius: 5px;
+    }
     .header-z .search-form {
         width: 90%;
         right: 2rem;

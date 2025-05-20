@@ -40,11 +40,19 @@ function displayCartItems() {
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const totalDiv = document.createElement("div");
   totalDiv.style.marginTop = "20px";
+  totalDiv.style.marginBottom = "20px";
   totalDiv.style.fontWeight = "bold";
   totalDiv.style.fontSize = "18px";
+  totalDiv.style.color = "#fff";
   totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-
+  const btn = document.createElement("a"); 
+  btn.innerText='ChecKout'
+  btn.classList.add('checkout-z');
+  btn.href="../cart.html";
+ 
+  
   container.appendChild(totalDiv);
+  container.appendChild(btn);
 
   // إضافة حدث حذف
   container.querySelectorAll(".delete-btn").forEach(button => {
@@ -53,6 +61,7 @@ function displayCartItems() {
       removeItemFromCart(index);
     });
   });
+  
 }
 
 function removeItemFromCart(index) {
