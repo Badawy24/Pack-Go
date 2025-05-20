@@ -6,6 +6,8 @@ import { displayProductByCategory } from "./productbycategory.js";
 import { getProductDetails } from "./getProductDetails.js";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { initPayPal } from "./payment.js";
+
 // import { db } from "./firebase-config.js";
 
 const firebaseConfig = {
@@ -36,7 +38,9 @@ productsInShop(db);
 productsInShop(db);
 productsInHome(db);
 displayProductByCategory(db);
-
+document.addEventListener("DOMContentLoaded", () => {
+  initPayPal(db);
+});
 // Check if current page is product details page, then fetch details
 if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
   const urlParams = new URLSearchParams(window.location.search);
