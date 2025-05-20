@@ -20,26 +20,28 @@ export const productsInHome = (db) => {
         saleFlex.innerHTML = '';
 
         productsArray.forEach(product => {
-            let clone = template.cloneNode(true);
-            clone.style.display = "block";
-            clone.id = ""; // Remove ID to avoid duplication
+    let clone = template.cloneNode(true);
+    clone.style.display = "block";
+    clone.id = ""; // Remove ID to avoid duplication
 
-            let img = clone.querySelector('img');
-            let h3 = clone.querySelector('h3');
-            let del = clone.querySelector('del');
-            let span = clone.querySelector('span');
+    let img = clone.querySelector('img');
+    let h3 = clone.querySelector('h3');
+    let del = clone.querySelector('del');
+    let span = clone.querySelector('span');
 
-            img.src = product.image;
-            img.alt = product.title;
-            h3.innerText = product.title;
-            del.innerText = (product.originalPrice || (product.price * 1.2)).toFixed(2) + "$";
-            span.innerText = product.price + "$";
+    img.src = product.image;
+    img.alt = product.title;
+    h3.innerText = product.title;
+    del.innerText = (product.originalPrice || (product.price * 1.2)).toFixed(2) + "$";
+    span.innerText = product.price + "$";
 
-            clone.addEventListener("click", () => {
-                console.log('Product id : ', product.id);
-            });
+    // ✅ هنا الحل:
+    clone.addEventListener("click", () => {
+        window.location.href = `productDetails.html?id=${product.id}`;
+    });
 
-            saleFlex.appendChild(clone);
-        });
+    saleFlex.appendChild(clone);
+});
+
     });
 }

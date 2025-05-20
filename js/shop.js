@@ -1,4 +1,5 @@
 import { collection, onSnapshot } from "firebase/firestore";
+import {paginateProducts } from './pagination.js';
 
 export let productsArray = [];
 // Get Data From Firestore And Display it In shop.html As Dynamic Data
@@ -61,18 +62,29 @@ export function createProductCard(products) {
         // Append all elements to the product card
      let button = document.createElement("button");
       button.classList.add("button-z");
-      button.innerText = "Add To Cart";
+      button.innerText = "View Details";
         productCard.appendChild(productImg);
         productCard.appendChild(productTitle);
         productCard.appendChild(productPrice);
         productCard.appendChild(button);
+        let viewDetailsBtn = document.createElement("button");
+viewDetailsBtn.classList.add("add-to-cart-m");
+viewDetailsBtn.innerText = "View Details";
+
+productCard.addEventListener("click", (e) => {
+    e.stopPropagation(); // عشان ما يشتغلش كود كليك على الكارد كله
+    window.location.href = `productDetails.html?id=${product.id}`;
+});
+
+// productCard.appendChild(viewDetailsBtn);
+
         // productCard.appendChild(productBtnAddCart);
         // productCard.appendChild(productBtnViewDetials);
 
         // Append the product card to the shop body
         shopBody.append(productCard);
 
-
+        
         productCard.addEventListener("click", () => {
             console.log('Product id : ', product.id);
             console.log("Product code : ", product.code);
@@ -88,6 +100,7 @@ export function createProductCard(products) {
             console.log("Product image : ", product.image);
             console.log("Product info : ", product.info);
         });
+        paginateProducts();
     });
 }
 

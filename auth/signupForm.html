@@ -13,19 +13,24 @@
     <!-- Centering container for the signup form -->
     <div class="signup-k">
         <!-- Signup form card -->
-        <form class="signup-card-k">
+        <form class="signup-card-k" id="signup-form">
             <h1>Sign Up</h1>
             <!-- Link to Log In page -->
             <div class="subtext-k">Already a member? <a href="loginForm.html">Log In</a></div>
 
             <!-- Email input field -->
             <label>
-                <input type="email" placeholder="Enter your email">
+                <input type="email" id="email" placeholder="Enter your email" required>
             </label>
 
             <!-- Password input field -->
             <label>
-                <input type="password" placeholder="Enter your password">
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </label>
+
+            <!-- Confirm Password input field -->
+            <label>
+                <input type="password" id="confirm-password" placeholder="Confirm your password" required>
             </label>
 
             <!-- Signup button -->
@@ -40,12 +45,17 @@
             <!-- Social signup buttons row -->
             <div class="social-row-k">
                 <!-- Google signup button -->
-                <button type="button" class="social-btn-k google-btn-k" title="Sign up with Google">
+                <button type="button" id="google-signup" class="social-btn-k google-btn-k" title="Sign up with Google">
                     <img src="https://www.svgrepo.com/download/475656/google-color.svg" alt="Google" />
                 </button>
             </div>
         </form>
     </div>
+
+    <script type="module">
+        import { initSignupForm } from '../js/auth.js';
+        initSignupForm();
+    </script>
 </body>
 
 </html>

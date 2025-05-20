@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pack-Go</title>
-    <!-- google fonts -->
+    <title>Cart</title>
+     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
@@ -17,12 +16,11 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/footer.css">
-    <link rel="stylesheet" href="./css/category.css">
     <link rel="stylesheet" href="./css/cart-item.css">
+    <link rel="stylesheet" href="./css/checkout.css">
 </head>
-
 <body>
-    <header class="header-z">
+     <header class="header-z">
         <h2 href="" class="logo-z">P<span>ACK </span>& G<span>O</span></h2>
         <div class="right-z navbar">
             <a href="./index.html">Home</a>
@@ -47,32 +45,47 @@
         </div>
         <div class="cart-item-container">
             
-            <a href="" class="btn-z">Checkout Now</a>
+            
         </div>
 
     </header>
-
-    <h1 id="cat-title" style="color: white; margin-top: 100px; text-align: center;"></h1>
-  <div id="products-container">
-
-  </div>
-
-
-
-
-
-    <footer>
-        <div class="f-z">
-            <p>© 2025 by PACK & GO.</p>
-            <div class="links-z">
-                <a href="">HOME</a><a href="">ABOUT</a><a href="">CONTACT</a><a href="">SHOP</a>
+    <div class="container" style="margin-top: 100px;">
+        <div class="cart-section">
+            <h2 class="section-title">My cart</h2>
+            <div class="cart-item-container-cart">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            
+        </div>
+        
+        <div class="summary-section">
+            <h2 class="section-title">Order summary</h2>
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span class="price">$104.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span class="price">FREE</span>
+                </div>
+                <div class="summary-row">
+                    <span>Cairo, Egypt</span>
+                    <span></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span class="price">$104.00</span>
+                </div>
+                
+                <button class="checkout-btn">Checkout</button>
+                <div class="secure-checkout">🔒 Secure Checkout</div>
             </div>
         </div>
-    </footer>
-    <script type="module" src="./js/main.js"></script>
+    </div>
     <script src="./js/header.js"></script>
-    <script type="module" src="./js/productbycategory.js"></script>
+    <script type="module" src="js/index.js"></script>
     <script src="./js/cart-item.js"></script>
+    <script src="./js/checkout.js"></script>
 </body>
-
 </html>

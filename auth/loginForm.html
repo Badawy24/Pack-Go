@@ -12,19 +12,18 @@
 <body>
     <!-- Centering container for the login form -->
     <div class="login-k">
-
         <!-- Login form card -->
-        <form class="login-card-k">
+        <form class="login-card-k" id="login-form">
             <h1>Log In</h1>
             <!-- Link to Sign Up page -->
             <div class="subtext-k">New to this site? <a href="signupForm.html">Sign Up</a></div>
             <!-- Email input field -->
             <label>
-                <input type="email" placeholder="Enter your email">
+                <input type="email" id="email" placeholder="Enter your email" required>
             </label>
             <!-- Password input field -->
             <label>
-                <input type="password" placeholder="Enter your password">
+                <input type="password" id="password" placeholder="Enter your password" required>
             </label>
             <!-- Forgot password link -->
             <div class="forgot-row-k">
@@ -41,12 +40,17 @@
             <!-- Social login buttons row -->
             <div class="social-row-k">
                 <!-- Google login button -->
-                <button type="button" class="social-btn-k google-btn-k" title="Log in with Google">
+                <button type="button" id="google-signin" class="social-btn-k google-btn-k" title="Log in with Google">
                     <img src="https://www.svgrepo.com/download/475656/google-color.svg" alt="Google" />
                 </button>
             </div>
         </form>
     </div>
+
+    <script type="module">
+        import { initLoginForm } from '../js/auth.js';
+        initLoginForm();
+    </script>
 </body>
 
 </html>
