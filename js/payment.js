@@ -1,6 +1,7 @@
 // sb-0lnoj42363161@personal.example.com
 // 12345678
 import { collection, getDocs, query, where, documentId } from "firebase/firestore";
+import { db } from "./firebase-config.js";
 // import { displayCartItems } from './checkout.js';
 function getCartItemsFromLocalStorage() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -90,3 +91,7 @@ export async function initPayPal(db) {
         }
     }).render('#paypal-button-container');
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    initPayPal(db);
+});

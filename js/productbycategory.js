@@ -1,5 +1,5 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import { db } from "./firebase-config.js";
 // Get category from URL
 const params = new URLSearchParams(window.location.search);
 const category = params.get("category");
@@ -97,13 +97,13 @@ export async function displayProductByCategory(db) {
       productCard.appendChild(button);
 
       container.appendChild(productCard);
-      
+
     });
 
   } catch (error) {
     console.error("خطأ أثناء جلب المنتجات:", error);
   }
-  
+
 }
 function renderCartItems() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -134,7 +134,7 @@ function renderCartItems() {
     checkoutBtn.textContent = "Checkout 🛒";
     checkoutBtn.classList.add('checkout-z')
     checkoutBtn.addEventListener("click", () => {
-      
+
       // هنا تقدر توجهه لصفحة checkout فعلًا
       window.location.href = "../cart.html";
     });
@@ -153,3 +153,7 @@ function renderCartItems() {
     });
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  displayProductByCategory(db);
+});
