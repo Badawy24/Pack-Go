@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+     <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=shopping_cart" />
+    <!-- fontawesome link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/cart-item.css">
+    <link rel="stylesheet" href="./css/checkout.css">
+</head>
+<body>
+     <header class="header-z">
+        <h2 href="" class="logo-z">P<span>ACK </span>& G<span>O</span></h2>
+        <div class="right-z navbar">
+            <a href="./index.html">Home</a>
+            <a href="./shop.html">Shop</a>
+            <a href="">About</a>
+            <a href="">Contact</a>
+        </div>
+        <div class="icons-z">
+            <div class="icon-z fas fa-search"></div>
+            <div class="fas fa-shopping-cart icon-z" style="color: white;"></div>
+            <a href="">
+                <div class="fas fa-user user-icon-z"></div>
+                <span>Log in</span>
+            </a>
+
+            <div class="icon-z fas fa-bars" id="menu-btn"></div>
+        </div>
+
+        <div class="search-form">
+            <input type="search" placeholder="search here ..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </div>
+        <div class="cart-item-container">
+            
+            
+        </div>
+
+    </header>
+    <div class="container" style="margin-top: 100px;">
+        <div class="cart-section">
+            <h2 class="section-title">My cart</h2>
+            <div class="cart-item-container-cart">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            
+        </div>
+        
+        <div class="summary-section">
+            <h2 class="section-title">Order summary</h2>
+            <div class="order-summary">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span class="price">$104.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span class="price">FREE</span>
+                </div>
+                <div class="summary-row">
+                    <span>Cairo, Egypt</span>
+                    <span></span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span class="price">$104.00</span>
+                </div>
+                
+                <button class="checkout-btn">Checkout</button>
+                <div class="secure-checkout">🔒 Secure Checkout</div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/header.js"></script>
+    <script src="./js/cart-item.js"></script>
+    <script src="./js/checkout.js"></script>
+</body>
+</html>
