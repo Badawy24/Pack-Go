@@ -27,20 +27,20 @@ productsInHome(db);
 displayProductByCategory(db);
 // To Add Products To Firestore It is Not Important When Deployment Admin Dashboard
 // var allProducts = [
-//     {
-//         "code": 101,
-//         "title": "Blue Women's Handbag",
-//         "description": "Stylish and spacious accessory for everyday use.",
-//         "category": "womens-bags",
-//         "price": 49.99,
-//         "discountPercentage": 17.88,
-//         "quantity": 76,
-//         "returnPolicy": "7 days return policy",
-//         "colorHEX": "#ff0000",
-//         "color": "Red",
-//         "image": "./img/products/1.jpg",
-//         "info": "Elegant blue handbag for modern women."
-//     },
+    // {
+    //     "code": 101,
+    //     "title": "Blue Women's Handbag",
+    //     "description": "Stylish and spacious accessory for everyday use.",
+    //     "category": "womens-bags",
+    //     "price": 49.99,
+    //     "discountPercentage": 17.88,
+    //     "quantity": 76,
+    //     "returnPolicy": "7 days return policy",
+    //     "colorHEX": "#ff0000",
+    //     "color": "Red",
+    //     "image": "./img/products/1.jpg",
+    //     "info": "Elegant blue handbag for modern women."
+    // },
 //     {
 //         "code": 102,
 //         "title": "Classic Black Backpack",
