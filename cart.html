@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./css/footer.css">
     <link rel="stylesheet" href="./css/cart-item.css">
     <link rel="stylesheet" href="./css/checkout.css">
+    <link rel="stylesheet" href="./css/invoice.css">
 </head>
 
 <body>
@@ -120,13 +121,52 @@
             </div>
         </div>
     </div>
+    <div id="invoicePopup" class="invoice-popup" style="display: none;">
+        <div class="invoice-card" id="invoiceContent">
+            <h2>🧾 Invoice</h2>
+            <p><strong>Name:</strong> <span id="invName"></span></p>
+            <p><strong>Email:</strong> <span id="invEmail"></span></p>
+            <p><strong>Transaction ID:</strong> <span id="invTransactionId"></span></p>
+            <p><strong>Date:</strong> <span id="invDate"></span></p>
+            <p><strong>Paid Amount:</strong> <span id="invAmount"></span> <span id="invCurrency"></span></p>
+
+            <div id="invProductsList">
+                <h3>Products:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productRows"></tbody>
+                </table>
+            </div>
+
+            <div class="btns no-print">
+                <button onclick="printInvoice()" class="print-btn">🖨️ Print</button>
+                <button onclick="document.getElementById('invoicePopup').style.display='none'" class="close-btn">❌
+                    Close</button>
+            </div>
+        </div>
+    </div>
+
 
     <script src="./js/header.js"></script>
     <script type="module" src="./js/cart-item.js"></script>
     <script type="module" src="./js/checkout.js"></script>
+    <script type="module" src="./js/index.js"></script>
     <script
         src="https://www.paypal.com/sdk/js?client-id=AetKA9kClRz7soGgtNi9mIyzYV-A594ENviFY5SX0xPm5zr5he4LoObadbUZ1njQmHw3xpw9JGEIhb_z&disable-funding=card"></script>
     <script type="module" src="./js/payment.js"></script>
+
+    <script>
+        function printInvoice() {
+            window.print();
+        }
+    </script>
 </body>
 
 </html>
