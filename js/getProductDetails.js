@@ -34,7 +34,8 @@ export async function getProductDetails(id, db) {
     console.log("Fetching product for id:", id);
     if (!id) {
       const container = document.getElementById("product-details-container");
-      if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
+      if (container)
+        container.innerHTML = `<p>No product ID provided in URL.</p>`;
       return;
     }
 
@@ -53,7 +54,8 @@ export async function getProductDetails(id, db) {
   } catch (error) {
     console.error("Error fetching product:", error);
     const container = document.getElementById("product-details-container");
-    if (container) container.innerHTML = `<p>Error loading product details.</p>`;
+    if (container)
+      container.innerHTML = `<p>Error loading product details.</p>`;
   }
 }
 
@@ -63,7 +65,9 @@ function displayProductDetails(product) {
 
   container.innerHTML = `
     <div class="breadcrumbs">
-      <a href="index.html">Home</a> / <a href="shop.html">${product.category}</a> /
+      <a href="index.html">Home</a> / <a href="shop.html">${
+        product.category
+      }</a> /
       <span>${product.title}</span>
     </div>
 
@@ -96,6 +100,7 @@ function displayProductDetails(product) {
             name="quantity"
             value="1"
             min="1"
+            max=${product.quantity}
             required
           />
           <div class="product-buttons">
@@ -213,7 +218,6 @@ function displayProductDetails(product) {
   window.location.href = 'cart.html';
 });
 
-
 }
 
 function renderCartItems() {
@@ -243,15 +247,14 @@ function renderCartItems() {
     const checkoutBtn = document.createElement("button");
     checkoutBtn.className = "checkout-btn";
     checkoutBtn.textContent = "Checkout 🛒";
-    checkoutBtn.classList.add('checkout-z')
+    checkoutBtn.classList.add("checkout-z");
     checkoutBtn.addEventListener("click", () => {
-
       // هنا تقدر توجهه لصفحة checkout فعلًا
       window.location.href = "../cart.html";
     });
 
     container.appendChild(checkoutBtn);
-    container.classList.add('render-side-z')
+    container.classList.add("render-side-z");
   }
   
 
@@ -288,18 +291,19 @@ async function removeCartItemFromBoth(index) {
   renderCartItems();
 }
 document.addEventListener("DOMContentLoaded", () => {
-
   if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
     console.log("Product ID from URL:", productId);
     if (productId) {
-      getProductDetails(productId, db)
-        .catch(err => console.error("Error in getProductDetails:", err));
+      getProductDetails(productId, db).catch((err) =>
+        console.error("Error in getProductDetails:", err)
+      );
     } else {
       console.error("No product ID found in URL.");
       const container = document.getElementById("product-details-container");
-      if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
+      if (container)
+        container.innerHTML = `<p>No product ID provided in URL.</p>`;
     }
   }
 });
