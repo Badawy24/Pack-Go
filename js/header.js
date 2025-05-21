@@ -4,7 +4,7 @@ document.querySelector('#menu-btn').onclick = () => {
     searchform.classList.remove('active')
     cart.classList.remove('active')
 }
-let searchform = document.querySelector('.search-form')
+let searchform = document.querySelector('.search-form');
 document.querySelector('.fa-search').onclick = () => {
     searchform.classList.toggle('active')
     navbar.classList.remove('active')
