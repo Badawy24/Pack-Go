@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="./css/header.css" />
   <link rel="stylesheet" href="./css/footer.css" />
   <link rel="stylesheet" href="./css/home.css" />
+  <link rel="stylesheet" href="./css/history.css">
 </head>
 
 <body>
@@ -86,7 +87,26 @@
 
 
   </header>
-  // code here
+  
+  <section class="orders-section">
+    <h2>History Of Orders</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID.</th>
+          <th>Order date</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Track &amp; trace</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTableBody">
+        <!-- Orders will be injected here -->
+      </tbody>
+    </table>
+  </section>
+
+
   <footer>
     <div class="f-z">
       <p>© 2025 by PACK & GO.</p>
@@ -94,6 +114,9 @@
         <a href="">HOME</a><a href="">ABOUT</a><a href="">CONTACT</a><a href="">SHOP</a>
       </div>
   </footer>
+  <script src="./js/header.js"></script>
+  <script type="module" src="./js/index.js"></script>
+  <script type="module" src="./js/history.js"></script>
 
 </body>
 
