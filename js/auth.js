@@ -3,7 +3,9 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    updateProfile, // Add this import
+    onAuthStateChanged // Add this import
 } from "firebase/auth";
 import { userDataService } from './userDataService.js';  //modified
 
@@ -17,9 +19,22 @@ const updateUserUI = (user) => {
         loginText.textContent = user.displayName ? user.displayName.split(' ')[0] : user.email;
     }
 };
+//start of email-input validation
+const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
+const isStrongPassword = (password) => 
+    /[A-Z]/.test(password) && /[^A-Za-z0-9]/.test(password); // At least one capital and one special char
 
 // Email/Password Sign In
 const handleEmailSignIn = async (email, password) => {
+    if (!isValidEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    if (!password) {
+        alert("Password is required.");
+        return;
+    }
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         console.log('Signed in user:', {
@@ -52,8 +67,24 @@ const handleGoogleSignIn = async () => {
     }
 };
 
-// Email/Password Sign Up
-const handleEmailSignUp = async (email, password, confirmPassword) => {
+// Email/Password Sign Up with input validation
+const handleEmailSignUp = async (email, password, confirmPassword, displayName) => {
+    if (!displayName.trim()) {
+        alert("Display name is required.");
+        return;
+    }
+    if (!isValidEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+    }
+    if (!isStrongPassword(password)) {
+        alert("Password must contain at least one uppercase letter and one special character.");
+        return;
+    }
     if (password !== confirmPassword) {
         alert("Passwords don't match!");
         return;
@@ -61,11 +92,15 @@ const handleEmailSignUp = async (email, password, confirmPassword) => {
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        // Save only essential user data
+
+        // Set the display name in Firebase Auth profile
+        await updateProfile(userCredential.user, { displayName });
+
+        // Save user data with display name
         await userDataService.saveUserData(userCredential.user.uid, {
             uid: userCredential.user.uid,
             email: email,
-            displayName: null,
+            displayName: displayName,
             createdAt: new Date().toISOString()
         });
         window.location.href = '../index.html';
@@ -84,6 +119,15 @@ const handleGoogleSignUp = async () => {
         alert(error.message);
     }
 };
+
+const handleAuthStateChange = (user) => {
+    // No admin logic, just redirect to login if not logged in and on a protected page
+    const currentPath = window.location.pathname;
+    if (!user && currentPath.includes('user.html')) {
+        window.location.href = './auth/loginForm.html';
+    }
+};
+onAuthStateChanged(auth, handleAuthStateChange);
 
 // Initialize login form
 export const initLoginForm = () => {
@@ -115,7 +159,8 @@ export const initSignupForm = () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            await handleEmailSignUp(email, password, confirmPassword);
+            const displayName = document.getElementById('display-name').value; // Get display name
+            await handleEmailSignUp(email, password, confirmPassword, displayName);
         });
     }
 

@@ -1,4 +1,3 @@
-//untracked
 //this file is used to manage user data in Firebase Firestore and store 
 // it to be easier to access and deal with
 
@@ -12,61 +11,58 @@ class UserDataService {
     }
 
     setCurrentUser(user) {
-        if (user) {
-            this.currentUser = {
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName,
-                photoURL: user.photoURL,
-                emailVerified: user.emailVerified,
-                createdAt: user.metadata?.creationTime
-            };
-            console.log('Current user data:', this.currentUser);
-            return this.currentUser;
-        }
-        this.currentUser = null;
-        return null;
+        this.currentUser = user;
+        return this.saveUserData(user.uid, {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            lastLogin: new Date().toISOString()
+        });
     }
 
-    async saveUserData(userId, userData) {
+    async getUserData(userId) {
         try {
-            await setDoc(doc(db, 'users', userId), {
+            const userRef = doc(db, 'users', userId);
+            const docSnap = await getDoc(userRef);
+            return docSnap.exists() ? docSnap.data() : null;
+        } catch (error) {
+            console.error('Error getting user data:', error);
+            return null;
+        }
+    }
+
+    
+
+    async saveUserData(userId, userData) {
+        if (!userId || !userData) {
+            console.error('Missing userId or userData');
+            return null;
+        }
+
+        try {
+            const userRef = doc(db, 'users', userId);
+            const existingData = await this.getUserData(userId);
+            
+            const dataToSave = {
+                ...existingData,
                 ...userData,
                 updatedAt: new Date().toISOString()
-            }, { merge: true });
-            this.userData = userData;
-            console.log('Saved user data:', this.userData);
+            };
+
+            await setDoc(userRef, dataToSave, { merge: true });
+            this.userData = dataToSave;
+            console.log('User data saved successfully:', dataToSave);
+            return dataToSave;
         } catch (error) {
             console.error('Error saving user data:', error);
             throw error;
         }
     }
-
-    async getUserData(userId) {
-        try {
-            const docRef = doc(db, 'users', userId);
-            const docSnap = await getDoc(docRef);
-            this.userData = docSnap.exists() ? docSnap.data() : null;
-            console.log('Retrieved user data:', this.userData);
-            return this.userData;
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            throw error;
-        }
-    }
-
-    getCurrentUserData() {
-        return {
-            user: this.currentUser,
-            userData: this.userData
-        };
-    }
 }
 
 export const userDataService = new UserDataService();
 
-
-//to use anywhere in the app
 export function getCurrentUserUid() {
     return userDataService.currentUser ? userDataService.currentUser.uid : null;
 }
