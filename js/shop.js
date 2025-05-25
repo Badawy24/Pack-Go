@@ -1,53 +1,89 @@
-import { collection, query, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
+import { collection, query, orderBy, limit, startAfter, getDocs, where } from "firebase/firestore";
 import { db } from "./firebase-config.js";
+import { getCurrentCategoryFilter, getCurrentOrder, getCurrentTypeOrder, setProductsArray } from "./state.js";
 
-let products = [];
 let endOfProducts = null;
 let productsPerPage = 8;
-let currentPage = 1;
 let isLoading = false;
 let errorLoad = document.getElementById("error-load");
 
-let getProductsFromFireStore = async (loadFirstPage = true, order = "title", typeOrder = "asc") => {
+let products = [];
+
+async function getProductsFromFireStore(loadFirstPage = true) {
     if (isLoading) return;
+    if (!loadFirstPage && endOfProducts === null) return;
+
     isLoading = true;
+
     try {
-        let getProducts;
+        let collectionRef = collection(db, 'productsData');
+
+        let categoryFilter = getCurrentCategoryFilter();
+        let order = getCurrentOrder();
+        let typeOrder = getCurrentTypeOrder();
 
         if (loadFirstPage) {
-            getProducts = query(collection(db, 'productsData'), orderBy(order, typeOrder), limit(productsPerPage));
-            currentPage = 1;
+            endOfProducts = null;
             products = [];
-        } else {
-            getProducts = query(collection(db, 'productsData'), orderBy(order, typeOrder), startAfter(endOfProducts), limit(productsPerPage));
+            clearProductCards();
         }
 
-        let querySnapshot = await getDocs(getProducts);
+        let targetProducts;
+        if (categoryFilter === "all") {
+            targetProducts = query(collectionRef, orderBy(order, typeOrder));
+        } else {
+            targetProducts = query(collectionRef, where("category", "==", categoryFilter), orderBy(order, typeOrder));
+        }
+
+        let productsQuery;
+        if (loadFirstPage) {
+            productsQuery = query(targetProducts, limit(productsPerPage));
+        } else {
+            productsQuery = query(targetProducts, startAfter(endOfProducts), limit(productsPerPage));
+        }
+        
+
+        let querySnapshot = await getDocs(productsQuery);
+
+        if (querySnapshot.empty) {
+            showError("No more products to load");
+            endOfProducts = null;
+            isLoading = false;
+            return;
+        }
+
         endOfProducts = querySnapshot.docs[querySnapshot.docs.length - 1];
 
+        let newProducts = [];
         querySnapshot.forEach(doc => {
             let product = doc.data();
             product.id = doc.id;
-            products.push(product);
+            newProducts.push(product);
         });
 
-        createProductCard(products);
-    } catch (error) {
-        errorLoad.innerText = "Can't load more";
-        errorLoad.style.display = "flex";
-        setTimeout(() => {
-            errorLoad.style.display = "none";
-        }, 4000);
-    } 
-    isLoading = false;
+        products = [...products, ...newProducts];
+        setProductsArray(products);
 
+        appendProductCards(newProducts);
+
+    } catch (error) {
+        console.error("Firestore load error:", error);
+        showError("Can't load more");
+    }
+
+    isLoading = false;
 }
 
-function createProductCard(products) {
+function clearProductCards() {
+    let shopBody = document.getElementById('shop-body-B');
+    if (shopBody) {
+        shopBody.innerHTML = '';
+    }
+}
+
+function appendProductCards(products) {
     let shopBody = document.getElementById('shop-body-B');
     if (!shopBody) return;
-
-    shopBody.innerHTML = '';
 
     products.forEach(product => {
         let productCard = document.createElement("div");
@@ -56,8 +92,7 @@ function createProductCard(products) {
 
         let priceBeforeDiscount = parseFloat(product.price);
         let discount = parseFloat(product.discountPercentage);
-        let priceAfterDiscount = (priceBeforeDiscount * (1 - discount/100)).toFixed(2);
-
+        let priceAfterDiscount = (priceBeforeDiscount * (1 - discount / 100)).toFixed(2);
 
         productCard.innerHTML = `
         <img src="${product.image}" alt="${product.title}">
@@ -65,16 +100,24 @@ function createProductCard(products) {
         <span class="price-m">${priceAfterDiscount}$</span>
         <span class="price-m" style="text-decoration: line-through; color:var(--dark-grey-color);">${priceBeforeDiscount}$</span>
         <button class="button-z">View Details</button>
-    `;
+        `;
 
         productCard.addEventListener("click", (e) => {
-            if (e.target.tagName !== 'button') {
+            if (e.target.tagName !== 'BUTTON') {
                 window.location.href = `productDetails.html?id=${product.id}`;
             }
         });
 
         shopBody.appendChild(productCard);
     });
+}
+
+function showError(message) {
+    errorLoad.innerText = message;
+    errorLoad.style.display = "flex";
+    setTimeout(() => {
+        errorLoad.style.display = "none";
+    }, 3000);
 }
 
 window.addEventListener("load", () => {
@@ -88,5 +131,4 @@ window.addEventListener("load", () => {
     });
 });
 
-
-export { products, getProductsFromFireStore, createProductCard };
+export { getProductsFromFireStore, appendProductCards };

@@ -1,38 +1,28 @@
-import { createProductCard ,productsArray} from "./shop.js";
-import { paginateProducts } from "./pagination.js";
-import { getCurrentProducts } from "./state.js";
+import { setCurrentOrder, setCurrentTypeOrder } from "./state.js";
+import { getProductsFromFireStore } from "./shop.js";
 
 let sortOption = document.getElementById("sort");
 
 sortOption.addEventListener("change", () => {
-    let currentProducts = getCurrentProducts();
+    let value = sortOption.value;
 
-    // لو currentProducts فاضية (في حالة نادرة جداً)، نعرض كل المنتجات الافتراضية
-    if (!currentProducts || currentProducts.length === 0) {
-        currentProducts = productsArray.slice();  // لو حابب تحتاج تستورد productsArray هنا
+    switch (value) {
+        case "1":
+            setCurrentOrder("title");
+            setCurrentTypeOrder("desc");
+            break;
+        case "2":
+            setCurrentOrder("price");
+            setCurrentTypeOrder("asc");
+            break;
+        case "3":
+            setCurrentOrder("price");
+            setCurrentTypeOrder("desc");
+            break;
+        default:
+            setCurrentOrder("title");
+            setCurrentTypeOrder("asc");
     }
 
-    let sortedArray = currentProducts.slice();
-
-    let selectedOption = sortOption.value;
-
-    if (selectedOption === "0") {
-        createProductCard(currentProducts);
-    } else if (selectedOption === "1") {
-        sortedArray.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-        createProductCard(sortedArray);
-    } else if (selectedOption === "2") {
-        sortedArray.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-        createProductCard(sortedArray);
-    } else if (selectedOption === "3") {
-        sortedArray.sort((a, b) => a.title.localeCompare(b.title));
-        createProductCard(sortedArray);
-    } else if (selectedOption === "4") {
-        sortedArray.sort((a, b) => b.title.localeCompare(a.title));
-        createProductCard(sortedArray);
-    } else {
-        createProductCard(currentProducts);
-    }
-
-    paginateProducts();
+    getProductsFromFireStore(true);
 });
