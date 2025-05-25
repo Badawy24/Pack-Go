@@ -89,6 +89,25 @@ body {
     border-bottom: 2px solid #79afff;
 }
 
+/* Style for display name input */
+.signup-card-k input[type="text"].display-name-input {
+    width: 100%;
+    font-size: 1.12rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #484848;
+    padding: 10px 3px 7px 3px;
+    margin-bottom: 3px;
+    outline: none;
+    font-family: 'Oswald', Arial, sans-serif;
+    transition: border-bottom-color 0.3s;
+}
+
+.signup-card-k input[type="text"].display-name-input:focus {
+    border-bottom: 2px solid #79afff;
+}
+
 .signup-btn-k {
     margin: 16px 0 6px 0;
     width: 100%;
@@ -203,5 +222,10 @@ body {
     .social-btn-k img {
         width: 20px;
         height: 20px;
+    }
+
+    .signup-card-k input[type="text"].display-name-input {
+        font-size: 1em;
+        padding: 0.7em 3px 0.5em 3px;
     }
 }
