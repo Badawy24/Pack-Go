@@ -6,7 +6,7 @@ let endOfProducts = null;
 let productsPerPage = 8;
 let isLoading = false;
 let errorLoad = document.getElementById("error-load");
-
+let categoryLink = document.getElementById("category-selected");
 let products = [];
 
 async function getProductsFromFireStore(loadFirstPage = true) {
@@ -103,11 +103,12 @@ function appendProductCards(products) {
         `;
 
         productCard.addEventListener("click", (e) => {
-            if (e.target.tagName !== 'BUTTON') {
+            if (e.target.tagName !== 'button') {
                 window.location.href = `productDetails.html?id=${product.id}`;
             }
         });
-
+        categoryLink.innerText = getCurrentCategoryFilter();
+        categoryLink.setAttribute("data-category",getCurrentCategoryFilter());
         shopBody.appendChild(productCard);
     });
 }

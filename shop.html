@@ -88,9 +88,8 @@
   <span id="error-load"></span>
 
   <div class="browse-section-m">
-
     <div class="breadcrumb-m">
-      <a href="./index.html">Home</a> > <a href="./shop.html">All Products</a>
+      <a href="./index.html">Home</a> > <a href="#" id="category-selected"></a>
     </div>
     <div class="product-count-sort-m">
       <div class="sort-by-m">
@@ -101,6 +100,12 @@
           <option value="2">Price: Low to High</option>
           <option value="3">Price: High to Low</option>
         </select>
+        <div class="search-product">
+          <button id="searchToggle" class="search-icon-btn" aria-label="Search">
+            <span for="search-box" class="fas fa-search"></span>
+          </button>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search products..." />
+        </div>
       </div>
     </div>
   </div>
@@ -131,6 +136,7 @@
   <script type="module" src="./js/shop.js"></script>
   <script type="module" src="./js/sortInShop.js"></script>
   <script type="module" src="./js/filtershop.js"></script>
+  <script type="module" src="./js/search.js"></script>
   <script type="module" src="./js/cart-item.js"></script>
 
 </body>

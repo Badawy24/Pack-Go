@@ -225,13 +225,36 @@
     font-size: 2rem;
 }
 
-/* Footer Styles */
-/* .footer-m {
-    background-color: var(--dark-color);
+.search-product {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-icon-btn {
     color: var(--white-color);
-    text-align: center;
-    padding: 1rem 0;
-} */
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.search-input {
+    width: 0;
+    opacity: 0;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    font-size: 14px;
+}
+
+.search-product.active .search-input {
+    width: 200px;
+    opacity: 1;
+}
+
 @media screen and (max-width: 962px) {
     .browse-section-m {
         padding-top: 10%;
