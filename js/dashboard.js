@@ -8,6 +8,9 @@ import {
   doc,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { auth } from './firebase-config.js';
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { userDataService } from './userDataService.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDOL8EAF_5kYHAom1fZ_7UiAxWcWIJ5Aok",
@@ -26,6 +29,32 @@ const productsRef = collection(db, "productsData");
 const form = document.querySelector("#productForm");
 const productList = document.querySelector("#productList");
 let editId = null;
+
+// Add signout button to the dashboard UI
+const signoutBtn = document.createElement('button');
+signoutBtn.id = 'dashboard-signout-btn';
+signoutBtn.textContent = 'Sign Out';
+signoutBtn.style.position = 'fixed';
+signoutBtn.style.top = '20px';
+signoutBtn.style.right = '20px';
+signoutBtn.style.zIndex = '1000';
+document.body.appendChild(signoutBtn);
+
+signoutBtn.addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = 'auth/loginForm.html';
+});
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "auth/loginForm.html";
+        return;
+    }
+    const userData = await userDataService.getUserData(user.uid);
+    if (!userData || userData.role !== 'admin') {
+        window.location.href = "index.html";
+    }
+});
 
 async function loadProducts() {
   productList.innerHTML = "";
