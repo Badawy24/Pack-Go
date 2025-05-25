@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pack-Go</title>
+    <title>Cart</title>
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,8 +17,10 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/footer.css">
-    <link rel="stylesheet" href="./css/category.css">
     <link rel="stylesheet" href="./css/cart-item.css">
+    <link rel="stylesheet" href="./css/checkout.css">
+    <link rel="stylesheet" href="./css/invoice.css">
+    <link rel="stylesheet" href="./css/orederDetails.css">
 </head>
 
 <body>
@@ -86,27 +88,66 @@
 
 
     </header>
+    <div class="container" style="margin-top: 100px;">
+        <div class="cart-section">
+            <h2 class="section-title">My cart</h2>
+            <div class="cart-item-container-cart">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
 
-    <h1 id="cat-title" style="color: white; margin-top: 100px; text-align: center;"></h1>
-    <div id="products-container">
+        </div>
 
+        <div class="summary-section">
+            <h2 class="section-title">Order summary</h2>
+            <div class="order-summary">
+                
+                
+            </div>
+        </div>
+    </div>
+    <div id="invoicePopup" class="invoice-popup" style="display: none;">
+        <div class="invoice-card" id="invoiceContent">
+            <h2>🧾 Invoice</h2>
+            <p><strong>Name:</strong> <span id="invName"></span></p>
+            <p><strong>Email:</strong> <span id="invEmail"></span></p>
+            <p><strong>Transaction ID:</strong> <span id="invTransactionId"></span></p>
+            <p><strong>Date:</strong> <span id="invDate"></span></p>
+            <p><strong>Paid Amount:</strong> <span id="invAmount"></span> <span id="invCurrency"></span></p>
+
+            <div id="invProductsList">
+                <h3>Products:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productRows"></tbody>
+                </table>
+            </div>
+
+            <div class="btns no-print">
+                <button onclick="printInvoice()" class="print-btn">🖨️ Print</button>
+                <button onclick="document.getElementById('invoicePopup').style.display='none'" class="close-btn">❌
+                    Close</button>
+            </div>
+        </div>
     </div>
 
 
-
-
-
-    <footer>
-        <div class="f-z">
-          <p>© 2025 by PACK & GO.</p>
-          <div class="links-z">
-            <a href="">HOME</a><a href="">ABOUT</a><a href="">CONTACT</a><a href="">SHOP</a>
-          </div>
-        </footer>
     <script src="./js/header.js"></script>
-    <script type="module" src="./js/productbycategory.js"></script>
     <script type="module" src="./js/cart-item.js"></script>
-
+    <script type="module" src="./js/checkout.js"></script>
+    <script type="module" src="./js/index.js"></script>
+    <script type="module" src="./js/orderDetails.js"></script>
+    <script>
+        function printInvoice() {
+            window.print();
+        }
+    </script>
 </body>
 
 </html>

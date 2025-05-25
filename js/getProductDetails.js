@@ -1,12 +1,41 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, addDoc, collection, query, where, getDocs, updateDoc , deleteDoc } from "firebase/firestore";
 import { db } from "./firebase-config.js";
+
+// الدالة الجديدة هنا
+async function addOrUpdateCartItem(cartItem) {
+  const cartsRef = collection(db, "carts");
+
+  // Query على المنتج بنفس الـ id واللون
+  const q = query(cartsRef, where("id", "==", cartItem.id), where("color", "==", cartItem.color));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const docRef = querySnapshot.docs[0].ref;
+    const existingData = querySnapshot.docs[0].data();
+
+    // اجعل الكمية الجديدة هي مجموع القديم + الجديد
+    const newQuantity = existingData.quantity + cartItem.quantity;
+
+    await updateDoc(docRef, { quantity: newQuantity });
+    console.log("تم تحديث الكمية في Firestore.");
+  } else {
+    await addDoc(cartsRef, cartItem);
+    console.log("تم إضافة المنتج في Firestore.");
+  }
+}
+
+
+
+// بعد كده في مكان استدعاء addDoc استبدله بـ addOrUpdateCartItem
+
 
 export async function getProductDetails(id, db) {
   try {
     console.log("Fetching product for id:", id);
     if (!id) {
       const container = document.getElementById("product-details-container");
-      if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
+      if (container)
+        container.innerHTML = `<p>No product ID provided in URL.</p>`;
       return;
     }
 
@@ -25,7 +54,8 @@ export async function getProductDetails(id, db) {
   } catch (error) {
     console.error("Error fetching product:", error);
     const container = document.getElementById("product-details-container");
-    if (container) container.innerHTML = `<p>Error loading product details.</p>`;
+    if (container)
+      container.innerHTML = `<p>Error loading product details.</p>`;
   }
 }
 
@@ -35,17 +65,15 @@ function displayProductDetails(product) {
 
   container.innerHTML = `
     <div class="breadcrumbs">
-      <a href="index.html">Home</a> / <a href="shop.html">${product.category}</a> /
+      <a href="index.html">Home</a> / <a href="shop.html">${
+        product.category
+      }</a> /
       <span>${product.title}</span>
     </div>
 
     <section class="product-section">
       <div class="product-images">
         <img src="${product.image}" alt="${product.title}" />
-        <div class="image-thumbs">
-          <img src="${product.image}" alt="Product Thumb" />
-          <img src="${product.image}" alt="Product Thumb" />
-        </div>
       </div>
       <div class="product-info">
         <h1>${product.title}</h1>
@@ -72,6 +100,7 @@ function displayProductDetails(product) {
             name="quantity"
             value="1"
             min="1"
+            max=${product.quantity}
             required
           />
           <div class="product-buttons">
@@ -94,83 +123,100 @@ function displayProductDetails(product) {
 
   // إضافة حدث submit للفورم عشان نخزن المنتج في localStorage
   const form = document.getElementById("add-to-cart-form");
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  form.addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    const color = form.color.value;
-    const quantity = parseInt(form.quantity.value);
+  const color = form.color.value;
+  const quantity = parseInt(form.quantity.value);
 
-    // تجهيز العنصر للسلة
-    const cartItem = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      color,
-      quantity,
-      image: product.image,
-    };
+  // تجهيز العنصر للسلة
+  const cartItem = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    color,
+    quantity,
+    image: product.image,
+  };
 
-    // جلب السلة من localStorage أو إنشاء جديدة
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  // جلب السلة من localStorage أو إنشاء جديدة
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // هل المنتج بنفس اللون موجود في السلة؟ نحدث الكمية فقط
-    const existingIndex = cart.findIndex(
-      (item) => item.id === cartItem.id && item.color === cartItem.color
-    );
+  // هل المنتج بنفس اللون موجود في السلة؟ نحدث الكمية فقط
+  const existingIndex = cart.findIndex(
+    (item) => item.id === cartItem.id && item.color === cartItem.color
+  );
 
-    if (existingIndex > -1) {
-      cart[existingIndex].quantity += quantity;
-    } else {
-      cart.push(cartItem);
-    }
+  if (existingIndex > -1) {
+  cart[existingIndex].quantity += quantity;
+} else {
+  cart.push(cartItem);
+}
 
-    // حفظ السلة المحدثة
-    localStorage.setItem("cart", JSON.stringify(cart));
 
-    alert("تم إضافة المنتج إلى السلة!");
+  // حفظ السلة المحدثة
+  localStorage.setItem("cart", JSON.stringify(cart));
 
-    const container = document.querySelector(".cart-item-container");
-    container.classList.add('active');
-    renderCartItems();
-  });
+  // 🔥 إضافة العنصر إلى Firestore داخل carts
+  try {
+    await addOrUpdateCartItem(cartItem);
+
+    console.log("تم حفظ المنتج في Firestore من الفورم.");
+  } catch (error) {
+    console.error("خطأ أثناء الحفظ في Firestore من الفورم:", error);
+  }
+
+
+  const container = document.querySelector(".cart-item-container");
+  container.classList.add('active');
+  renderCartItems();
+});
+
+
   const buy = document.getElementById("buy");
 
-  buy.addEventListener("click", function (e) {
-    e.preventDefault();
+  buy.addEventListener("click", async function (e) {
+  e.preventDefault();
 
-    const color = form.color.value;
-    const quantity = parseInt(form.quantity.value);
+  const color = form.color.value;
+  const quantity = parseInt(form.quantity.value);
 
-    // تجهيز العنصر للسلة
-    const cartItem = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      color,
-      quantity,
-      image: product.image,
-    };
+  const cartItem = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    color,
+    quantity,
+    image: product.image,
+  };
 
-    // جلب السلة من localStorage أو إنشاء جديدة
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  // إضافة للسلة في localStorage
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // هل المنتج بنفس اللون موجود في السلة؟ نحدث الكمية فقط
-    const existingIndex = cart.findIndex(
-      (item) => item.id === cartItem.id && item.color === cartItem.color
-    );
+  const existingIndex = cart.findIndex(
+    (item) => item.id === cartItem.id && item.color === cartItem.color
+  );
 
-    if (existingIndex > -1) {
-      cart[existingIndex].quantity += quantity;
-    } else {
-      cart.push(cartItem);
-    }
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += quantity;
+  } else {
+    cart.push(cartItem);
+  }
 
-    // حفظ السلة المحدثة
-    localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart));
 
-    // التنقل لصفحة السلة
-    window.location.href = 'cart.html';
-  });
+  // 🟢 إضافة العنصر إلى Firestore داخل Collection اسمها "carts"
+  try {
+    await addOrUpdateCartItem(cartItem);
+
+    console.log("تم حفظ المنتج في Firestore.");
+  } catch (error) {
+    console.error("خطأ أثناء الحفظ في Firestore:", error);
+  }
+
+  // التنقل لصفحة cart
+  window.location.href = 'cart.html';
+});
 
 }
 
@@ -201,41 +247,63 @@ function renderCartItems() {
     const checkoutBtn = document.createElement("button");
     checkoutBtn.className = "checkout-btn";
     checkoutBtn.textContent = "Checkout 🛒";
-    checkoutBtn.classList.add('checkout-z')
+    checkoutBtn.classList.add("checkout-z");
     checkoutBtn.addEventListener("click", () => {
-
       // هنا تقدر توجهه لصفحة checkout فعلًا
       window.location.href = "../cart.html";
     });
 
     container.appendChild(checkoutBtn);
-    container.classList.add('render-side-z')
+    container.classList.add("render-side-z");
   }
+  
 
   // ✅ حذف العناصر
   document.querySelectorAll(".cart-item-delete").forEach((btn) => {
     btn.addEventListener("click", function () {
       const index = parseInt(this.dataset.index);
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCartItems();
+      removeCartItemFromBoth(index);
     });
   });
 }
+async function removeCartItemFromBoth(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const itemToRemove = cart[index];
 
+  if (!itemToRemove) return;
+
+  // حذف من Firestore
+  const q = query(collection(db, "carts"),
+    where("id", "==", itemToRemove.id),
+    where("color", "==", itemToRemove.color)
+  );
+  const querySnapshot = await getDocs(q);
+
+  for (let docSnap of querySnapshot.docs) {
+    await deleteDoc(docSnap.ref);
+  }
+
+  // حذف من localStorage
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // إعادة العرض
+  renderCartItems();
+}
 document.addEventListener("DOMContentLoaded", () => {
-
   if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
     console.log("Product ID from URL:", productId);
     if (productId) {
-      getProductDetails(productId, db)
-        .catch(err => console.error("Error in getProductDetails:", err));
+      getProductDetails(productId, db).catch((err) =>
+        console.error("Error in getProductDetails:", err)
+      );
     } else {
       console.error("No product ID found in URL.");
       const container = document.getElementById("product-details-container");
-      if (container) container.innerHTML = `<p>No product ID provided in URL.</p>`;
+      if (container)
+        container.innerHTML = `<p>No product ID provided in URL.</p>`;
     }
   }
 });

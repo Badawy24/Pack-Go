@@ -1,29 +1,34 @@
-
-
-import { productsArray, createProductCard } from './shop.js';
+import { productsArray, createProductCard } from "./shop.js";
 import { paginateProducts } from "./pagination.js";
+import { setCurrentProducts } from "./state.js";
 
+const filterLinks = document.querySelectorAll('#filter a');
+
+function displayProducts(products) {
+    setCurrentProducts(products);
+    createProductCard(products);
+    paginateProducts();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-    const filterLinks = document.querySelectorAll('#filter a');
+    // أول ما الصفحة تفتح، نعيّن currentProducts لكل المنتجات
+    displayProducts(productsArray.slice());
+});
 
-    filterLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
+filterLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
 
-            // Remove active class from all
-            filterLinks.forEach(l => l.classList.remove("active"));
-            link.classList.add("active");
+        filterLinks.forEach(l => l.classList.remove("active"));
+        link.classList.add("active");
 
-            const selectedCategory = link.getAttribute("data-category");
+        const selectedCategory = link.getAttribute("data-category");
 
-            if (selectedCategory === "all") {
-                createProductCard(productsArray);
-            } else {
-                const filtered = productsArray.filter(product => product.category === selectedCategory);
-                createProductCard(filtered);
-            }
-            paginateProducts();
-        });
+        if (selectedCategory === "all") {
+            displayProducts(productsArray.slice());
+        } else {
+            const filtered = productsArray.filter(product => product.category === selectedCategory);
+            displayProducts(filtered);
+        }
     });
 });
