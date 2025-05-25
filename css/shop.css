@@ -1,7 +1,5 @@
-/* Breadcrumb and Browse Section */
-
 .browse-section-m {
-    max-width: 85%;
+    max-width: 100%;
     padding-top: 5%;
     padding-bottom: 2rem;
     display: flex;
@@ -9,17 +7,13 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--light-grey-color);
-    /* background-color: var(--white-color); */
     position: relative;
     width: 85%;
     margin: 0 auto;
-    /* top: 16%; */
-    /* left: 8%; */
 
 }
 
 .breadcrumb-m {
-    /* margin-bottom: 1.5rem; */
     font-size: 1.7rem;
 }
 
@@ -51,7 +45,7 @@
     border: 1px solid var(--secondary-color);
 }
 
-/* Shop Section */
+
 
 .shop-m {
     display: flex;
@@ -66,7 +60,6 @@
     border-radius: 1rem;
     height: 100vh;
     position: relative;
-    /* top: 20%; */
 }
 
 
@@ -119,7 +112,6 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    /* margin-left: 25%; */
 }
 
 .product-card-m {
@@ -251,68 +243,152 @@
 }
 
 .search-product.active .search-input {
-    width: 200px;
+    width: 12rem;
     opacity: 1;
 }
 
-@media screen and (max-width: 962px) {
+
+@media screen and (max-width: 1200px) {
     .browse-section-m {
         padding-top: 10%;
     }
 
-    .sidebar-m {
-        width: 25%;
+    .shop-m,
+    .browse-section-m {
+        width: 95%;
     }
 
-    .product-card-m {
-        padding: 0;
+    .sidebar-m ul li a.active {
+        border-left: 3px solid var(--white-color);
     }
 
     .shop-container-m {
-        max-width: 75%;
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
+@media screen and (max-width: 992px) {
+    .sidebar-m {
+        min-width: 25%;
+        position: sticky;
+        top: 7%;
+        align-self: flex-start;
+    }
+
+    .shop-container-m {
+        width: 70%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
 
 @media screen and (max-width: 768px) {
+
+    .browse-section-m {
+        padding-top: 12%;
+    }
+
+    .sort-by-m>span {
+        display: none;
+    }
+
+    .sort-by-m select {
+        padding: 0.5rem;
+        font-size: 1.5rem;
+        width: 12rem;
+    }
+    .search-product.active .search-input {
+        width: 10rem;
+        opacity: 1;
+    }
+    .product-card-m:hover {
+        transform: none;
+    }
+
+    .product-card-m button {
+        display: inline-block;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .product-card-m button {
+        display: inline-block;
+    }
+
+    .product-card-m h3 {
+        display: block;
+    }
+
+    .product-card-m .price-m {
+        display: inline-block;
+    }
+
+    .product-card-m:hover h3 {
+        display: block;
+    }
+
+    .product-card-m:hover .price-m {
+        display: inline-block;
+    }
+
     .shop-m {
         flex-direction: column;
-        width: 95%;
-        margin-top: 5%;
     }
 
     .sidebar-m {
+        order: -1;
         width: 100%;
-        /* position: static; */
         height: auto;
-        /* margin-bottom: 2rem; */
-        margin: 0 auto 2rem;
-        padding: 1rem;
     }
 
     .shop-container-m {
         width: 100%;
         margin: 0 auto;
-        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
     }
 
+    .sidebar-m ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .sidebar-m ul li {
+        padding: 1rem 1.5rem;
+        border: 1px solid var(--light-grey-color);
+        border-radius: 0.5rem;
+    }
+
+    .sidebar-m ul li a {
+        font-size: 1.4rem;
+    }
+
+    .sidebar-m ul li:hover a {
+        border-left: none;
+        padding-left: 0px;
+    }
+}
+
+
+@media screen and (max-width: 576px) {
     .browse-section-m {
-        padding: 15% 1rem 1rem;
-        width: 100%;
-        flex-direction: row-reverse;
+        padding-top: 20%;
     }
 
-    .sort-by-m span,
+    .shop-container-m {
+        grid-template-columns: 1fr;
+    }
+
     .breadcrumb-m {
-        display: none;
+        font-size: 1.4rem;
     }
 
-    .sort-by-m select {
-        width: 100%;
+    .product-count-sort-m {
+        font-size: 1.5rem;
     }
-
-    .product-card-m:hover {
-        transform: none;
+    .product-card-m img {
+        width: 70%;
+        border-radius: 1rem;
     }
 }
