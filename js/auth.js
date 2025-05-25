@@ -54,13 +54,16 @@ const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
         const result = await signInWithPopup(auth, provider);
-        // Save user data on Google sign-in with role
+        // Fetch existing user data
+        const existingUserData = await userDataService.getUserData(result.user.uid);
+        // Use existing role if present, otherwise default to "user"
+        const role = existingUserData && existingUserData.role ? existingUserData.role : "user";
         await userDataService.saveUserData(result.user.uid, {
             uid: result.user.uid,
             email: result.user.email.toLowerCase(),
             displayName: result.user.displayName,
-            role: "user",
-            createdAt: new Date().toISOString()
+            role: role, // Use the correct role
+            createdAt: existingUserData && existingUserData.createdAt ? existingUserData.createdAt : new Date().toISOString()
         });
         updateUserUI(result.user);
         window.location.href = '../index.html';
@@ -116,7 +119,18 @@ const handleEmailSignUp = async (email, password, confirmPassword, displayName) 
 const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
     try {
-        await signInWithPopup(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        // Fetch existing user data
+        const existingUserData = await userDataService.getUserData(result.user.uid);
+        // Use existing role if present, otherwise default to "user"
+        const role = existingUserData && existingUserData.role ? existingUserData.role : "user";
+        await userDataService.saveUserData(result.user.uid, {
+            uid: result.user.uid,
+            email: result.user.email.toLowerCase(),
+            displayName: result.user.displayName,
+            role: role,
+            createdAt: existingUserData && existingUserData.createdAt ? existingUserData.createdAt : new Date().toISOString()
+        });
         window.location.href = '../index.html';
     } catch (error) {
         alert(error.message);
