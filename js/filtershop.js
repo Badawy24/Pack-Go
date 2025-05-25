@@ -1,19 +1,7 @@
-import { productsArray, createProductCard } from "./shop.js";
-import { paginateProducts } from "./pagination.js";
-import { setCurrentProducts } from "./state.js";
+import { setCurrentCategoryFilter } from "./state.js";
+import { getProductsFromFireStore } from "./shop.js";
 
-const filterLinks = document.querySelectorAll('#filter a');
-
-function displayProducts(products) {
-    setCurrentProducts(products);
-    createProductCard(products);
-    paginateProducts();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    // أول ما الصفحة تفتح، نعيّن currentProducts لكل المنتجات
-    displayProducts(productsArray.slice());
-});
+let filterLinks = document.querySelectorAll('#filter a');
 
 filterLinks.forEach(link => {
     link.addEventListener("click", (e) => {
@@ -22,13 +10,8 @@ filterLinks.forEach(link => {
         filterLinks.forEach(l => l.classList.remove("active"));
         link.classList.add("active");
 
-        const selectedCategory = link.getAttribute("data-category");
+        setCurrentCategoryFilter(link.getAttribute("data-category"));
 
-        if (selectedCategory === "all") {
-            displayProducts(productsArray.slice());
-        } else {
-            const filtered = productsArray.filter(product => product.category === selectedCategory);
-            displayProducts(filtered);
-        }
+        getProductsFromFireStore(true);
     });
 });
