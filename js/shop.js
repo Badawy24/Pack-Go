@@ -1,111 +1,92 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, limit, startAfter, getDocs } from "firebase/firestore";
 import { db } from "./firebase-config.js";
-import { paginateProducts } from './pagination.js';
 
-export let productsArray = [];
-// Get Data From Firestore And Display it In shop.html As Dynamic Data
-export const productsInShop = (db) => {
-    const productsCollection = collection(db, 'productsData');
-    onSnapshot(productsCollection, (snapshot) => {
+let products = [];
+let endOfProducts = null;
+let productsPerPage = 8;
+let currentPage = 1;
+let isLoading = false;
+let errorLoad = document.getElementById("error-load");
 
-        snapshot.docs.forEach(doc => {
-            let products = doc.data();
-            products.id = doc.id;
-            productsArray.push(products)
+let getProductsFromFireStore = async (loadFirstPage = true, order = "title", typeOrder = "asc") => {
+    if (isLoading) return;
+    isLoading = true;
+    try {
+        let getProducts;
+
+        if (loadFirstPage) {
+            getProducts = query(collection(db, 'productsData'), orderBy(order, typeOrder), limit(productsPerPage));
+            currentPage = 1;
+            products = [];
+        } else {
+            getProducts = query(collection(db, 'productsData'), orderBy(order, typeOrder), startAfter(endOfProducts), limit(productsPerPage));
+        }
+
+        let querySnapshot = await getDocs(getProducts);
+        endOfProducts = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+        querySnapshot.forEach(doc => {
+            let product = doc.data();
+            product.id = doc.id;
+            products.push(product);
         });
 
-        createProductCard(productsArray);
+        createProductCard(products);
+    } catch (error) {
+        errorLoad.innerText = "Can't load more";
+        errorLoad.style.display = "flex";
+        setTimeout(() => {
+            errorLoad.style.display = "none";
+        }, 4000);
+    } 
+    isLoading = false;
 
-    });
 }
 
-export function createProductCard(products) {
-    // Container for the product cards
-    // <div id="shop-body-B"></div>
+function createProductCard(products) {
     let shopBody = document.getElementById('shop-body-B');
+    if (!shopBody) return;
+
     shopBody.innerHTML = '';
 
     products.forEach(product => {
-
-        // <div class="product-card-m"></div>
         let productCard = document.createElement("div");
-        productCard.classList.add("product-card-m");
-        productCard.setAttribute("data-category", product.category); // مهم للفلترة
+        productCard.className = "product-card-m";
+        productCard.setAttribute("data-category", product.category);
+
+        let priceBeforeDiscount = parseFloat(product.price);
+        let discount = parseFloat(product.discountPercentage);
+        let priceAfterDiscount = (priceBeforeDiscount * (1 - discount/100)).toFixed(2);
 
 
-        // <img src="" alt="">
-        let productImg = document.createElement("img");
-        productImg.src = product.image;
-        productImg.alt = product.title;
-
-        // <h3></h3>
-        let productTitle = document.createElement("h3");
-        productTitle.innerText = product.title;
-
-        //  <p class="price-m"></p>
-        let productPrice = document.createElement("p");
-        productPrice.classList.add("price-m");
-        productPrice.innerText = product.price + "$";
-
-        // <button class="add-to-cart-m">Add to Cart</button>
-        // let productBtnAddCart = document.createElement("button");
-        // productBtnAddCart.classList.add("add-to-cart-m");
-        // productBtnAddCart.innerText = "Add to Cart";
-
-        // let productBtnViewDetials = document.createElement("button");
-        // productBtnViewDetials.classList.add("add-to-cart-m");
-        // productBtnViewDetials.innerText = "View Details";
-
-        // productBtnViewDetials.addEventListener("click", () => {
-        //     window.location.href = `productDetails.html?id=${product.id}`;
-        // });
-
-        // Append all elements to the product card
-        let button = document.createElement("button");
-        button.classList.add("button-z");
-        button.innerText = "View Details";
-        productCard.appendChild(productImg);
-        productCard.appendChild(productTitle);
-        productCard.appendChild(productPrice);
-        productCard.appendChild(button);
-        let viewDetailsBtn = document.createElement("button");
-        viewDetailsBtn.classList.add("add-to-cart-m");
-        viewDetailsBtn.innerText = "View Details";
+        productCard.innerHTML = `
+        <img src="${product.image}" alt="${product.title}">
+        <h3>${product.title}</h3>
+        <span class="price-m">${priceAfterDiscount}$</span>
+        <span class="price-m" style="text-decoration: line-through; color:var(--dark-grey-color);">${priceBeforeDiscount}$</span>
+        <button class="button-z">View Details</button>
+    `;
 
         productCard.addEventListener("click", (e) => {
-            e.stopPropagation(); // عشان ما يشتغلش كود كليك على الكارد كله
-            window.location.href = `productDetails.html?id=${product.id}`;
+            if (e.target.tagName !== 'button') {
+                window.location.href = `productDetails.html?id=${product.id}`;
+            }
         });
 
-        // productCard.appendChild(viewDetailsBtn);
-
-        // productCard.appendChild(productBtnAddCart);
-        // productCard.appendChild(productBtnViewDetials);
-
-        // Append the product card to the shop body
-        shopBody.append(productCard);
-
-
-        productCard.addEventListener("click", () => {
-            console.log('Product id : ', product.id);
-            console.log("Product code : ", product.code);
-            console.log("Product title : ", product.title);
-            console.log("Product description : ", product.description);
-            console.log("Product category : ", product.category);
-            console.log("Product price : ", product.price);
-            console.log("Product discountPercentage : ", product.discountPercentage);
-            console.log("Product quantity : ", product.quantity);
-            console.log("Product returnPolicy : ", product.returnPolicy);
-            console.log("Product colorHEX : ", product.colorHEX);
-            console.log("Product color : ", product.color);
-            console.log("Product image : ", product.image);
-            console.log("Product info : ", product.info);
-        });
-        paginateProducts();
+        shopBody.appendChild(productCard);
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    productsInShop(db);
+window.addEventListener("load", () => {
+    getProductsFromFireStore(true);
+
+    window.addEventListener('scroll', () => {
+        let { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoading) {
+            getProductsFromFireStore(false);
+        }
+    });
 });
 
+
+export { products, getProductsFromFireStore, createProductCard };
