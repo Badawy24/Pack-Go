@@ -4,8 +4,9 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
-    updateProfile, // Add this import
-    onAuthStateChanged // Add this import
+    updateProfile, 
+    onAuthStateChanged, 
+    sendPasswordResetEmail // Add for forgot password
 } from "firebase/auth";
 import { userDataService } from './userDataService.js';  //modified
 
@@ -53,11 +54,12 @@ const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
         const result = await signInWithPopup(auth, provider);
-        // Save user data on Google sign-in
+        // Save user data on Google sign-in with role
         await userDataService.saveUserData(result.user.uid, {
             uid: result.user.uid,
-            email: result.user.email,
+            email: result.user.email.toLowerCase(),
             displayName: result.user.displayName,
+            role: "user",
             createdAt: new Date().toISOString()
         });
         updateUserUI(result.user);
@@ -96,11 +98,12 @@ const handleEmailSignUp = async (email, password, confirmPassword, displayName) 
         // Set the display name in Firebase Auth profile
         await updateProfile(userCredential.user, { displayName });
 
-        // Save user data with display name
+        // Save user data with display name and role
         await userDataService.saveUserData(userCredential.user.uid, {
             uid: userCredential.user.uid,
             email: email,
             displayName: displayName,
+            role: "user",
             createdAt: new Date().toISOString()
         });
         window.location.href = '../index.html';
@@ -134,10 +137,24 @@ export const initLoginForm = () => {
     const loginForm = document.getElementById('login-form');
     const googleSignInBtn = document.getElementById('google-signin');
 
+    //checkpointStart-forgot password link
+    const forgotPasswordLink = document.querySelector('.forgot-link-k');
+    const emailInput = document.getElementById('email');
+
+    // Create or select a message area for forgot password
+    let forgotPasswordMessage = document.getElementById('forgot-password-message');
+    if (!forgotPasswordMessage) {
+        forgotPasswordMessage = document.createElement('div');
+        forgotPasswordMessage.id = 'forgot-password-message';
+        forgotPasswordMessage.style.color = '#79afff';
+        forgotPasswordMessage.style.marginTop = '8px';
+        loginForm.appendChild(forgotPasswordMessage);
+    }
+    
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             await handleEmailSignIn(email, password);
         });
@@ -146,6 +163,26 @@ export const initLoginForm = () => {
     if (googleSignInBtn) {
         googleSignInBtn.addEventListener('click', handleGoogleSignIn);
     }
+
+    // forgot password
+
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim().toLowerCase();
+            if (!email) {
+                forgotPasswordMessage.textContent = "Please enter your email address above first.";
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                forgotPasswordMessage.textContent = "Password reset email sent! Check your inbox.";
+            } catch (error) {
+                forgotPasswordMessage.textContent = error.message;
+            }
+        });
+    }
+    
 };
 
 // Initialize signup form
@@ -156,7 +193,7 @@ export const initSignupForm = () => {
     if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
             const displayName = document.getElementById('display-name').value; // Get display name

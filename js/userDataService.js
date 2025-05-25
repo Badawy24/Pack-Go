@@ -59,6 +59,19 @@ class UserDataService {
             throw error;
         }
     }
+
+    async updateUserField(userId, field, value) {
+        try {
+            const userRef = doc(db, 'users', userId);
+            await setDoc(userRef, { [field]: value }, { merge: true });
+            if (this.userData && this.userData.uid === userId) {
+                this.userData[field] = value;
+            }
+        } catch (error) {
+            console.error('Error updating user field:', error);
+            throw error;
+        }
+    }
 }
 
 export const userDataService = new UserDataService();

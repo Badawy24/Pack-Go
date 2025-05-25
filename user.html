@@ -16,13 +16,15 @@
     </header>
     <main class="user-main">
         <div class="user-info-card">
-            <img id="user-profile-pic" src="img/default-user-icon.png" alt="User Photo" />
+            <img id="user-icon" src="img/default-user-icon.png" alt="User Photo" />
             <h2 id="user-display-name">User Name</h2>
             <form id="user-update-form">
                 <label for="user-email">Email:</label>
-                <input type="email" id="user-email" required>
+                <input type="email" id="user-email" required autocomplete="off" autocapitalize="off">
+                <input type="password" id="user-current-password" placeholder="Current Password (required for email change)">
                 <label for="user-password">New Password:</label>
-                <input type="password" id="user-password" minlength="8" placeholder="Optional">
+                <input type="password" id="user-password" minlength="8" placeholder="Optional (leave blank to keep current)">
+
                 <button type="submit">Update your account</button>
             </form>
             

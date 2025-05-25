@@ -22,6 +22,14 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         userDataService.setCurrentUser(user);
         console.log('Current UID:', getCurrentUserUid());
+        // Fetch user data and redirect admin to dashboard
+        userDataService.getUserData(user.uid).then(userData => {
+            if (userData && userData.role === 'admin') {
+                if (!window.location.pathname.endsWith('dashboard.html')) {
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        });
     } else {
         console.log('User is signed out');
     }
