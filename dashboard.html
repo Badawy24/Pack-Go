@@ -9,10 +9,8 @@
 <body>
   <h1>Product Dashboard</h1>
 
-  <!-- زرار إظهار/إخفاء الفورم -->
   <button id="toggleFormBtn"> Add New Product</button>
 
-  <!-- فورم إضافة/تعديل المنتج -->
   <form id="productForm" class="hidden">
     <input type="number" name="code" placeholder="Code" required />
     <input type="text" name="title" placeholder="Title" required />
@@ -48,11 +46,9 @@
     </tr>
   </thead>
   <tbody id="productList">
-    <!-- الصفوف تتولد من الجافاسكربت -->
   </tbody>
 </table>
 
-  <!-- مكان عرض المنتجات -->
   <div id="productList" class="productList"></div>
 
   <script type="module" src="./js/dashboard.js"></script>

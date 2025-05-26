@@ -4,7 +4,7 @@ import { auth } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { userDataService } from './userDataService.js';
 
-const firebaseConfig = {
+let firebaseConfig = {
   apiKey: "AIzaSyDOL8EAF_5kYHAom1fZ_7UiAxWcWIJ5Aok",
   authDomain: "pack-go-5d568.firebaseapp.com",
   projectId: "pack-go-5d568",
@@ -14,18 +14,17 @@ const firebaseConfig = {
   measurementId: "G-R9DE3EBPD2"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const productsRef = collection(db, "productsData");
+let app = initializeApp(firebaseConfig);
+let db = getFirestore(app);
+let productsRef = collection(db, "productsData");
 
-const form = document.querySelector("#productForm");
-const productList = document.querySelector("#productList");
-const toggleFormBtn = document.getElementById("toggleFormBtn");
+let form = document.querySelector("#productForm");
+let productList = document.querySelector("#productList");
+let toggleFormBtn = document.getElementById("toggleFormBtn");
 
 let editId = null;
 
-// زر تسجيل الخروج
-const signoutBtn = document.createElement('button');
+let signoutBtn = document.createElement('button');
 signoutBtn.id = 'dashboard-signout-btn';
 signoutBtn.textContent = 'Sign Out';
 signoutBtn.style.position = 'fixed';
@@ -44,7 +43,7 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "auth/loginForm.html";
     return;
   }
-  const userData = await userDataService.getUserData(user.uid);
+  let userData = await userDataService.getUserData(user.uid);
   if (!userData || userData.role !== 'admin') {
     window.location.href = "index.html";
   }
@@ -58,10 +57,10 @@ toggleFormBtn.addEventListener("click", () => {
 
 async function loadProducts() {
   productList.innerHTML = "";
-  const snapshot = await getDocs(productsRef);
+  let snapshot = await getDocs(productsRef);
   snapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    const row = document.createElement("tr");
+    let data = docSnap.data();
+    let row = document.createElement("tr");
     row.innerHTML = `
       <td><img src="${data.image || ''}" alt="Product" /></td>
       <td>${data.title}</td>
@@ -104,7 +103,7 @@ window.editProduct = (id, data) => {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const data = {
+  let data = {
     code: Number(form.code.value),
     title: form.title.value,
     description: form.description.value,
