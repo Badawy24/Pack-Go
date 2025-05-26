@@ -1,7 +1,7 @@
 .header-z .cart-item-container   {
   max-width: 900px;
   padding: 20px;
-  background-color: var(--main-color);
+  background-color: #222;
   height: 1000px;
   max-height: 580px;
   overflow-y: auto;
@@ -84,6 +84,14 @@
   border-top: 2px solid #ccc;
   color: #fff;
 }
+.total {
+  background-color: #eee;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px;
+  margin-top: 20px;
+}
+
 .cart-item-container .checkout-z{
   display: block;
   text-align: center;
