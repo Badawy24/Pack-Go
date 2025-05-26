@@ -1,7 +1,6 @@
-// cart-item.js
+
 import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase-config.js";
-
 async function removeItemFromFirestoreAndLocal(docId, id, color) {
   try {
     await deleteDoc(doc(db, "carts", docId));
@@ -87,12 +86,12 @@ async function displayCartItems() {
     totalDiv.style.color = "#fff";
     totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
 
-    // const btn = document.createElement("button");
-    // btn.innerText = 'Checkout';
-    // btn.classList.add('checkout-z');
+    
+    
+    
 
     container.appendChild(totalDiv);
-    //container.appendChild(btn);
+    
 
     updateSummary(totalPrice);
 
@@ -114,10 +113,10 @@ async function displayCartItems() {
       });
     });
 
-    let isUpdating = false; // قفل لمنع التحديثات المتزامنة
+    let isUpdating = false; 
 
     async function updateQuantity(docId, newQty, price) {
-      if (isUpdating) return; // منع التحديث إذا كان هناك عملية جارية
+      if (isUpdating) return; 
       isUpdating = true;
 
       try {
@@ -137,11 +136,11 @@ async function displayCartItems() {
       } catch (error) {
         console.error("Failed to update quantity:", error);
       } finally {
-        isUpdating = false; // فك القفل بعد انتهاء العملية
+        isUpdating = false; 
       }
     }
 
-    // تعديل Event Listener الخاص بتغيير الكمية
+    
     container.querySelectorAll(".quantity-input").forEach(input => {
       input.addEventListener("change", async (e) => {
         const newQty = parseInt(e.target.value);
@@ -171,7 +170,7 @@ function updateSummary(totalPrice) {
   const cart = (JSON.parse(localStorage.getItem("cart")) || [])
     .filter(item => item && typeof item.quantity === "number" && item.quantity > 0);
 
-  // ✅ عدد المنتجات الفريدة (بغض النظر عن الكمية)
+  
   const totalItems = cart.length;
 
   if (itemCountElement) {
@@ -187,3 +186,5 @@ function updateSummary(totalPrice) {
 window.addEventListener("DOMContentLoaded", () => {
   displayCartItems();
 });
+
+export {displayCartItems};

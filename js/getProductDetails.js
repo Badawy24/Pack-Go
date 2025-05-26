@@ -1,73 +1,94 @@
-import { doc, getDoc, addDoc, collection, query, where, getDocs, updateDoc , deleteDoc } from "firebase/firestore";
-import { db } from "./firebase-config.js";
 
-// دالة لإضافة أو تحديث عنصر في Firestore
-async function addOrUpdateCartItem(cartItem) {
-  const cartsRef = collection(db, "carts");
-  const q = query(cartsRef, where("id", "==", cartItem.id), where("color", "==", cartItem.color));
-  const querySnapshot = await getDocs(q);
 
-  if (!querySnapshot.empty) {
-    const docRef = querySnapshot.docs[0].ref;
-    const existingData = querySnapshot.docs[0].data();
-    const newQuantity = existingData.quantity + cartItem.quantity;
-    await updateDoc(docRef, { quantity: newQuantity });
-    console.log("تم تحديث الكمية في Firestore.");
-  } else {
-    await addDoc(cartsRef, cartItem);
-    console.log("تم إضافة المنتج في Firestore.");
+import { doc, getDoc, addDoc, collection, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { db, app } from "./firebase-config.js";
+import { updateCartCount, displayCartItems } from "./cart-item.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+let auth = getAuth(app);
+
+async function mergeCartWithFirestore(userId) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  for (let cartItem of cart) {
+
+    cartItem.userId = userId;
+
+    let q = query(
+      collection(db, "carts"),
+      where("userId", "==", userId),
+      where("id", "==", cartItem.id),
+      where("color", "==", cartItem.color)
+    );
+
+    let snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      let docRef = snapshot.docs[0].ref;
+      let existing = snapshot.docs[0].data();
+      let newQuantity = existing.quantity + cartItem.quantity;
+      await updateDoc(docRef, { quantity: newQuantity });
+    } else {
+      await addDoc(collection(db, "carts"), cartItem);
+    }
   }
+
+
+  localStorage.setItem("userId", userId);
+  updateCartCount();
+
 }
 
-// دالة لتحديث عداد الكارت في الصفحة
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  const cartCountElems = document.querySelectorAll("#cart-count"); // لو في أكتر من عنصر عداد
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    let userId = user.uid;
+    let savedUserId = localStorage.getItem("userId");
 
-  cartCountElems.forEach(elem => {
-    elem.textContent = totalCount;
-  });
-
-  console.log("تم تحديث عداد الكارت:", totalCount);
-}
+    if (userId !== savedUserId) {
+      await mergeCartWithFirestore(userId);
+    }
+  }
+});
 
 export async function getProductDetails(id, db) {
   try {
     if (!id) {
-      const container = document.getElementById("product-details-container");
+      let container = document.getElementById("product-details-container");
       if (container)
         container.innerHTML = `<p>No product ID provided in URL.</p>`;
       return;
     }
 
-    const docRef = doc(db, "productsData", id);
-    const docSnap = await getDoc(docRef);
+    let docRef = doc(db, "productsData", id);
+    let docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
       displayProductDetails({ id: docSnap.id, ...docSnap.data() });
     } else {
-      const container = document.getElementById("product-details-container");
+      let container = document.getElementById("product-details-container");
       if (container) container.innerHTML = `<p>Product not found</p>`;
+      alert("This Product is not Available");
     }
   } catch (error) {
-    const container = document.getElementById("product-details-container");
+    let container = document.getElementById("product-details-container");
     if (container)
       container.innerHTML = `<p>Error loading product details.</p>`;
     console.error(error);
   }
+  updateCartCount();
+
 }
 
 function displayProductDetails(product) {
-  const container = document.getElementById("product-details-container");
+  let priceBeforeDiscount = parseFloat(product.price);
+  let discount = parseFloat(product.discountPercentage);
+  let priceAfterDiscount = (priceBeforeDiscount * (1 - discount / 100)).toFixed(2);
+  let container = document.getElementById("product-details-container");
   if (!container) return;
 
   container.innerHTML = `
-    <div class="breadcrumbs">
-      <a href="index.html">Home</a> / <a href="shop.html">${product.category}</a> /
-      <span>${product.title}</span>
-    </div>
+    <div class="breadcrumbs"></div>
 
     <section class="product-section">
       <div class="product-images">
@@ -75,32 +96,19 @@ function displayProductDetails(product) {
       </div>
       <div class="product-info">
         <h1>${product.title}</h1>
-        <div class="rating">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span class="half">★</span>
-          <span class="rating-value">4.5 | 4 reviews</span>
-        </div>
         <div class="product-price">
-          <span class="old-price">$${(product.price * 1.1).toFixed(2)}</span>
-          <span class="sale-price">$${product.price}</span>
+          <span class="old-price">$${priceBeforeDiscount}</span>
+          <span class="sale-price">$${priceAfterDiscount}</span>
         </div>
-
         <form id="add-to-cart-form">
-          <label for="color">Color:</label>
-          <select id="color" name="color" required>
-            <option value="Blue">Blue</option>
-            <option value="Black">Black</option>
-            <option value="Green">Green</option>
-          </select>
+          <span style="display: block;width: 30px;
+          height: 30px;
+          background-color: ${product.colorHEX};
+          border-radius: 50%; border:1px solid #fff ;
+          margin-bottom:10px;"></span>          
+          <input type="hidden" name="color" value="${product.colorHEX}" />
           <label for="quantity">Quantity:</label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            value="1"
-            min="1"
-            max=${product.quantity}
-            required
-          />
+          <input type="number" id="quantity" name="quantity" value="1" min="1" max=${product.quantity} required />
           <div class="product-buttons">
             <button type="submit" class="add-cart-btn">Add to Cart</button>
             <button type="button" id="buy" class="buy-now-btn">Buy Now</button>
@@ -119,172 +127,104 @@ function displayProductDetails(product) {
     </section>
   `;
 
-  const form = document.getElementById("add-to-cart-form");
+  let form = document.getElementById("add-to-cart-form");
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    const color = form.color.value;
-    const quantity = parseInt(form.quantity.value);
-
-    const cartItem = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      color,
-      quantity,
-      image: product.image,
-    };
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existingIndex = cart.findIndex(
-      (item) => item.id === cartItem.id && item.color === cartItem.color
-    );
-
-    if (existingIndex > -1) {
-      cart[existingIndex].quantity += quantity;
-    } else {
-      cart.push(cartItem);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    try {
-      await addOrUpdateCartItem(cartItem);
-    } catch (error) {
-      console.error("Error saving to Firestore:", error);
-    }
-
-    updateCartCount();
-
-    // لو في عنصر ال cart-item-container شغّل عرض العناصر
-    const container = document.querySelector(".cart-item-container");
+    await handleAddToCart(product);
+    let container = document.querySelector(".cart-item-container");
     if (container) {
-      container.classList.add('active');
-      renderCartItems();
+      container.classList.add("active");
+      displayCartItems();
     }
   });
 
-  const buy = document.getElementById("buy");
+  let buy = document.getElementById("buy");
   buy.addEventListener("click", async function (e) {
     e.preventDefault();
-
-    const color = form.color.value;
-    const quantity = parseInt(form.quantity.value);
-
-    const cartItem = {
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      color,
-      quantity,
-      image: product.image,
-    };
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existingIndex = cart.findIndex(
-      (item) => item.id === cartItem.id && item.color === cartItem.color
-    );
-
-    if (existingIndex > -1) {
-      cart[existingIndex].quantity += quantity;
-    } else {
-      cart.push(cartItem);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    try {
-      await addOrUpdateCartItem(cartItem);
-    } catch (error) {
-      console.error("Error saving to Firestore:", error);
-    }
-
-    updateCartCount();
-
-    window.location.href = 'cart.html';
+    await handleAddToCart(product);
+    window.location.href = "cart.html";
   });
+  updateCartCount();
+
 }
 
-function renderCartItems() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const container = document.querySelector(".cart-item-container");
-  if (!container) return;
-  container.innerHTML = "";
+async function handleAddToCart(product) {
+  let form = document.getElementById("add-to-cart-form");
+  let color = form.color.value;
+  let quantity = parseInt(form.quantity.value);
 
-  cart.forEach((item, index) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "cart-item";
-    itemDiv.innerHTML = `
-      <img src="${item.image}" alt="${item.title}" class="cart-item-img" />
-      <div class="cart-item-info">
-        <p class="cart-item-title">${item.title}</p>
-        <p class="cart-item-color">Color: ${item.color}</p>
-        <p class="cart-item-quantity">Quantity: ${item.quantity}</p>
-        <p class="cart-item-price">${item.price} EGP</p>
-      </div>
-      <button style="margin-left:30px;" class="cart-item-delete" data-index="${index}">🗑️</button>
-    `;
-    container.appendChild(itemDiv);
-  });
+  let userId = localStorage.getItem("userId");
 
-  if (cart.length > 0) {
-    const checkoutBtn = document.createElement("button");
-    checkoutBtn.className = "checkout-btn checkout-z";
-    checkoutBtn.textContent = "Checkout 🛒";
-    checkoutBtn.addEventListener("click", () => {
-      window.location.href = "../cart.html";
-    });
-    container.appendChild(checkoutBtn);
-    container.classList.add("render-side-z");
+  let cartItem = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    color,
+    quantity,
+    image: product.image,
+  };
+
+  if (userId) {
+    cartItem.userId = userId;
   }
 
-  document.querySelectorAll(".cart-item-delete").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const index = parseInt(this.dataset.index);
-      removeCartItemFromBoth(index);
-    });
-  });
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let existingIndex = cart.findIndex(
+    (item) => item.id === cartItem.id && item.color === cartItem.color
+  );
+
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += quantity;
+  } else {
+    cart.push(cartItem);
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  try {
+    await addOrUpdateCartItem(cartItem);
+  } catch (error) {
+    console.error("Error saving to Firestore:", error);
+  }
 
   updateCartCount();
 }
 
-async function removeCartItemFromBoth(index) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const itemToRemove = cart[index];
+async function addOrUpdateCartItem(cartItem) {
+  if (!cartItem.userId) return;
 
-  if (!itemToRemove) return;
-
-  const q = query(collection(db, "carts"),
-    where("id", "==", itemToRemove.id),
-    where("color", "==", itemToRemove.color)
+  let cartsRef = collection(db, "carts");
+  let q = query(
+    cartsRef,
+    where("userId", "==", cartItem.userId),
+    where("id", "==", cartItem.id),
+    where("color", "==", cartItem.color)
   );
-  const querySnapshot = await getDocs(q);
+  let querySnapshot = await getDocs(q);
 
-  for (let docSnap of querySnapshot.docs) {
-    await deleteDoc(docSnap.ref);
+  if (!querySnapshot.empty) {
+    let docRef = querySnapshot.docs[0].ref;
+    let existingData = querySnapshot.docs[0].data();
+    let newQuantity = existingData.quantity + cartItem.quantity;
+    await updateDoc(docRef, { quantity: newQuantity });
+  } else {
+    await addDoc(cartsRef, cartItem);
   }
+  updateCartCount();
 
-  cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  renderCartItems();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   if (window.location.pathname.toLowerCase().endsWith("productdetails.html")) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id");
+    let urlParams = new URLSearchParams(window.location.search);
+    let productId = urlParams.get("id");
     if (productId) {
       getProductDetails(productId, db).catch(console.error);
     }
   }
 
-  // حدث العداد عند تحميل الصفحة
   updateCartCount();
-
-  // لو عندك نافبار فيها قائمة الكارت لازم تعرض العناصر فيها هنا
-  renderCartItems();
+  displayCartItems();
 });
