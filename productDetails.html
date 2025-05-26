@@ -31,13 +31,9 @@
     <div class="right-z navbar">
       <a href="./index.html">Home</a>
       <a href="./shop.html">Shop</a>
-      <a href="index.html/?#sale">Sale</a>
-      <a href="index.html/?#about">About</a>
-            <a href="index.html/?#contact">Contact</a>
-     <!--  <a href="auth/loginForm.html" id="user-link">
-       <img id="user-icon" src="img/default-user-icon.png" alt="User Icon" class="user-icon-z" />
-        <span id="login-text">Log in</span>
-      </a> -->
+      <a href="#sale">Sale</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </div>
     <div class="icons-z">
       <div class="fas fa-shopping-cart icon-z" style="color: white; position: relative;">
@@ -52,13 +48,12 @@
         border-radius: 50%;
       ">0</span>
 </div>
-
-      <a href="auth/loginForm.html" id="user-link">
-       <!--  <div class="fas fa-user user-icon-z"></div> replace div with icon picture -->
+      <a href="auth/loginForm.html" id="user-link" class="">
        <i class="fas fa-user-circle user-icon-z" id="user-icon" ></i>
         <span id="login-text">Log in</span>
       </a>
-<a href="#" id="logout-btn" style="display:none;color:rgb(253, 83, 83); font-size: 20px;"><i class="fas fa-sign-out-alt"></i></a>      <div class="icon-z fas fa-bars" id="menu-btn"></div>
+      <a href="#" id="logout-btn" style="display:none;color:rgb(253, 83, 83); font-size: 20px;"><i class="fas fa-sign-out-alt"></i></a>
+      <div class="icon-z fas fa-bars" id="menu-btn"></div>
     </div>
 
     </div>
@@ -68,6 +63,7 @@
       <label for="search-box" class="fas fa-search"></label>
     </div>
     <div class="cart-item-container">
+      
     </div>
     
     
@@ -78,7 +74,7 @@
         <i style="color: #FF0000;" class="fab fa-youtube"></i>
   </div>
     <main id="product-details-container" class="product-details-container"></main>
-    
+
     <footer>
       <div class="f-z">
         <p>© 2025 by PACK & GO.</p>
@@ -87,10 +83,11 @@
         </div>
       </footer>
 
+      <script src="./js/header.js"></script>
     <script type="module" src="./js/getProductDetails.js"></script>
     <script type="module" src="js/index.js"></script>
-    <script src="./js/header.js"></script>
-    <script src="./js/cart-item.js"></script>
-</body>
+    <!-- <script type="module" src="./js/cart-item.js"></script> -->
+    
+  </body>
 
 </html>
