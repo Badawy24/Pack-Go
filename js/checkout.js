@@ -114,6 +114,34 @@ async function displayCartItems() {
       });
     });
 
+    let isUpdating = false; // قفل لمنع التحديثات المتزامنة
+
+    async function updateQuantity(docId, newQty, price) {
+      if (isUpdating) return; // منع التحديث إذا كان هناك عملية جارية
+      isUpdating = true;
+
+      try {
+        const itemRef = doc(db, "carts", docId);
+        await updateDoc(itemRef, { quantity: newQty });
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart = cart.map(item => {
+          if (item._id === docId) {
+            item.quantity = newQty;
+          }
+          return item;
+        });
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        await displayCartItems();
+      } catch (error) {
+        console.error("Failed to update quantity:", error);
+      } finally {
+        isUpdating = false; // فك القفل بعد انتهاء العملية
+      }
+    }
+
+    // تعديل Event Listener الخاص بتغيير الكمية
     container.querySelectorAll(".quantity-input").forEach(input => {
       input.addEventListener("change", async (e) => {
         const newQty = parseInt(e.target.value);
@@ -126,23 +154,7 @@ async function displayCartItems() {
           return;
         }
 
-        try {
-          const itemRef = doc(db, "carts", docId);
-          await updateDoc(itemRef, { quantity: newQty });
-
-          let cart = JSON.parse(localStorage.getItem("cart")) || [];
-          cart = cart.map(item => {
-            if (item._id === docId) {
-              item.quantity = newQty;
-            }
-            return item;
-          });
-          localStorage.setItem("cart", JSON.stringify(cart));
-
-          await displayCartItems();
-        } catch (error) {
-          console.error("Failed to update quantity:", error);
-        }
+        await updateQuantity(docId, newQty, price);
       });
     });
   } catch (error) {
@@ -155,10 +167,14 @@ function updateSummary(totalPrice) {
   const subtotalElement = document.querySelector(".summary-row:first-child .price");
   const totalElement = document.querySelector(".summary-row.total .price");
   const itemCountElement = document.querySelector(".summary-row.items .count");
+
+  const cart = (JSON.parse(localStorage.getItem("cart")) || [])
+    .filter(item => item && typeof item.quantity === "number" && item.quantity > 0);
+
+  // ✅ عدد المنتجات الفريدة (بغض النظر عن الكمية)
+  const totalItems = cart.length;
+
   if (itemCountElement) {
-    const cart = (JSON.parse(localStorage.getItem("cart")) || [])
-      .filter(item => item && typeof item.quantity === "number" && item.quantity > 0);
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     itemCountElement.textContent = `${totalItems}`;
   }
 
