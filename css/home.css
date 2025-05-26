@@ -363,7 +363,9 @@ hr {
 .inputs-z {
     width: 50%;
 }
-
+.name-z{
+    width: 100%;
+}
 .first-input-z {
     width: 80%;
     margin: auto;

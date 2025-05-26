@@ -1,14 +1,14 @@
-const categories = [
+let categories = [
 { name: "DuffleBags", id: "dufflebags" },
 { name: "Backpacks", id: "backpacks" },
 { name: "TravelPacks", id: "travelpacks" },
 ];
 
-const categoryDivs = document.querySelectorAll(".cat-z");
+let categoryDivs = document.querySelectorAll(".cat-z");
 
 categoryDivs.forEach((div, index) => {
 if (categories[index]) {
-const h1 = div.querySelector("h1");
+let h1 = div.querySelector("h1");
 h1.innerText = categories[index].name;
 
 

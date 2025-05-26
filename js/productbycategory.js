@@ -2,11 +2,10 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./firebase-config.js";
 
 // Get category from URL
-const params = new URLSearchParams(window.location.search);
-const category = params.get("category");
+let params = new URLSearchParams(window.location.search);
+let category = params.get("category");
 
-// تحديث عنوان التصنيف
-const categoryTitle = document.getElementById("category-title");
+let categoryTitle = document.getElementById("category-title");
 if (categoryTitle && category) {
   categoryTitle.innerText = `منتجات: ${category}`;
 }
@@ -15,14 +14,14 @@ export async function displayProductByCategory(db) {
   if (!category) return;
 
   try {
-    const productsRef = collection(db, 'productsData');
-    const q = query(productsRef, where("category", "==", category));
-    const querySnapshot = await getDocs(q);
+    let productsRef = collection(db, 'productsData');
+    let q = query(productsRef, where("category", "==", category));
+    let querySnapshot = await getDocs(q);
 
-    const container = document.getElementById("products-container");
+    let container = document.getElementById("products-container");
     if (!container) return;
 
-    container.innerHTML = ""; // تفريغ المحتوى السابق
+    container.innerHTML = ""; 
 
     if (querySnapshot.empty) {
       container.innerText = "لا توجد منتجات في هذه الفئة.";
@@ -30,42 +29,38 @@ export async function displayProductByCategory(db) {
     }
 
     querySnapshot.forEach(docSnap => {
-      const product = docSnap.data();
-      const productId = docSnap.id;
+      let product = docSnap.data();
+      let productId = docSnap.id;
 
-      const catTitle = document.getElementById('cat-title');
+      let catTitle = document.getElementById('cat-title');
       if (catTitle) catTitle.innerText = product.category;
 
-      // إنشاء كارت المنتج
-      const productCard = document.createElement("div");
+      let productCard = document.createElement("div");
       productCard.classList.add("product-card");
 
-      const img = document.createElement("img");
+      let img = document.createElement("img");
       img.src = product.image;
       img.alt = product.title;
 
-      const title = document.createElement("h3");
+      let title = document.createElement("h3");
       title.innerText = product.title;
 
-      const price = document.createElement("p");
+      let price = document.createElement("p");
       price.innerText = product.price + "$";
 
-      const button = document.createElement("button");
+      let button = document.createElement("button");
       button.classList.add("button-z");
       button.innerText = "View Details";
 
-      // تعديل هنا: زر ينقل لصفحة تفاصيل المنتج بدل إضافة للسلة
       button.addEventListener("click", (e) => {
         e.stopPropagation();
         window.location.href = `productDetails.html?id=${productId}`;
       });
 
-      // كليك على الكارت يفتح صفحة التفاصيل
       productCard.addEventListener("click", () => {
         window.location.href = `productDetails.html?id=${productId}`;
       });
 
-      // ترتيب عناصر الكارت
       productCard.appendChild(img);
       productCard.appendChild(title);
       productCard.appendChild(price);
@@ -80,13 +75,12 @@ export async function displayProductByCategory(db) {
 }
 
 function renderCartItems() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const container = document.querySelector(".cart-item-container");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let container = document.querySelector(".cart-item-container");
   container.innerHTML = "";
 
-  // عرض العناصر
   cart.forEach((item, index) => {
-    const itemDiv = document.createElement("div");
+    let itemDiv = document.createElement("div");
     itemDiv.className = "cart-item";
     itemDiv.innerHTML = `
       <img src="${item.image}" alt="${item.title}" class="cart-item-img" />
@@ -101,9 +95,9 @@ function renderCartItems() {
     container.appendChild(itemDiv);
   });
 
-  // إضافة زر Checkout تحت المنتجات فقط لو فيه منتجات
+
   if (cart.length > 0) {
-    const checkoutBtn = document.createElement("button");
+    let checkoutBtn = document.createElement("button");
     checkoutBtn.className = "checkout-btn checkout-z";
     checkoutBtn.textContent = "Checkout 🛒";
     checkoutBtn.addEventListener("click", () => {
@@ -114,10 +108,10 @@ function renderCartItems() {
     container.classList.add('render-side-z')
   }
 
-  // حذف العناصر
+
   document.querySelectorAll(".cart-item-delete").forEach((btn) => {
     btn.addEventListener("click", function () {
-      const index = parseInt(this.dataset.index);
+      let index = parseInt(this.dataset.index);
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCartItems();

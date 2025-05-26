@@ -1,9 +1,9 @@
 import { collection, onSnapshot, query, limit } from "firebase/firestore";
 import { db } from "./firebase-config.js";
 
-export const productsInHome = (db) => {
-    const productsCollection = collection(db, 'productsData');
-    const productsQuery = query(productsCollection, limit(3));
+export let productsInHome = (db) => {
+    let productsCollection = collection(db, 'productsData');
+    let productsQuery = query(productsCollection, limit(3));
 
     onSnapshot(productsQuery, (snapshot) => {
         let productsArray = [];
@@ -36,7 +36,6 @@ export const productsInHome = (db) => {
     del.innerText = (product.originalPrice || (product.price * 1.2)).toFixed(2) + "$";
     span.innerText = product.price + "$";
 
-    // ✅ هنا الحل:
     clone.addEventListener("click", () => {
         window.location.href = `productDetails.html?id=${product.id}`;
     });
