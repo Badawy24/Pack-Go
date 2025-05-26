@@ -79,8 +79,8 @@
 }
 .product-buttons {
   display: flex;
-  flex-direction: column; /* يخلي العناصر رأسية */
-  gap: 10px; /* مسافة بين الزرين */
+  flex-direction: column;
+  gap: 10px;
   margin-top: 15px;
 }
 
@@ -89,7 +89,6 @@
   padding: 10px 20px;
   width: 100%;
   border: none;
-  /* background: #afb0b1; */
   color: #fff;
   border-radius: 6px;
   font-size: 2rem;
