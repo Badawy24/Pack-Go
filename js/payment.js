@@ -1,76 +1,51 @@
-// sb-0lnoj42363161@personal.example.com
-// 12345678
-import { collection, getDocs, query, where, documentId, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc, serverTimestamp, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./firebase-config.js";
 import { showInvoicePopup } from "./invoice.js";
 import { IsLogin } from './isLogin.js';
-document.addEventListener("DOMContentLoaded", () => {
+
+window.addEventListener("load", () => {
     IsLogin()
         .then((user) => {
-            const userId = user.uid;
-            console.log("Logged in:", userId);
+            let userId = user.uid;
             initPayPal(db, userId);
         })
-        .catch((err) => {
-            console.error("❌", err);
+        .catch(() => {
+            window.location.href = "./../auth/loginForm.html";
         });
 });
 
+async function getCartItemsFromFirestoreByUser(db, userId) {
+    let cartRef = collection(db, "carts");
+    let q = query(cartRef, where("userId", "==", userId));
+    let querySnapshot = await getDocs(q);
 
-function getCartItemsFromLocalStorage() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log(1);
-    return cart;
-}
-async function getProductsFromFirestoreByIds(db, ids) {
-    if (!ids.length) return [];
-
-    const productsRef = collection(db, "productsData");
-    const queryOfProducts = query(productsRef, where(documentId(), "in", ids));
-    const querySnapshot = await getDocs(queryOfProducts);
-
-    let firestoreProducts = [];
-    querySnapshot.forEach((doc) => {
-        firestoreProducts.push({ id: doc.id, ...doc.data() });
+    let cartItems = [];
+    querySnapshot.forEach(document => {
+        cartItems.push({ 
+            firestoreId: document.id, 
+            ...document.data()
+        });
     });
-    console.log(2);
 
-    return firestoreProducts;
+    return cartItems;
 }
 
-async function calculateTotalAmount(db) {
-    const localCart = getCartItemsFromLocalStorage();
-    const ids = localCart.map(item => item.id);
-
-    const firestoreProducts = await getProductsFromFirestoreByIds(db, ids);
-
+async function calculateTotalAmount(cartItems) {
     let total = 0;
-    for (let item of localCart) {
-        const firestoreItem = firestoreProducts.find(p => p.id === item.id);
-        if (firestoreItem) {
-            total += firestoreItem.price * item.quantity;
-        }
+    for (let item of cartItems) {
+        let priceBeforeDiscount = parseFloat(item.price);
+        let discount = parseFloat(item.discountPercentage);
+        let priceAfterDiscount = priceBeforeDiscount * (1 - discount / 100);
+        total += priceAfterDiscount * (item.quantity);
     }
-    console.log(3);
-
-    return total;
+    return total.toFixed(2);
 }
 
 export async function initPayPal(db, userId) {
-    const localCart = getCartItemsFromLocalStorage();
-
-    if (localCart.length === 0) {
-        console.log("Cart is empty. PayPal button will not render.");
+    let cartItems = await getCartItemsFromFirestoreByUser(db, userId);
+    if (cartItems.length === 0) {
         return;
     }
-
-    const valueShouldPay = Number(await calculateTotalAmount(db)).toFixed(2);
-
-    if (valueShouldPay <= 0) {
-        console.log("Total amount is 0. No payment required.");
-        return;
-    }
-
     paypal.Buttons({
         style: {
             layout: 'vertical',
@@ -80,7 +55,18 @@ export async function initPayPal(db, userId) {
             tagline: false,
             height: 45
         },
-        createOrder: function (data, actions) {
+        createOrder: async function (data, actions) {
+            
+            let cartItemsCurrent = await getCartItemsFromFirestoreByUser(db, userId);
+            if (cartItemsCurrent.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            let valueShouldPay = await calculateTotalAmount(cartItemsCurrent);
+            if (valueShouldPay <= 0) {
+                alert("Invalid total amount.");
+                return;
+            }
             return actions.order.create({
                 purchase_units: [{
                     amount: {
@@ -91,40 +77,28 @@ export async function initPayPal(db, userId) {
         },
         onApprove: async function (data, actions) {
             return actions.order.capture().then(async function (details) {
-                const paidAmount = details.purchase_units[0].amount.value;
-
+                
+                let cartItemsCurrent = await getCartItemsFromFirestoreByUser(db, userId);
+                let cartItemIds = cartItemsCurrent.map(item => item.firestoreId); 
+                let valueShouldPay = await calculateTotalAmount(cartItemsCurrent);
+                let paidAmount = details.purchase_units[0].amount.value;
                 if (Number(paidAmount).toFixed(2) === valueShouldPay) {
-                    console.log("✅ Payment matched!");
-                    console.log("💵 Paid Amount:", paidAmount);
-                    console.log("🆔 Transaction ID:", details.id);
-                    console.log("🆔 User ID:", userId);
-                    console.log("✅ Payment Success!");
-                    console.log("👤 Payer Name:", details.payer.name.given_name, details.payer.name.surname);
-                    console.log("💳 Email:", details.payer.email_address);
-                    console.log("💵 Paid Amount:", details.purchase_units[0].amount.value, details.purchase_units[0].amount.currency_code);
-
-                    const productIds = localCart.map(item => item.id);
-                    const firestoreProducts = await getProductsFromFirestoreByIds(db, productIds);
-
-                    const productsWithQuantity = firestoreProducts.map(product => {
-                        const cartItem = localCart.find(item => item.id === product.id);
-                        return {
-                            id: product.id,
-                            code: product.code || "",
-                            description: product.description || "",
-                            image: product.image || "",
-                            price: product.price || 0,
-                            quantity: cartItem ? cartItem.quantity : 0,
-                            title: product.title || ""
-                        };
-                    });
-
-                    const orderData = {
+                    let productsWithQuantity = cartItemsCurrent.map(item => ({
+                        id: item.firestoreId,
+                        code: item.code || "",
+                        description: item.description || "",
+                        image: item.image || "",
+                        price: item.price || 0,
+                        discount: item.discountPercentage || 0,
+                        quantity: item.quantity || 0,
+                        title: item.title || ""
+                    }));
+                    let orderData = {
                         userId: userId,
                         payerName: details.payer.name.given_name + " " + details.payer.name.surname,
                         payerEmail: details.payer.email_address,
                         transactionId: details.id,
-                        paidAmount: details.purchase_units[0].amount.value,
+                        paidAmount: paidAmount,
                         currency: details.purchase_units[0].amount.currency_code,
                         createdAt: serverTimestamp(),
                         products: productsWithQuantity,
@@ -132,19 +106,21 @@ export async function initPayPal(db, userId) {
                     };
                     try {
                         await addDoc(collection(db, "orders"), orderData);
-                        console.log("✅ Order saved successfully in Firestore.");
-                        localStorage.removeItem("cart");
+                        
+                        for (let cartId of cartItemIds) {
+                            await deleteDoc(doc(db, "carts", cartId));
+                        }
                         showInvoicePopup(orderData);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 8000);
                     } catch (error) {
-                        console.error("❌ Failed to save order:", error);
+                        alert("Payment mismatch. Expected: $" + valueShouldPay + " but got: $" + paidAmount);
                     }
                 } else {
-                    console.error("❌ Payment amount mismatch!");
-                    console.log("Expected:", valueShouldPay, "Got:", paidAmount);
                     alert("Payment mismatch. Expected: $" + valueShouldPay + " but got: $" + paidAmount);
                 }
             });
         }
     }).render('#paypal-button-container');
 }
-

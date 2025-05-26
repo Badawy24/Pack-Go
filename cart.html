@@ -34,10 +34,6 @@
             <a href="index.html#sale">Sale</a>
             <a href="index.html#about">About</a>
             <a href="index.html#contact">Contact</a>
-            <!--  <a href="auth/loginForm.html" id="user-link">
-           <img id="user-icon" src="img/default-user-icon.png" alt="User Icon" class="user-icon-z" />
-            <span id="login-text">Log in</span>
-          </a> -->
         </div>
         <div class="icons-z">
             <div class="fas fa-shopping-cart icon-z" style="color: white; position: relative;">
@@ -95,7 +91,7 @@
             <div class="order-summary">
                 <div class="summary-row">
                     <span>Subtotal</span>
-                    <span class="price">$104.00</span>
+                    <span class="price">$00.00</span>
                 </div>
                 <div class="summary-row">
                     <span>Delivery</span>
@@ -107,14 +103,8 @@
                 </div>
                 <div class="summary-row total">
                     <span>Total</span>
-                    <span class="price">$104.00</span>
+                    <span class="price">$00.00</span>
                 </div>
-
-                <!-- <div class="summary-row items">
-                    <span> Number Of Items</span>
-                    <span class="count">0</span>
-                </div> -->
-
                 <div id="paypal-button-container"></div>
                 <div class="secure-checkout">🔒 Secure Checkout</div>
             </div>
@@ -122,7 +112,7 @@
     </div>
     <div id="invoicePopup" class="invoice-popup" style="display: none;">
         <div class="invoice-card" id="invoiceContent">
-            <h2>🧾 Invoice</h2>
+            <h2>Invoice</h2>
             <p><strong>Name:</strong> <span id="invName"></span></p>
             <p><strong>Email:</strong> <span id="invEmail"></span></p>
             <p><strong>Transaction ID:</strong> <span id="invTransactionId"></span></p>
@@ -137,6 +127,7 @@
                             <th>Title</th>
                             <th>Qty</th>
                             <th>Price</th>
+                            <th>Discount</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -145,9 +136,8 @@
             </div>
 
             <div class="btns no-print">
-                <button onclick="printInvoice()" class="print-btn">🖨️ Print</button>
-                <button onclick="document.getElementById('invoicePopup').style.display='none'" class="close-btn">❌
-                    Close</button>
+                <button onclick="printInvoice()" class="print-btn">Print</button>
+                <button onclick="document.getElementById('invoicePopup').style.display='none'" class="close-btn">Close</button>
             </div>
         </div>
     </div>
