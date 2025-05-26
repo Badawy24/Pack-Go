@@ -1,13 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import {getFirestore,collection,getDocs,addDoc,deleteDoc,doc,updateDoc} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { auth } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { userDataService } from './userDataService.js';
@@ -28,9 +20,11 @@ const productsRef = collection(db, "productsData");
 
 const form = document.querySelector("#productForm");
 const productList = document.querySelector("#productList");
+const toggleFormBtn = document.getElementById("toggleFormBtn");
+
 let editId = null;
 
-// Add signout button to the dashboard UI
+// زر تسجيل الخروج
 const signoutBtn = document.createElement('button');
 signoutBtn.id = 'dashboard-signout-btn';
 signoutBtn.textContent = 'Sign Out';
@@ -41,19 +35,25 @@ signoutBtn.style.zIndex = '1000';
 document.body.appendChild(signoutBtn);
 
 signoutBtn.addEventListener('click', async () => {
-    await signOut(auth);
-    window.location.href = 'auth/loginForm.html';
+  await signOut(auth);
+  window.location.href = 'auth/loginForm.html';
 });
 
 onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        window.location.href = "auth/loginForm.html";
-        return;
-    }
-    const userData = await userDataService.getUserData(user.uid);
-    if (!userData || userData.role !== 'admin') {
-        window.location.href = "index.html";
-    }
+  if (!user) {
+    window.location.href = "auth/loginForm.html";
+    return;
+  }
+  const userData = await userDataService.getUserData(user.uid);
+  if (!userData || userData.role !== 'admin') {
+    window.location.href = "index.html";
+  }
+});
+
+toggleFormBtn.addEventListener("click", () => {
+  form.classList.toggle("hidden");
+  editId = null;
+  form.reset();
 });
 
 async function loadProducts() {
@@ -61,21 +61,20 @@ async function loadProducts() {
   const snapshot = await getDocs(productsRef);
   snapshot.forEach((docSnap) => {
     const data = docSnap.data();
-    const div = document.createElement("div");
-    div.className = "product-card";
-    div.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.description}</p>
-      <p>Category : ${data.category}</p>
-      <p>Price : $${data.price} | Discount: ${data.discountPercentage}%</p>
-      <p>Quantity : ${data.quantity} | Return: ${data.returnPolicy}</p>
-      <p>Color : ${data.color} <span style="background:${data.colorHEX};padding:0 10px;">&nbsp;</span></p>
-      <div class="actions">
-        <button onclick="editProduct('${docSnap.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Edit</button>
-        <button onclick="deleteProduct('${docSnap.id}')">Delete</button>
-      </div>
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><img src="${data.image || ''}" alt="Product" /></td>
+      <td>${data.title}</td>
+      <td>${data.category}</td>
+      <td>$${data.price} <br> ${data.discountPercentage}% off</td>
+      <td>${data.quantity}</td>
+      <td><span style="background:${data.colorHEX};padding:2px 8px;border-radius:4px;">${data.color}</span></td>
+      <td>
+        <button class="action-btn edit-btn" onclick="editProduct('${docSnap.id}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Edit</button>
+        <button class="action-btn delete-btn" onclick="deleteProduct('${docSnap.id}')">Delete</button>
+      </td>
     `;
-    productList.appendChild(div);
+    productList.appendChild(row);
   });
 }
 
@@ -85,6 +84,9 @@ window.deleteProduct = async (id) => {
 };
 
 window.editProduct = (id, data) => {
+  form.classList.remove("hidden");
+  toggleFormBtn.scrollIntoView({ behavior: "smooth" });
+
   form.code.value = data.code;
   form.title.value = data.title;
   form.description.value = data.description;
@@ -123,6 +125,7 @@ form.addEventListener("submit", async (e) => {
     await addDoc(productsRef, data);
   }
   form.reset();
+  form.classList.add("hidden");
   loadProducts();
 });
 

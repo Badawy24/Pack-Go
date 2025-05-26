@@ -46,9 +46,11 @@
     text-transform: uppercase;
     color: #c4c4bf;
 }
+
 .header-z #user-link span:hover {
     color: #fff;
 }
+
 #login-text-k {
     margin-left: 8px;
     font-weight: 600;
@@ -166,7 +168,8 @@
 .icons-z {
     display: flex;
     align-items: center;
-    gap: 18px; /* space between icons */
+    gap: 18px;
+    /* space between icons */
 }
 
 #user-link {
@@ -204,10 +207,12 @@
         padding: .5rem;
         font-size: 1.5rem;
     }
+
     .header-z .navbar a:hover {
         background-color: rgb(19, 19, 56);
         border-radius: 5px;
     }
+
     .header-z .search-form {
         width: 90%;
         right: 2rem;
@@ -229,53 +234,56 @@
         font-size: 20px;
     }
 }
+
 .user-container {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .user-icon-z {
-  border-radius: 50%;
-  vertical-align: middle;
-  font-size:2.8rem;
+    border-radius: 50%;
+    vertical-align: middle;
+    font-size: 2.8rem;
 }
 
 .user-menu {
-  position: absolute;
-  top: 110%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  display: none;
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 1000;
-  min-width: 160px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    min-width: 160px;
+    padding-top: 10px;
+    margin-top: -10px;
 }
 
 .user-menu.active {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .user-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .user-menu li a {
-  display: block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: #333;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
 }
 
 .user-menu li a:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
