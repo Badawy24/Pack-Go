@@ -1,111 +1,94 @@
-import { deleteDoc, query, collection, where, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "./firebase-config.js";
 
+const cartContainer = document.querySelector(".cart .box-container");
+const cartTotalElement = document.querySelector(".cart .total span");
+
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+  const cartCountElement = document.querySelector("#cart-count");
+  if (cartCountElement) {
+    cartCountElement.textContent = cartCount;
+  }
+}
+
+// عرض عناصر السلة
 async function displayCartItems() {
-  const container = document.querySelector(".cart-item-container");
-  if (!container) return;
+  cartContainer.innerHTML = ""; // تفريغ المحتوى القديم
 
-  container.innerHTML = "";
+  const cartSnapshot = await getDocs(collection(db, "carts"));
+  let cartTotal = 0;
+  const localCart = [];
 
-  try {
-    const querySnapshot = await getDocs(collection(db, "carts"));
-    const cart = [];
-    querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      data._id = docSnap.id;
-      cart.push(data);
-    });
+  cartSnapshot.forEach((docSnap) => {
+    const item = docSnap.data();
+    item._id = docSnap.id;
 
-    if (cart.length === 0) {
-      container.innerHTML = "<p>Cart is empty</p>";
-      return;
-    }
+    const subtotal = (item.price || 0) * (item.quantity || 1);
+    cartTotal += subtotal;
 
-    cart.forEach((item) => {
-      console.log("Cart item:", item);
-
-      const itemDiv = document.createElement("div");
-      itemDiv.classList.add("cart-item");
-      itemDiv.style.display = "flex";
-      itemDiv.style.alignItems = "center";
-      itemDiv.style.justifyContent = "space-between";
-      itemDiv.style.marginBottom = "10px";
-
-      itemDiv.innerHTML = `
-        <div style="display:flex; align-items:center; gap:10px;">
-          <img src="${item.image}" alt="${item.title}" style="width:80px; height:80px; object-fit:cover;" />
-          <div>
-            <h4>${item.title}</h4>
-            <p>Color: ${item.color}</p>
-            <p>Quantity: ${item.quantity}</p>
-            <p>Item-Price: $${item.price}</p>
-          </div>
+    // بناء عنصر HTML
+    const cartItemHTML = `
+      <div class="box">
+        <img src="${item.image}" alt="${item.name}" />
+        <div class="content">
+          <h3>${item.name}</h3>
+          <span class="color">Color: ${item.color}</span><br>
+          <span class="quantity">Qty: ${item.quantity}</span><br>
+          <span class="price">Price: $${item.price}</span><br>
+          <span class="subtotal">Subtotal: $${subtotal}</span><br>
+          <button class="btn remove-btn" 
+            data-id="${item._id}" 
+            data-itemid="${item.id}" 
+            data-color="${item.color}">
+            Remove
+          </button>
         </div>
-        <button class="delete-btn" data-id="${item._id}" title="delete item" style="background:none; border:none; cursor:pointer; font-size:20px; color:#c00;">🗑️</button>
-      `;
+      </div>
+    `;
+    cartContainer.innerHTML += cartItemHTML;
 
-      container.appendChild(itemDiv);
+    // بناء نسخة LocalStorage
+    localCart.push(item);
+  });
+
+  // تحديث LocalStorage بناءً على Firestore
+  localStorage.setItem("cart", JSON.stringify(localCart));
+
+  // تحديث السعر الكلي
+  cartTotalElement.textContent = `$${cartTotal}`;
+
+  // تحديث عداد السلة
+  updateCartCount();
+
+  // إضافة Event Listeners لأزرار الحذف
+  const removeButtons = document.querySelectorAll(".remove-btn");
+  removeButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const docId = button.dataset.id;
+      const itemId = button.dataset.itemid;
+      const itemColor = button.dataset.color;
+
+      await removeItemFromFirestoreAndLocal(docId, itemId, itemColor);
     });
-
-    const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const totalDiv = document.createElement("div");
-    totalDiv.style.marginTop = "20px";
-    totalDiv.style.marginBottom = "20px";
-    totalDiv.style.fontWeight = "bold";
-    totalDiv.style.fontSize = "18px";
-    totalDiv.style.color = "#fff";
-    totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-
-    const btn = document.createElement("a");
-    btn.innerText = 'Checkout';
-    btn.classList.add('checkout-z');
-    btn.href = "../checkout.html";
-
-    container.appendChild(totalDiv);
-    container.appendChild(btn);
-
-    container.querySelectorAll(".delete-btn").forEach(button => {
-      button.addEventListener("click", async (e) => {
-        const docId = e.currentTarget.dataset.id;
-        if (!docId) {
-          console.error("docId is missing!");
-          return;
-        }
-        console.log("Doc ID to delete:", docId);
-        await removeItemFromFirestoreAndLocal(docId);
-      });
-    });
-
-  } catch (error) {
-    console.error("Error fetching or displaying cart data:", error);
-    container.innerHTML = "<p>There was an error loading the cart.</p>";
-  }
+  });
 }
 
-async function removeItemFromCart(docId) {
+// حذف عنصر من Firestore وLocalStorage
+async function removeItemFromFirestoreAndLocal(docId, itemId, itemColor) {
   try {
     await deleteDoc(doc(db, "carts", docId));
-    console.log("Document deleted:", docId);
-    await displayCartItems();
-  } catch (error) {
-    console.error("Error deleting item from cart:", error);
-  }
-}
-
-async function removeItemFromFirestoreAndLocal(docId) {
-  try {
-    await deleteDoc(doc(db, "carts", docId));
-    console.log("Document deleted from Firestore:", docId);
+    console.log("تم حذف العنصر من Firestore:", docId);
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const updatedCart = cart.filter(item => item.id !== productId);
-
+    const updatedCart = cart.filter(item => !(item.id === itemId && item.color === itemColor));
     localStorage.setItem("cart", JSON.stringify(updatedCart));
 
     await displayCartItems();
   } catch (error) {
-    console.error("Error deleting item from Firestore and localStorage:", error);
+    console.error("حدث خطأ أثناء الحذف:", error);
   }
 }
 
-window.addEventListener("DOMContentLoaded", displayCartItems);
+document.addEventListener("DOMContentLoaded", displayCartItems);

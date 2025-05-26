@@ -28,28 +28,25 @@
 }
 
 .user-icon-z {
-    color: var(--dark-color);
-    background-color: gray;
-    padding: 2px 2px 0px 2px;
-    font-size: 2rem;
+    color: #111;
+    background-color: #979797;
     cursor: pointer;
     border-radius: 50%;
+    border: 1px solid var(--main-color--);
 }
 
 #user-icon.user-icon-z {
-    width: 32px;
-    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     vertical-align: middle;
 }
 
-.header-z a span {
+.header-z #user-link span {
     font-size: 1.5rem;
     text-transform: uppercase;
     color: #c4c4bf;
 }
-.header-z a span:hover {
+.header-z #user-link span:hover {
     color: #fff;
 }
 #login-text-k {
@@ -107,10 +104,12 @@
     right: -100%;
     padding: 0 1.5rem;
     width: 35rem;
+    transition: right .9s ease;
 }
 
 .header-z .cart-item-container.active {
     right: 0;
+    transition: right .9s ease;
 }
 
 .header-z .cart-item-container .cart-item {
@@ -221,10 +220,60 @@
     }
 
     .header-z a span {
-        font-size: 1rem;
+        font-size: 25px;
     }
 
     .logo-z {
-        font-size: 15px;
+        font-size: 25px;
     }
+}
+.user-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.user-icon-z {
+  border-radius: 50%;
+  vertical-align: middle;
+  font-size:2.8rem;
+}
+
+.user-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+  min-width: 160px;
+}
+
+.user-menu.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.user-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu li a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.user-menu li a:hover {
+  background-color: #f0f0f0;
 }

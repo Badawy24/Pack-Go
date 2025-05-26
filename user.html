@@ -7,16 +7,22 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="./css/user.css">
+    <link rel="stylesheet" href="./css/home.css">
 </head>
 
 <body>
     <header class="header-z">
         <!-- You can reuse your header here if you want -->
-        <h2 class="logo-z">P<span>ACK </span>& G<span>O</span></h2>
+        <a href=""><h2  class="logo-z">P<span>ACK </span>& G<span>O</span></h2></a>
     </header>
+    <div class="social-z">
+        <i style="color: #1877F2;" class="fab fa-facebook"></i>
+        <i style="color: #E1306C;" class="fab fa-instagram"></i>
+        <i style="color: #FF0000;" class="fab fa-youtube"></i>
+  </div>
     <main class="user-main">
         <div class="user-info-card">
-            <img id="user-icon" src="img/default-user-icon.png" alt="User Photo" />
+            <i class="fas fa-user-circle user-icon-z" id="user-icon" ></i>
             <h2 id="user-display-name">User Name</h2>
             <form id="user-update-form">
                 <label for="user-email">Email:</label>
@@ -34,6 +40,7 @@
         </div>
     </main>
     <script type="module" src="./js/user.js"></script>
+
 </body>
 
 </html>

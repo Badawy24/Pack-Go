@@ -1,5 +1,6 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "./firebase-config.js";
+
 // Get category from URL
 const params = new URLSearchParams(window.location.search);
 const category = params.get("category");
@@ -51,41 +52,15 @@ export async function displayProductByCategory(db) {
 
       const button = document.createElement("button");
       button.classList.add("button-z");
-      button.innerText = "Add To Cart";
+      button.innerText = "View Details";
 
-      // ✅ زر إضافة المنتج إلى السلة
+      // تعديل هنا: زر ينقل لصفحة تفاصيل المنتج بدل إضافة للسلة
       button.addEventListener("click", (e) => {
         e.stopPropagation();
-
-        const cartItem = {
-          id: productId,
-          title: product.title,
-          price: product.price,
-          color: "Default",
-          quantity: 1,
-          image: product.image,
-        };
-
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        const existingIndex = cart.findIndex(
-          (item) => item.id === cartItem.id && item.color === cartItem.color
-        );
-
-        if (existingIndex > -1) {
-          cart[existingIndex].quantity += 1;
-        } else {
-          cart.push(cartItem);
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert("تم إضافة المنتج إلى السلة!");
-        const cartcontainer = document.querySelector(".cart-item-container");
-        cartcontainer.classList.add('active');
-        renderCartItems();
+        window.location.href = `productDetails.html?id=${productId}`;
       });
 
-      // ✅ كليك على الكارت يفتح صفحة التفاصيل
+      // كليك على الكارت يفتح صفحة التفاصيل
       productCard.addEventListener("click", () => {
         window.location.href = `productDetails.html?id=${productId}`;
       });
@@ -97,14 +72,13 @@ export async function displayProductByCategory(db) {
       productCard.appendChild(button);
 
       container.appendChild(productCard);
-
     });
 
   } catch (error) {
     console.error("خطأ أثناء جلب المنتجات:", error);
   }
-
 }
+
 function renderCartItems() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const container = document.querySelector(".cart-item-container");
@@ -127,15 +101,12 @@ function renderCartItems() {
     container.appendChild(itemDiv);
   });
 
-  // 🔻 إضافة زر Checkout تحت المنتجات فقط لو فيه منتجات
+  // إضافة زر Checkout تحت المنتجات فقط لو فيه منتجات
   if (cart.length > 0) {
     const checkoutBtn = document.createElement("button");
-    checkoutBtn.className = "checkout-btn";
+    checkoutBtn.className = "checkout-btn checkout-z";
     checkoutBtn.textContent = "Checkout 🛒";
-    checkoutBtn.classList.add('checkout-z')
     checkoutBtn.addEventListener("click", () => {
-
-      // هنا تقدر توجهه لصفحة checkout فعلًا
       window.location.href = "../cart.html";
     });
 
@@ -143,7 +114,7 @@ function renderCartItems() {
     container.classList.add('render-side-z')
   }
 
-  // ✅ حذف العناصر
+  // حذف العناصر
   document.querySelectorAll(".cart-item-delete").forEach((btn) => {
     btn.addEventListener("click", function () {
       const index = parseInt(this.dataset.index);
