@@ -1,4 +1,14 @@
-import { doc, getDoc, addDoc, collection, query, where, getDocs, updateDoc , deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "./firebase-config.js";
 
 // الدالة الجديدة هنا
@@ -6,7 +16,11 @@ async function addOrUpdateCartItem(cartItem) {
   const cartsRef = collection(db, "carts");
 
   // Query على المنتج بنفس الـ id واللون
-  const q = query(cartsRef, where("id", "==", cartItem.id), where("color", "==", cartItem.color));
+  const q = query(
+    cartsRef,
+    where("id", "==", cartItem.id),
+    where("color", "==", cartItem.color)
+  );
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
@@ -24,10 +38,7 @@ async function addOrUpdateCartItem(cartItem) {
   }
 }
 
-
-
 // بعد كده في مكان استدعاء addDoc استبدله بـ addOrUpdateCartItem
-
 
 export async function getProductDetails(id, db) {
   try {
@@ -77,10 +88,7 @@ function displayProductDetails(product) {
       </div>
       <div class="product-info">
         <h1>${product.title}</h1>
-        <div class="rating">
-          <span>★</span><span>★</span><span>★</span><span>★</span><span class="half">★</span>
-          <span class="rating-value">4.5 | 4 reviews</span>
-        </div>
+      
         <div class="product-price">
           <span class="old-price">$${(product.price * 1.1).toFixed(2)}</span>
           <span class="sale-price">$${product.price}</span>
@@ -124,100 +132,96 @@ function displayProductDetails(product) {
   // إضافة حدث submit للفورم عشان نخزن المنتج في localStorage
   const form = document.getElementById("add-to-cart-form");
   form.addEventListener("submit", async function (e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const color = form.color.value;
-  const quantity = parseInt(form.quantity.value);
+    const color = form.color.value;
+    const quantity = parseInt(form.quantity.value);
 
-  // تجهيز العنصر للسلة
-  const cartItem = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    color,
-    quantity,
-    image: product.image,
-  };
+    // تجهيز العنصر للسلة
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      color,
+      quantity,
+      image: product.image,
+    };
 
-  // جلب السلة من localStorage أو إنشاء جديدة
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // جلب السلة من localStorage أو إنشاء جديدة
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  // هل المنتج بنفس اللون موجود في السلة؟ نحدث الكمية فقط
-  const existingIndex = cart.findIndex(
-    (item) => item.id === cartItem.id && item.color === cartItem.color
-  );
+    // هل المنتج بنفس اللون موجود في السلة؟ نحدث الكمية فقط
+    const existingIndex = cart.findIndex(
+      (item) => item.id === cartItem.id && item.color === cartItem.color
+    );
 
-  if (existingIndex > -1) {
-  cart[existingIndex].quantity += quantity;
-} else {
-  cart.push(cartItem);
-}
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity += quantity;
+    } else {
+      cart.push(cartItem);
+    }
 
+    // حفظ السلة المحدثة
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-  // حفظ السلة المحدثة
-  localStorage.setItem("cart", JSON.stringify(cart));
+    // 🔥 إضافة العنصر إلى Firestore داخل carts
+    try {
+      await addOrUpdateCartItem(cartItem);
+      alert("Added To Cart ");
+      console.log("تم حفظ المنتج في Firestore من الفورم.");
+    } catch (error) {
+      console.error("خطأ أثناء الحفظ في Firestore من الفورم:", error);
+    }
 
-  // 🔥 إضافة العنصر إلى Firestore داخل carts
-  try {
-    await addOrUpdateCartItem(cartItem);
-
-    console.log("تم حفظ المنتج في Firestore من الفورم.");
-  } catch (error) {
-    console.error("خطأ أثناء الحفظ في Firestore من الفورم:", error);
-  }
-
-
-  const container = document.querySelector(".cart-item-container");
-  container.classList.add('active');
-  renderCartItems();
-});
-
+    const container = document.querySelector(".cart-item-container");
+    container.classList.add("active");
+    renderCartItems();
+  });
 
   const buy = document.getElementById("buy");
 
   buy.addEventListener("click", async function (e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const color = form.color.value;
-  const quantity = parseInt(form.quantity.value);
+    const color = form.color.value;
+    const quantity = parseInt(form.quantity.value);
 
-  const cartItem = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    color,
-    quantity,
-    image: product.image,
-  };
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      color,
+      quantity,
+      image: product.image,
+    };
 
-  // إضافة للسلة في localStorage
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // إضافة للسلة في localStorage
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const existingIndex = cart.findIndex(
-    (item) => item.id === cartItem.id && item.color === cartItem.color
-  );
+    const existingIndex = cart.findIndex(
+      (item) => item.id === cartItem.id && item.color === cartItem.color
+    );
 
-  if (existingIndex > -1) {
-    cart[existingIndex].quantity += quantity;
-  } else {
-    cart.push(cartItem);
-  }
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity += quantity;
+    } else {
+      cart.push(cartItem);
+    }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-  // 🟢 إضافة العنصر إلى Firestore داخل Collection اسمها "carts"
-  try {
-    await addOrUpdateCartItem(cartItem);
+    // 🟢 إضافة العنصر إلى Firestore داخل Collection اسمها "carts"
+    try {
+      await addOrUpdateCartItem(cartItem);
 
-    console.log("تم حفظ المنتج في Firestore.");
-  } catch (error) {
-    console.error("خطأ أثناء الحفظ في Firestore:", error);
-  }
+      console.log("تم حفظ المنتج في Firestore.");
+    } catch (error) {
+      console.error("خطأ أثناء الحفظ في Firestore:", error);
+    }
 
-  // التنقل لصفحة cart
-  window.location.href = 'cart.html';
-});
-
+    // التنقل لصفحة cart
+    window.location.href = "cart.html";
+  });
 }
 
 function renderCartItems() {
@@ -256,7 +260,6 @@ function renderCartItems() {
     container.appendChild(checkoutBtn);
     container.classList.add("render-side-z");
   }
-  
 
   // ✅ حذف العناصر
   document.querySelectorAll(".cart-item-delete").forEach((btn) => {
@@ -273,7 +276,8 @@ async function removeCartItemFromBoth(index) {
   if (!itemToRemove) return;
 
   // حذف من Firestore
-  const q = query(collection(db, "carts"),
+  const q = query(
+    collection(db, "carts"),
     where("id", "==", itemToRemove.id),
     where("color", "==", itemToRemove.color)
   );
