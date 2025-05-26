@@ -23,3 +23,33 @@ window.onscroll = () => {
     searchform.classList.remove('active')
     cart.classList.remove('active')
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userContainer = document.querySelector('.user-container');
+    const userMenu = document.querySelector('.user-menu');
+    const userLink = document.getElementById('user-link');
+    const loginText = document.getElementById('login-text');
+    let timeoutId;
+
+    // Show dropdown on hover
+    userContainer.addEventListener('mouseenter', () => {
+        if (loginText.textContent !== 'Log in') {
+            clearTimeout(timeoutId);
+            userMenu.classList.add('active');
+        }
+    });
+
+    // Hide dropdown when mouse leaves
+    userContainer.addEventListener('mouseleave', () => {
+        timeoutId = setTimeout(() => {
+            userMenu.classList.remove('active');
+        }, 100); // Small delay to prevent flickering
+    });
+
+    // Prevent default link behavior when logged in
+    userLink.addEventListener('click', (e) => {
+        if (loginText.textContent !== 'Log in') {
+            e.preventDefault();
+        }
+    });
+});
