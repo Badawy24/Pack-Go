@@ -78,7 +78,7 @@ input[type="email"] {
   text-transform: none;
 }
 
-/* Responsive styles for user page */
+
 @media (max-width: 600px) {
     .user-main {
         min-height: 100vh;

@@ -13,7 +13,7 @@ if (logoutBtn) {
 }
 
 onAuthStateChanged(auth, (user) => {
-    console.log('Auth state changed:', user); // Debug: log user object
+    //console.log('Auth state changed:', user); // Debug: log user object
 
     const userIcon = document.getElementById('user-icon');
     const loginText = document.getElementById('login-text');
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, (user) => {
     }
 
     if (user && userIcon && loginText && userLink) {
-        console.log('Display Name:', user.displayName); // Debug: log display name
+        //console.log('Display Name:', user.displayName); // Debug: log display name
 
         userIcon.src = user.photoURL ? user.photoURL : 'img/default-user-icon.png';
         loginText.textContent = (user.displayName || user.email || "Log in").split(' ')[0];

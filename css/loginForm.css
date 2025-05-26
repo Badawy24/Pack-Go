@@ -196,11 +196,11 @@ body {
 /* --- Responsive Design --- */
 @media (max-width: 600px) {
 
-    /* Adjustments for smaller screens */
+    
     .login-card-k {
         padding: 18px 4vw 12px 4vw;
         width: 100%;
-        /* Make card full width on small screens */
+       
         min-width: 0;
     }
 
