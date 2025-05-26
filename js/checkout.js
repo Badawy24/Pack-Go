@@ -87,12 +87,12 @@ async function displayCartItems() {
     totalDiv.style.color = "#fff";
     totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
 
-    const btn = document.createElement("button");
-    btn.innerText = 'Checkout';
-    btn.classList.add('checkout-z');
+    // const btn = document.createElement("button");
+    // btn.innerText = 'Checkout';
+    // btn.classList.add('checkout-z');
 
     container.appendChild(totalDiv);
-    container.appendChild(btn);
+    //container.appendChild(btn);
 
     updateSummary(totalPrice);
 
