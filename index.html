@@ -20,7 +20,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
-
+    
+    <link rel="stylesheet" href="./css/animate.css">
     <link rel="stylesheet" href="./css/main.css" />
     <link rel="stylesheet" href="./css/header.css" />
     <link rel="stylesheet" href="./css/footer.css" />
@@ -78,7 +79,7 @@
   </header>
   <section class="home-z">
     <div class="center-z">
-      <h1>PLAN YOUR ADVENTURE</h1>
+      <h1 class="wow fadeInUp" data-wow-delay="0.6s">PLAN YOUR ADVENTURE</h1>
       <a href="./shop.html"><button class="button-z">SHOP NOW</button></a>
       <div class="arrow-z">
        <a href="#shop"><i class="fas fa-chevron-down"></i></a> 
@@ -92,24 +93,24 @@
         <i style="color: #FF0000;" class="fab fa-youtube"></i>
   </div>
   <div class="shop-z" id="shop">
-    <div class="left-z">
+    <div class="left-z wow bounceInLeft" data-wow-delay="0.4s">
       <h1>New Arrivals</h1>
       <a href="./shop.html"><button class="button-z">SHOP NOW</button></a>
     </div>
-    <div class="right-z"></div>
+    <div class="right-z wow bounceInRight" data-wow-delay="0.4s"></div>
   </div>
   <div class="categories-z" id="categories">
-    <div class="cat-z cat1-z">
+    <div class="cat-z cat1-z wow bounceInLeft" data-wow-delay="0.4s">
       <div class="overlay-z"><img src="./img/cat-1.avif" alt=""></div>
       <h1></h1>
     </div>
 
-    <div class="cat-z cat2-z">
+    <div class="cat-z cat2-z wow bounceInDown" data-wow-delay="0.8s">
       <div class="overlay-z"><img src="./img/cat-2.avif" alt=""></div>
       <h1></h1>
     </div>
 
-    <div class="cat-z cat3-z">
+    <div class="cat-z cat3-z wow bounceInRight" data-wow-delay="0.4s">
       <div class="overlay-z"><img src="./img/cat-3.avif" alt=""></div>
       <h1></h1>
     </div>
@@ -117,13 +118,13 @@
   </div>
   <div class="sale-z" id="sale">
     <div class="tex-center-z">
-      <h1>NOW ON SALE</h1>
-      <h4>UP TO 50% OFF</h4>
+      <h1 class="wow bounceInDown" data-wow-delay="0.5s">NOW ON SALE</h1>
+      <h4 class="wow bounceInUp" data-wow-delay="0.8s">UP TO 50% OFF</h4>
     </div>
     <div class="sale-flex-z">
       
       <div id="sale-flex" class="sale-flex-z">
-        <div class="product-z product-1-z" id="product-template" style="display:none;">
+        <div class="product-z product-1-z wow bounceInRight" data-wow-delay="0.8s" id="product-template" style="display:none;">
           <img src="" alt="">
           <div class="product-content-z">
             <h3></h3>
@@ -137,13 +138,13 @@
     </div>
     <div id="about" class="about-z">
         <div class="about-left-z">
-            <div class="content-z">
+            <div class="content-z wow bounceInRight" data-wow-delay="0.6s">
                 <h1>ABOUT US</h1>
                 <p>I'm a paragraph. Click here to add your own text and edit me. It’s easy.
                     Just click “Edit Text” or double click me to add your own content and make changes to the font.
                     I’m a great place for you to tell a story and let your users know a little more about you.
                 </p>
-            </div>
+          </div>
 
         </div>
       </div>
@@ -152,7 +153,7 @@
         <div class="inputs-z">
             <div class="first-input-z">
                 <label for="firstname" id="none-z">First Name* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                    &nbsp;</label>
                 <label for="lastname" id="none-z">Last Name*</label> <br>
                 <label for="firstname" id="r-block-z">Full Name</label>
                 <input type="text" name="firstname">
@@ -196,6 +197,10 @@
     <script src="./js/home-category.js"></script>
     <script type="module" src="./js/cart-item.js"></script>
     <script type="module" src="./js/getProductDetails.js"></script>
+    <script src="./js/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
 </body>
 
 </html>
