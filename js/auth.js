@@ -6,17 +6,17 @@ import {
     signInWithPopup,
     updateProfile, 
     onAuthStateChanged, 
-    sendPasswordResetEmail // Add for forgot password
+    sendPasswordResetEmail 
 } from "firebase/auth";
-import { userDataService } from './userDataService.js';  //modified
+import { userDataService } from './userDataService.js';  
 
 const updateUserUI = (user) => {
     const userIcon = document.getElementById('user-icon');
     const loginText = document.getElementById('login-text');
     if (userIcon && loginText) {
-        // Set user photo or fallback to default icon
-        userIcon.src = user.photoURL || 'default-user-icon.png'; // Use your default icon path
-        // Set first name or email as fallback
+      
+        userIcon.src = user.photoURL || 'default-user-icon.png'; 
+     
         loginText.textContent = user.displayName ? user.displayName.split(' ')[0] : user.email;
     }
 };
@@ -62,7 +62,7 @@ const handleGoogleSignIn = async () => {
             uid: result.user.uid,
             email: result.user.email.toLowerCase(),
             displayName: result.user.displayName,
-            role: role, // Use the correct role
+            role: role, 
             createdAt: existingUserData && existingUserData.createdAt ? existingUserData.createdAt : new Date().toISOString()
         });
         updateUserUI(result.user);
@@ -98,10 +98,10 @@ const handleEmailSignUp = async (email, password, confirmPassword, displayName) 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-        // Set the display name in Firebase Auth profile
+       
         await updateProfile(userCredential.user, { displayName });
 
-        // Save user data with display name and role
+       
         await userDataService.saveUserData(userCredential.user.uid, {
             uid: userCredential.user.uid,
             email: email,
@@ -122,7 +122,7 @@ const handleGoogleSignUp = async () => {
         const result = await signInWithPopup(auth, provider);
         // Fetch existing user data
         const existingUserData = await userDataService.getUserData(result.user.uid);
-        // Use existing role if present, otherwise default to "user"
+       
         const role = existingUserData && existingUserData.role ? existingUserData.role : "user";
         await userDataService.saveUserData(result.user.uid, {
             uid: result.user.uid,
@@ -138,7 +138,7 @@ const handleGoogleSignUp = async () => {
 };
 
 const handleAuthStateChange = (user) => {
-    // No admin logic, just redirect to login if not logged in and on a protected page
+   
     const currentPath = window.location.pathname;
     if (!user && currentPath.includes('user.html')) {
         window.location.href = './auth/loginForm.html';
