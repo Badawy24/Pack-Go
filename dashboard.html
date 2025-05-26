@@ -8,17 +8,21 @@
 </head>
 <body>
   <h1>Product Dashboard</h1>
-  <form id="productForm">
+
+  <!-- زرار إظهار/إخفاء الفورم -->
+  <button id="toggleFormBtn"> Add New Product</button>
+
+  <!-- فورم إضافة/تعديل المنتج -->
+  <form id="productForm" class="hidden">
     <input type="number" name="code" placeholder="Code" required />
     <input type="text" name="title" placeholder="Title" required />
     <textarea name="description" placeholder="Description"></textarea>
-    <!-- <input type="text" name="category" placeholder="Category" required /> -->
-  <select name="category" required>
-  <option value="" disabled selected hidden>Choose category</option>
-  <option value="backpacks">Backpacks</option>
-  <option value="dufflebags">Dufflebags</option>
-  <option value="travelpacks">Travelpacks</option>
-</select>
+    <select name="category" required>
+      <option value="" disabled selected hidden>Choose category</option>
+      <option value="backpacks">Backpacks</option>
+      <option value="dufflebags">Dufflebags</option>
+      <option value="travelpacks">Travelpacks</option>
+    </select>
     <input type="number" name="price" placeholder="Price" step="0.01" required />
     <input type="number" name="discountPercentage" placeholder="Discount %" step="0.01" required />
     <input type="number" name="quantity" placeholder="Quantity" required />
@@ -29,8 +33,28 @@
     <input type="text" name="info" placeholder="Additional Info" />
     <button type="submit">Save Product</button>
   </form>
+
+
+<table id="productsTable">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Title</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Color</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="productList">
+    <!-- الصفوف تتولد من الجافاسكربت -->
+  </tbody>
+</table>
+
+  <!-- مكان عرض المنتجات -->
   <div id="productList" class="productList"></div>
-   
+
   <script type="module" src="./js/dashboard.js"></script>
 </body>
 </html>
