@@ -193,10 +193,12 @@
         width: 30rem;
         height: calc(100vh - 9.5rem);
         display: block;
+        transition: right .9s ease;
     }
 
     .header-z .navbar.active {
         right: 0;
+        transition: right .9s ease;
     }
 
     .header-z .navbar a {
@@ -225,11 +227,11 @@
     }
 
     .header-z a span {
-        font-size: 25px;
+        font-size: 20px;
     }
 
     .logo-z {
-        font-size: 25px;
+        font-size: 20px;
     }
 }
 
