@@ -19,16 +19,17 @@
   -ms-overflow-style: none;
 }
 .cart-item {
-  display: flex;
+   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
-  background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 15px;
   margin-bottom: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease; 
+  background: #222;
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
 }
 
 .cart-item:hover {

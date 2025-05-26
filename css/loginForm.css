@@ -1,4 +1,3 @@
-/* General body and page layout */
 body {
     background: #000;
     color: #fff;
@@ -12,19 +11,17 @@ body {
     height: 100vh;
 }
 
-/* --- Component Classes --- */
 
-/* Full-screen container to center the login card */
 .login-k {
     min-width: 100vw;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Transparent background, body handles actual bg color */
+    
 }
 
-/* Login card styling */
+
 .login-card-k {
     background: #181818;
     color: #fff;
@@ -32,23 +29,17 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
     width: 400px;
     max-width: 95vw;
-    /* Ensure it doesn't exceed viewport width on small screens */
     margin: 0 auto;
-    /* Center the card if width is less than login-k container */
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    /* Make child elements stretch to full width */
     gap: 16px;
     padding: 36px 32px 24px 32px;
     opacity: 0;
-    /* Initial state for animation */
     transform: translateY(100vh);
-    /* Initial state for animation */
     animation: slideUpCenter 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
-/* Heading within the login card */
 .login-card-k h1 {
     font-size: 2.1em;
     font-weight: 700;
@@ -57,7 +48,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Subtext for links (e.g., "New to this site?") */
 .subtext-k {
     color: #eee;
     font-weight: 400;
@@ -72,7 +62,6 @@ body {
     font-weight: 500;
 }
 
-/* Labels for input fields */
 .login-card-k label {
     color: #ddd;
     display: block;
@@ -81,7 +70,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Email and password input field styling */
 .login-card-k input[type="email"],
 .login-card-k input[type="password"] {
     width: 100%;
@@ -94,25 +82,20 @@ body {
     margin-bottom: 3px;
     outline: none;
     font-family: 'Oswald', Arial, sans-serif;
-    /* Consistent font */
     transition: border-bottom-color 0.3s;
 }
 
-/* Focus state for input fields */
 .login-card-k input[type="email"]:focus,
 .login-card-k input[type="password"]:focus {
     border-bottom: 2px solid #79afff;
 }
 
-/* Row for "Forgot password?" link */
 .forgot-row-k {
     display: flex;
     justify-content: flex-end;
-    /* Align link to the right */
     margin-bottom: 4px;
 }
 
-/* "Forgot password?" link styling */
 .forgot-link-k {
     color: #79afff;
     text-decoration: underline;
@@ -126,7 +109,6 @@ body {
     color: #357ab8;
 }
 
-/* Main login button styling */
 .login-btn-k {
     margin: 16px 0 6px 0;
     width: 100%;
@@ -134,7 +116,6 @@ body {
     border: none;
     border-radius: 6px;
     font-family: inherit;
-    /* Use Oswald font from body */
     font-size: 1.13rem;
     font-weight: 600;
     background: #fff;
@@ -149,7 +130,6 @@ body {
     color: #dddedf;
 }
 
-/* Divider with "or log in with" text */
 .divider-k {
     display: flex;
     align-items: center;
@@ -162,13 +142,11 @@ body {
 
 .divider-k span {
     flex: 1;
-    /* Allows spans to take up equal space for the lines */
     border-bottom: 1px solid #515151;
     height: 0;
     min-width: 25px;
 }
 
-/* Row for social login buttons */
 .social-row-k {
     display: flex;
     justify-content: center;
@@ -177,14 +155,12 @@ body {
     margin: 8px 0 18px 0;
 }
 
-/* Social login button (e.g., Google) styling */
 .social-btn-k {
     width: 40px;
     height: 40px;
     background: #fff;
     border: none;
     border-radius: 50%;
-    /* Circular button */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -198,7 +174,6 @@ body {
     box-shadow: 0 2px 16px 1px #3a80e9;
 }
 
-/* Image within social buttons */
 .social-btn-k img {
     width: 24px;
     height: 24px;

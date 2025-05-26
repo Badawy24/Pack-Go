@@ -77,3 +77,44 @@
 input[type="email"] {
   text-transform: none;
 }
+
+/* Responsive styles for user page */
+@media (max-width: 600px) {
+    .user-main {
+        min-height: 100vh;
+        padding: 16px;
+        align-items: flex-start;
+    }
+
+    .user-info-card {
+        min-width: unset;
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 8px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .user-info-card img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 12px;
+    }
+
+    .user-info-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+
+    .user-info-card input {
+        width: 100%;
+        font-size: 1em;
+        padding: 7px;
+    }
+
+    .user-info-card button {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 1em;
+    }
+}
