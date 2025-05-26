@@ -12,27 +12,31 @@ export function showInvoicePopup(orderData) {
     document.getElementById("invAmount").textContent = orderData.paidAmount;
     document.getElementById("invCurrency").textContent = orderData.currency;
 
-    // بناء صفوف المنتجات في الجدول
-    const tbody = document.getElementById("productRows");
+    let tbody = document.getElementById("productRows");
     tbody.innerHTML = "";
 
     orderData.products.forEach(product => {
-        const row = document.createElement("tr");
+        let row = document.createElement("tr");
 
-        const titleCell = document.createElement("td");
+        let titleCell = document.createElement("td");
         titleCell.textContent = product.title;
         row.appendChild(titleCell);
 
-        const qtyCell = document.createElement("td");
+        let qtyCell = document.createElement("td");
         qtyCell.textContent = product.quantity;
         row.appendChild(qtyCell);
 
-        const priceCell = document.createElement("td");
+        let priceCell = document.createElement("td");
         priceCell.textContent = `$${product.price.toFixed(2)}`;
         row.appendChild(priceCell);
 
-        const totalCell = document.createElement("td");
-        totalCell.textContent = `$${(product.price * product.quantity).toFixed(2)}`;
+        let discount = document.createElement("td");
+        discount.textContent = `${product.discount.toFixed(2)}%`;
+        row.appendChild(discount);
+
+        let totalCell = document.createElement("td");
+        let priceAfterDiscount = product.price * (1 - product.discount / 100);
+        totalCell.textContent = `$${(priceAfterDiscount * product.quantity).toFixed(2)}`;
         row.appendChild(totalCell);
 
         tbody.appendChild(row);

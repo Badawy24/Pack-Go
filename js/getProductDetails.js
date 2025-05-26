@@ -163,6 +163,9 @@ async function handleAddToCart(product) {
     color,
     quantity,
     image: product.image,
+    description: product.description,
+    code: product.code,
+    discountPercentage: product.discountPercentage
   };
 
   if (userId) {

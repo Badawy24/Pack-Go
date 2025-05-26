@@ -1,44 +1,55 @@
+import { collection, getDocs, deleteDoc, doc, updateDoc, query, where } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db, app } from "./firebase-config.js";
+import { updateCartCount } from "./cart-item.js";
+let auth = getAuth(app);
+let currentUserId = null; 
 
-import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "./firebase-config.js";
-async function removeItemFromFirestoreAndLocal(docId, id, color) {
+async function removeItemFromFirestoreAndLocal(docId, id, color, userId) {
   try {
     await deleteDoc(doc(db, "carts", docId));
-    console.log("Document deleted from Firestore:", docId);
-
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart = cart.filter(item => !(item.id === id && item.color === color));
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    await displayCartItems();
+    await displayCartItems(userId);  
   } catch (error) {
-    console.error("Error while deleting item from Firestore and localStorage:", error);
+    alert("Error while deleting item Please Try again");
   }
+  updateCartCount();
 }
 
-async function displayCartItems() {
-  const container = document.querySelector(".cart-item-container-cart");
+async function displayCartItems(userId) {
+  let container = document.querySelector(".cart-item-container-cart");
   if (!container) return;
 
   container.innerHTML = "";
 
+  if (!userId) {
+    container.innerHTML = "<h2>Please login to see your cart.</h2>";
+    updateSummary(0);
+    return;
+  }
+
   try {
-    const querySnapshot = await getDocs(collection(db, "carts"));
-    const cart = [];
+    let q = query(collection(db, "carts"), where("userId", "==", userId));
+    let querySnapshot = await getDocs(q);
+    let cart = [];
+    
     querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
+      let data = docSnap.data();
       data._id = docSnap.id;
       cart.push(data);
     });
 
     if (cart.length === 0) {
-      container.innerHTML = "<h2> the cart is empty</h2>";
+      container.innerHTML = "<h2>The cart is empty</h2>";
       updateSummary(0);
       return;
     }
 
     cart.forEach((item) => {
-      const itemDiv = document.createElement("div");
+      let itemDiv = document.createElement("div");
       itemDiv.classList.add("cart-item");
       itemDiv.style.display = "flex";
       itemDiv.style.alignItems = "center";
@@ -54,8 +65,12 @@ async function displayCartItems() {
                  ${item.title}
               </a>
             </h4>
-            <p style="margin-bottom:5px;">Color : ${item.color}</p>
-            <p style="margin-bottom:5px; ">Quantity : 
+            <p style="margin:10px;"><span style="display: block;width: 30px;
+          height: 30px;
+          background-color: ${item.colorHEX};
+          border-radius: 50%; border:1px solid #fff ;
+          margin-bottom:10px;"></span></p>
+            <p style="margin-bottom:5px;">Quantity : 
               <input type="number" min="1" value="${item.quantity}" 
                       class="quantity-input" 
                       data-docid="${item._id}" 
@@ -69,7 +84,7 @@ async function displayCartItems() {
                 data-docid="${item._id}"
                 data-id="${item.id}"
                 data-color="${item.color}"
-                title=" delete item"
+                title="Delete item"
                 style="background:none; border:none; cursor:pointer; font-size:22px; color:#e74c3c;">
           <i class="fas fa-trash-alt"></i>
         </button>
@@ -78,49 +93,42 @@ async function displayCartItems() {
       container.appendChild(itemDiv);
     });
 
-    const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const totalDiv = document.createElement("div");
+    let totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    let totalDiv = document.createElement("div");
     totalDiv.style.marginTop = "20px";
     totalDiv.style.fontWeight = "bold";
     totalDiv.style.fontSize = "18px";
     totalDiv.style.color = "#fff";
     totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
-
-    
-    
-    
-
     container.appendChild(totalDiv);
-    
 
     updateSummary(totalPrice);
 
     container.querySelectorAll(".delete-btn").forEach(button => {
       button.addEventListener("click", async (e) => {
-        const docId = e.currentTarget.dataset.docid;
-        const id = e.currentTarget.dataset.id;
-        const color = e.currentTarget.dataset.color;
+        let docId = e.currentTarget.dataset.docid;
+        let id = e.currentTarget.dataset.id;
+        let color = e.currentTarget.dataset.color;
 
         if (!docId || !id || !color) {
-          console.error("Delete data incomplete!");
           return;
         }
-        console.log("Doc ID to delete:", docId, "id:", id, "color:", color);
-        const confirmDelete = confirm("Do you want to delete this item?");
+
+        let confirmDelete = confirm("Do you want to delete this item?");
         if (confirmDelete) {
-          await removeItemFromFirestoreAndLocal(docId, id, color);
+          await removeItemFromFirestoreAndLocal(docId, id, color, userId);
         }
       });
     });
 
-    let isUpdating = false; 
+    let isUpdating = false;
 
-    async function updateQuantity(docId, newQty, price) {
-      if (isUpdating) return; 
+    async function updateQuantity(docId, newQty) {
+      if (isUpdating) return;
       isUpdating = true;
 
       try {
-        const itemRef = doc(db, "carts", docId);
+        let itemRef = doc(db, "carts", docId);
         await updateDoc(itemRef, { quantity: newQty });
 
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -132,20 +140,17 @@ async function displayCartItems() {
         });
         localStorage.setItem("cart", JSON.stringify(cart));
 
-        await displayCartItems();
+        await displayCartItems(userId);
       } catch (error) {
-        console.error("Failed to update quantity:", error);
-      } finally {
-        isUpdating = false; 
-      }
+        console.error("Failed to update quantity Try again");
+      } 
+        isUpdating = false;
     }
 
-    
     container.querySelectorAll(".quantity-input").forEach(input => {
       input.addEventListener("change", async (e) => {
-        const newQty = parseInt(e.target.value);
-        const docId = e.target.dataset.docid;
-        const price = parseFloat(e.target.dataset.price);
+        let newQty = parseInt(e.target.value);
+        let docId = e.target.dataset.docid;
 
         if (isNaN(newQty) || newQty < 1) {
           alert("The quantity must be a positive number.");
@@ -153,25 +158,25 @@ async function displayCartItems() {
           return;
         }
 
-        await updateQuantity(docId, newQty, price);
+        await updateQuantity(docId, newQty);
       });
     });
+
   } catch (error) {
-    console.error("Error while fetching cart items:", error);
-    container.innerHTML = "<p>Error loading cart.</p>";
+    container.innerHTML = "<p>Can't loading cart.</p>";
   }
+  updateCartCount();
 }
 
 function updateSummary(totalPrice) {
-  const subtotalElement = document.querySelector(".summary-row:first-child .price");
-  const totalElement = document.querySelector(".summary-row.total .price");
-  const itemCountElement = document.querySelector(".summary-row.items .count");
+  let subtotalElement = document.querySelector(".summary-row:first-child .price");
+  let totalElement = document.querySelector(".summary-row.total .price");
+  let itemCountElement = document.querySelector(".summary-row.items .count");
 
-  const cart = (JSON.parse(localStorage.getItem("cart")) || [])
+  let cart = (JSON.parse(localStorage.getItem("cart")) || [])
     .filter(item => item && typeof item.quantity === "number" && item.quantity > 0);
 
-  
-  const totalItems = cart.length;
+  let totalItems = cart.length;
 
   if (itemCountElement) {
     itemCountElement.textContent = `${totalItems}`;
@@ -181,10 +186,19 @@ function updateSummary(totalPrice) {
     subtotalElement.textContent = `$${totalPrice.toFixed(2)}`;
     totalElement.textContent = `$${totalPrice.toFixed(2)}`;
   }
+  updateCartCount();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  displayCartItems();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUserId = user.uid;
+      displayCartItems(currentUserId);
+    } else {
+      currentUserId = null;
+      displayCartItems(null);
+    }
+  });
 });
 
-export {displayCartItems};
+export { displayCartItems };
