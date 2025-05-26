@@ -53,7 +53,7 @@ async function displayCartItems() {
 
 
   if (cartItems.length === 0) {
-    cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+    cartContainer.innerHTML = "<p style='color:#fff'>Your cart is empty.</p>";
     updateCartCount();
     isRendering = false;
     return;
@@ -67,9 +67,13 @@ async function displayCartItems() {
       <img src="${item.image}" alt="${item.title}" class="cart-item-img" />
       <div class="cart-item-info">
         <p class="cart-item-title">${item.title || item.name}</p>
-        <p class="cart-item-color">Color: ${item.color}</p>
         <p class="cart-item-quantity">Quantity: ${item.quantity}</p>
-        <p class="cart-item-price">${item.price} EGP</p>
+        <p class="cart-item-price">${item.price}$</p>
+        <p class="cart-item-color"><span style="display: block;width: 20px;
+          height: 20px;
+          background-color: ${item.colorHEX};
+          border-radius: 50%; border:1px solid #fff ;
+          margin-bottom:10px;"></span></p>
       </div>
       <button class="delete-btn"
         data-docid="${item._id || ''}"
