@@ -1,5 +1,5 @@
-import { setCurrentOrder, setCurrentTypeOrder } from "./state.js";
-import { getProductsFromFireStore } from "./shop.js";
+import { setCurrentOrder, setCurrentTypeOrder } from "state.js";
+import { getProductsFromFireStore } from "shop.js";
 
 let sortOption = document.getElementById("sort");
 

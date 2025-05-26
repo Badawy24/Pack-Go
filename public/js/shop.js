@@ -1,6 +1,6 @@
 import { collection, query, orderBy, limit, startAfter, getDocs, where } from "firebase/firestore";
-import { db } from "./firebase-config.js";
-import { getCurrentCategoryFilter, getCurrentOrder, getCurrentTypeOrder, setProductsArray } from "./state.js";
+import { db } from "firebase-config.js";
+import { getCurrentCategoryFilter, getCurrentOrder, getCurrentTypeOrder, setProductsArray } from "state.js";
 
 let endOfProducts = null;
 let productsPerPage = 8;

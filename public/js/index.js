@@ -1,6 +1,6 @@
-import { auth } from './firebase-config.js';
+import { auth } from 'firebase-config.js';
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { userDataService, getCurrentUserUid } from './userDataService.js';
+import { userDataService, getCurrentUserUid } from 'userDataService.js';
 
 const logoutBtn = document.getElementById('logout-btn');
 

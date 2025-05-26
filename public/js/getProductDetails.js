@@ -1,8 +1,8 @@
 
 
 import { doc, getDoc, addDoc, collection, query, where, getDocs, updateDoc } from "firebase/firestore";
-import { db, app } from "./firebase-config.js";
-import { updateCartCount, displayCartItems } from "./cart-item.js";
+import { db, app } from "firebase-config.js";
+import { updateCartCount, displayCartItems } from "cart-item.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 let auth = getAuth(app);

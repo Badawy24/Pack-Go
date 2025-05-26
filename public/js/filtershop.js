@@ -1,5 +1,5 @@
-import { setCurrentCategoryFilter } from "./state.js";
-import { getProductsFromFireStore } from "./shop.js";
+import { setCurrentCategoryFilter } from "state.js";
+import { getProductsFromFireStore } from "shop.js";
 
 let filterLinks = document.querySelectorAll('#filter a');
 

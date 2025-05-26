@@ -1,5 +1,5 @@
 import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
-import { db, app } from "./firebase-config.js";
+import { db, app } from "firebase-config.js";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 let auth = getAuth(app);
@@ -92,7 +92,7 @@ async function displayCartItems() {
   checkoutBtn.className = "checkout-btn checkout-z";
   checkoutBtn.textContent = "Checkout";
   checkoutBtn.addEventListener("click", () => {
-    window.location.href = "../cart.html";
+    window.location.href = ".cart.html";
   });
   cartContainer.appendChild(checkoutBtn);
   cartContainer.classList.add("render-side-z");
